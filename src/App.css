@@ -124,11 +124,13 @@
 
 
 
-
+.home-upper-half {
+  display: grid;
+  grid-template-columns: 900px 1000px;
+}
 
 .home-intro {
   border: 2px solid red;
-  width: 34%;
   margin-left: 10%;
   margin-top: 3%;
   text-align: left;
@@ -158,6 +160,29 @@
 
 .home-intro Button:hover {
   background-color: red;
+}
+
+
+.GameSummary {
+  background-color: rgb(234, 222, 214);
+  border: 3px solid rgb(77, 77, 77);
+  display: grid;
+  grid-template-columns: 500px 500px;
+  color: black;
+
+}
+
+.GameSummary .right-panel {
+  border: 2px solid red;
+  text-align: left;
+}
+
+.GameSummary .right-panel h1 {
+  font-size: 1.0em;
+}
+
+.GameSummary .right-panel h2 {
+  font-size: 0.7em;
 }
 
 
