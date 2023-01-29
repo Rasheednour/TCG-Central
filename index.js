@@ -45,6 +45,8 @@ app.post('/games', async (req, res) => {
     }
 });
 
+//PUT and DELeTE GAME - leaving these out for now, since post can overwrite a game
+
 //GET 1 game - add game_id attribute
 app.get('/games/:gameId', async (req, res) => {
     let query = db.collection('games').doc(req.params.gameId);
@@ -126,3 +128,7 @@ app.delete('/cards/:cardId', async (req, res) => {
 });
 
  
+//--------------------- USERS ----------------------------
+app.post('/users', async (req, res) => {
+    
+}
