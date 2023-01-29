@@ -13,6 +13,10 @@ app.get('/', async (req, res) => {
     res.json({status: 'tcgbackend is up and listening'});
 });
 
+
+//---------------------------------- GAMES --------------------------------
+
+
 //GET all games - returns an object containing each game keyed to its game Id
 app.get('/games', async (req, res) => {
     console.log("games endpoint was hit");
@@ -24,9 +28,11 @@ app.get('/games', async (req, res) => {
 	res.json({'error': 'no games found'});
     }
     console.log(`Found ${snapshot.size} games`);
-    let allGames = {};
+    let allGames = [];
     snapshot.forEach(doc => {
-	allGames[doc.id] = doc.data();
+	let curGame = doc.data();
+	curGame['game_id'] = doc.id;
+	allGames.push(curGame);
     });
     res.json(allGames);
 });
@@ -63,6 +69,8 @@ app.get('/games/:gameId', async (req, res) => {
 }):
 
 
+//------------------------------- CARDS ------------------------------
+
 
 //GET 1 card (dunno why this would get used but put it in for completeness)
 app.get('/cards/:cardId', async (req, res) => {
@@ -85,14 +93,21 @@ app.get('/games/:gameId/cards', async (req, res) => {
     let gameId = req.params.gameId;
     let query = db.collection('cards').where("game_ids", "array-contains", gameId);
     let snapshot = await query.get();
-    let allCards = {};
-    snapshot.forEach(doc => {
-	let curData = doc.data();
-	curData["card_id"] = doc.id;
-	allCards[doc.id] = curData;
-    });
-    res.json(allCards);
+    if (snapeshot.empty) {
+	res.status(404);
+	res.json({'error': 'no cards found for this game'});
+    }
+    else {
+	let allCards = [];
+	snapshot.forEach(doc => {
+	    let curData = doc.data();
+	    curData["card_id"] = doc.id;
+	    allCards.push(curData);
+	});
+	res.json(allCards);
+    }
 });
+	
 
 //POST new card to a given game
 app.post('/games/:gameId/cards', async (req, res) => {
@@ -130,5 +145,35 @@ app.delete('/cards/:cardId', async (req, res) => {
  
 //--------------------- USERS ----------------------------
 app.post('/users', async (req, res) => {
-    
-}
+    let user = req.body;
+    let id;
+    if ('user_id' in user) {
+	id = user['user_id'];
+	delete user.user_id;
+	let newUser = await db.collection('users').doc(id).set(user);
+    }
+    else {
+	let newUser = await db.collection('users').add(user);
+	id = newUser.id;
+    }
+    res.json({'user_id': id});
+});
+
+app.get('/users', async (req, res) => {
+    let query = db.collection('users');
+    let snapshot = await query.get();
+    if (snapshot.empty){
+	res.status(404);
+	res.json({error: 'no users found'});
+    }
+    else {
+	let allUsers = [];
+	snapshot.forEach(doc => {
+	    let curUser = doc.data();
+	    curUser['user_id'] = doc.id;
+	    allUsers.push(curUser);
+	});
+	res.json(allUsers);
+    }
+});
+	 
