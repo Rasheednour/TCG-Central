@@ -14,6 +14,30 @@ app.get('/', async (req, res) => {
 });
 
 
+//---------------------------- UTILITIES -----------------
+function field_based_sorter(field) {
+    return (one, two) => {
+	if ((field in one) && (field in two)){
+	    if (one < two) {
+		return -1;
+	    }
+	    if (two < one){
+		return 1;
+	    }
+	    return 0
+	}
+	if (field in one) {
+	    return -1;
+	}
+	if (field in two) {
+	    return 1;
+	}
+	return 0;
+    }
+}
+
+
+
 //---------------------------------- GAMES --------------------------------
 
 
@@ -34,6 +58,7 @@ app.get('/games', async (req, res) => {
 	curGame['game_id'] = doc.id;
 	allGames.push(curGame);
     });
+    allGames.sort(field_based_sorter('name'));
     res.json(allGames);
 });
 
@@ -57,7 +82,7 @@ app.post('/games', async (req, res) => {
 app.get('/games/:gameId', async (req, res) => {
     let query = db.collection('games').doc(req.params.gameId);
     let doc = await query.get();
-    if (doc.exists()){
+    if (doc.exists){
 	let game = doc.data();
 	game['game_id'] = doc.id;
 	res.json(game);
@@ -66,7 +91,7 @@ app.get('/games/:gameId', async (req, res) => {
 	res.status(404);
 	res.json({'error': 'game not found'});
     }
-}):
+});
 
 
 //------------------------------- CARDS ------------------------------
@@ -77,7 +102,7 @@ app.get('/cards/:cardId', async (req, res) => {
     let card_id = req.params.cardId;
     let query = db.collection('cards').doc(card_id);
     let doc = await query.get();
-    if (card.exists){
+    if (doc.exists){
 	let card = doc.data();
 	card['card_id'] = doc.id;
 	res.json(card);
@@ -88,12 +113,34 @@ app.get('/cards/:cardId', async (req, res) => {
     }
 });
 
+//GET ALL CARDS
+//TODO - Maybe add user based limitation so this only gets public cards and cards user owns/made
+app.get('/cards', async (req, res) => {
+    let query = db.collection('cards');
+    let snapshot = await query.get();
+    if (snapshot.empty) {
+	res.status(404);
+	res.json({error: 'there are no cards... strange'});
+    }
+    else {
+	let allCards = [];
+	snapshot.forEach(doc => {
+	    let curData = doc.data();
+	    curData['card_id'] = doc.id;
+	    allCards.push(curData);
+	});
+	allCards.sort(field_based_sorter('name'));
+	res.json(allCards);
+    }
+});
+
+
 //GET All cards for a given game
 app.get('/games/:gameId/cards', async (req, res) => {
     let gameId = req.params.gameId;
     let query = db.collection('cards').where("game_ids", "array-contains", gameId);
     let snapshot = await query.get();
-    if (snapeshot.empty) {
+    if (snapshot.empty) {
 	res.status(404);
 	res.json({'error': 'no cards found for this game'});
     }
@@ -104,6 +151,7 @@ app.get('/games/:gameId/cards', async (req, res) => {
 	    curData["card_id"] = doc.id;
 	    allCards.push(curData);
 	});
+	allCards.sort(field_based_sorter('name'));
 	res.json(allCards);
     }
 });
@@ -173,6 +221,7 @@ app.get('/users', async (req, res) => {
 	    curUser['user_id'] = doc.id;
 	    allUsers.push(curUser);
 	});
+	allUsers.sort(field_based_sorter('name'));
 	res.json(allUsers);
     }
 });
