@@ -16,6 +16,12 @@ export default class InteractiveHandler {
             scene.dealCards.setColor('#00ffff');
         })
 
+        //dragged objects follow mouse.
+        scene.input.on('drag', (pointer, gameObject, dragX, dragY) => {
+            gameObject.x = dragX;
+            gameObject.y = dragY;
+        })
+
         //Interactions for draggable elements (right now only cards)
         scene.input.on('dragstart', (pointer, gameObject) => {
             gameObject.setTint(0xff69b4);
@@ -32,8 +38,9 @@ export default class InteractiveHandler {
 
         scene.input.on('drop', (pointer, gameObject, dropZone) => {
             if (scene.gameHandler.isMyTurn && scene.gameHandler.gameState === 'Ready') {
-                gameObject.x = dropZone.x;
+                gameObject.x = (dropZone.x - 350) + (dopZone.data.values.cards * 150);
                 gameObject.y = dropZone.y;
+                scene.dropZone.data.values.cards++;
                 //currently once a card is dropped into a dropzone, it can't be dragged again.
                 scene.input.setDraggable(gameObject, false);
                 scene.socket.emit('cardPlayed', gameObject.data.values.name, scene.socket.id);
