@@ -35,6 +35,94 @@ function field_based_sorter(field) {
   };
 }
 
+//Pseudocode
+// if current element can make total equal target, add how we got here and then continue to check other routes
+
+function find_all_combinations(target, source_vals, current, completed) {
+  for (value in source_vals) {
+    let total = current.reduce(
+      (callbackFn = (a, b) => {
+        a + b;
+      }),
+      (initialValue = value)
+    );
+    if (total == target) {
+      current.push(value);
+      completed.push(current.slice());
+      current.pop();
+    } else if (total < target) {
+      current.push(value);
+      completed = find_all_combinations(
+        target,
+        source_vals,
+        current,
+        completed
+      );
+      current.pop();
+    } else {
+      break;
+    }
+  }
+  return completed;
+}
+
+function find_all_caller(target_difficulty, array_of_enemy_levels) {
+  let results = [];
+  for (starter in array_of_enemy_levels) {
+    results.concat(
+      find_all_combinations(
+        target_difficulty,
+        array_of_enemy_levels,
+        [starter],
+        Array()
+      )
+    );
+  }
+  return results;
+}
+
+function difficulty_level_gen(target_difficulty, array_of_enemy_levels) {
+  let results = find_all_caller(
+    target_difficulty,
+    array_of_enemy_levels.sort()
+  );
+  let HARD_LIMIT = 12; //To prevent infinite recursion from ridiculous inputs
+  let counter = 0;
+  while (results.length == 0 && counter < HARD_LIMIT) {
+    counter++;
+    if (target_difficulty > 1) {
+      results.concat(
+        find_all_caller(target_difficulty - 1, array_of_enemy_levels)
+      );
+    }
+    results.concat(
+      find_all_caller(target_difficulty + 1, array_of_enemy_levels)
+    );
+  }
+  return results;
+}
+
+function pick_random_from_array(target_array) {
+  return target_array[Math.floor(Math.random() * target_array.length)];
+}
+
+function generate_encounter(target, all_levels, enemies) {
+  let level_mix = pick_random_from_array(
+    difficulty_level_gen(target, all_levels)
+  );
+  let enemy_list = [];
+  for (level in level_mix) {
+    let start_index = Math.floor(Math.random() * enemies.length);
+    for (let counter = 0; counter++; counter < enemy_list.length) {
+      if (level == enemies[(counter + start_index) % enemies.length]) {
+        enemy_list.push(enemies[(counter + start_index) % enemies.length]);
+        break;
+      }
+    }
+  }
+  return enemy_list;
+}
+
 //---------------------------------- GAMES --------------------------------
 
 //GET all games - returns an object containing each game keyed to its game Id
@@ -215,6 +303,9 @@ app.get("/enemies", async (req, res) => {
 });
 
 //GET All enemies for a given game
+// CAN BE USED TO GENERATE ENEMY LIST FOR A GIVEN DIFFICULT LEVEL OF BATTLE
+// To return a random encounter of a given difficult include parameter "difficulty" which should be an int
+// returns the closest difficulty level to the requested that it can generate
 app.get("/games/:gameId/enemies", async (req, res) => {
   let gameId = req.params.gameId;
   let query = db
@@ -231,6 +322,33 @@ app.get("/games/:gameId/enemies", async (req, res) => {
       curData["enemy_id"] = doc.id;
       allenemies.push(curData);
     });
+
+    // if a difficulty is provided return a batch of enemies that total that difficulty (or as close to it as possible)
+    if ("difficulty" in req.params) {
+      let target = parseInt(req.params.difficulty);
+      if (target == NaN) {
+        res.status(400);
+        res.json({
+          error: `invalid difficulty param: ${req.params.difficulty}`,
+        });
+      }
+      let all_levels = [];
+      let valid_enemies = [];
+      for (enemy in allenemies) {
+        if ("level" in enemy) {
+          let cur_level = parseInt(enemy["level"]);
+          if (cur_level == NaN) {
+            continue;
+          }
+          if (cur_level in all_levels) {
+            all_levels.push(cur_level);
+          }
+          valid_enemies.push(enemy);
+        }
+      }
+      allenemies = generate_encounter(target, all_levels, valid_enemies);
+    }
+
     allenemies.sort(field_based_sorter("name"));
     res.json(allenemies);
   }
