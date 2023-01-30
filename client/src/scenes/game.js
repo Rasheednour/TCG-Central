@@ -1,3 +1,5 @@
+import UIHandler from "../helpers/UIHandler";
+
 export default class Game extends Phaser.Scene {
     constructor() {
         super({
@@ -10,11 +12,12 @@ export default class Game extends Phaser.Scene {
     }
 
     create() {
-
+        this.UIHandler = new UIHandler(this);
+        this.UIHandler.buildU
     }
 
     update() {
-        
+
     }
 
 }
