@@ -149,21 +149,27 @@ function pick_random_from_array(target_array) {
   return target_array[Math.floor(Math.random() * target_array.length)];
 }
 
-function pick_random_prefer_later(target_array) {
+function pick_random_prefer_later(target_array, factor = 4) {
     //Because random combos will make more encounters with many weaker enemies more likely
     //created this to intentionally pick later possibilities sooner (which will have bigger enemies)
+    // larger weights will increase the chance of many small monsters.
+    // WEIGHT MUST BE GREATER THAN 2
+    let weight = factor;
+    if (weight < 3) {
+	weight = 3;
+    }
     for (let counter = 1; counter <= target_array.length; counter++){
-	if (Math.floor(Math.random() * 3) == 1) {
+	if (Math.floor(Math.random() * weight) == 1) {
 	    return target_array[target_array.length - counter];
 	}
     }
     return target_array[0];
 }
 
-function generate_encounter(target, all_levels, enemies) {
+function generate_encounter(target, all_levels, enemies, big_pref = 4) {
     //console.log(`generating encounter: ${target}, ${all_levels}, ${enemies}`);
     let level_mix = pick_random_prefer_later(
-    difficulty_level_gen(target, all_levels)
+	difficulty_level_gen(target, all_levels), big_pref
   );
   let enemy_list = [];
     for (let count = 0; count < level_mix.length; count++) {
@@ -410,9 +416,13 @@ app.get("/games/:gameId/enemies", async (req, res) => {
             all_levels.push(cur_level);
           }
           valid_enemies.push(enemy);
-        }
-      }
-      allenemies = generate_encounter(target, all_levels, valid_enemies);
+            }
+	}
+	let factor = 4;
+	if ("randomFactor" in req.query && parseInt(req.query.randomFactor) != NaN){
+	    factor = parseInt(req.query.randomFactor);
+	}
+	allenemies = generate_encounter(target, all_levels, valid_enemies, factor);
     }
 
     allenemies.sort(field_based_sorter("name"));
