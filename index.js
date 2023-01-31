@@ -35,89 +35,91 @@ function field_based_sorter(field) {
   };
 }
 
-//Pseudocode
-// if current element can make total equal target, add how we got here and then continue to check other routes
+// function find_all_combinations(target, source_vals, current, completed) {
+//   for (let count = 0; count < source_vals.length; count++) {
+//     value = source_vals[count];
+//     let total = current.reduce(
+//       (callbackFn = (a, b) => {
+//         a + b;
+//       }),
+//       (initialValue = value)
+//     );
+//     if (total == target) {
+//       current.push(value);
+//       completed.push(current.slice());
+//       current.pop();
+//     } else if (total < target) {
+//       current.push(value);
+//       completed = find_all_combinations(
+//         target,
+//         source_vals,
+//         current,
+//         completed
+//       );
+//       current.pop();
+//     } else {
+//       break;
+//     }
+//   }
+//   //    console.log("done with a find all call, completed is: " + completed);
+//   return completed;
+// }
 
-function find_all_combinations(target, source_vals, current, completed) {
-    for (let count = 0; count < source_vals.length;  count++){
-	value = source_vals[count];
-    let total = current.reduce(
-      (callbackFn = (a, b) => {
-        a + b;
-      }),
-      (initialValue = value)
-    );
-    if (total == target) {
-      current.push(value);
-      completed.push(current.slice());
-      current.pop();
-    } else if (total < target) {
-      current.push(value);
-      completed = find_all_combinations(
-        target,
-        source_vals,
-        current,
-        completed
-      );
-      current.pop();
-    } else {
-      break;
-    }
-    }
-//    console.log("done with a find all call, completed is: " + completed);
-  return completed;
-}
-
-function find_all_subsets_totalling(target, options, current_track, subsets){
-    //console.log('recursing on ' + target + ' with track ' + current_track + ' and subsets ' + subsets);
-    if (current_track.length == 1 && current_track[0] == target){
-	subsets.push(current_track.slice(0,1));
-	return subsets;
-    }
-    for (let counter = 0; counter < options.length; counter++){
-	let total = 0;
-	current_track.push(options[counter]);
-
-	for (let acc_count = 0; acc_count < current_track.length; acc_count++){
-	    total = total + current_track[acc_count];
-	}
-//	console.log("finding subsets with total, current: " + total + " : " + current_track);
-	if (total == target) {
-	    let new_valid = current_track.slice(0, current_track.length);
-	    subsets.push(new_valid);
-	    current_track.pop();
-	    return subsets;
-	}
-	if (total < target) {
-	    subsets = find_all_subsets_totalling(target, options, current_track.slice(0, current_track.length), subsets.slice(0, subsets.length));
-	}
-	if (total > target) {
-	    current_track.pop();
-	    return subsets;
-	}
-	current_track.pop();
-    }
+function find_all_subsets_totalling(target, options, current_track, subsets) {
+  //console.log('recursing on ' + target + ' with track ' + current_track + ' and subsets ' + subsets);
+  if (current_track.length == 1 && current_track[0] == target) {
+    subsets.push(current_track.slice(0, 1));
     return subsets;
+  }
+  for (let counter = 0; counter < options.length; counter++) {
+    let total = 0;
+    current_track.push(options[counter]);
+
+    for (let acc_count = 0; acc_count < current_track.length; acc_count++) {
+      total = total + current_track[acc_count];
+    }
+    //	console.log("finding subsets with total, current: " + total + " : " + current_track);
+    if (total == target) {
+      let new_valid = current_track.slice(0, current_track.length);
+      subsets.push(new_valid);
+      current_track.pop();
+      return subsets;
+    }
+    if (total < target) {
+      subsets = find_all_subsets_totalling(
+        target,
+        options,
+        current_track.slice(0, current_track.length),
+        subsets.slice(0, subsets.length)
+      );
+    }
+    if (total > target) {
+      current_track.pop();
+      return subsets;
+    }
+    current_track.pop();
+  }
+  return subsets;
 }
 
 function find_all_caller(target_difficulty, array_of_enemy_levels) {
   let results = [];
-    for (let counter = 0; counter < array_of_enemy_levels.length;  counter++){
-	let starter = array_of_enemy_levels[counter];
-	let starter_array = new Array();
-	starter_array.push(starter);
-	let subsets = new Array();
-	//console.log(`calling for element: ${starter} of ${array_of_enemy_levels} with target ${target_difficulty}`);
-	let subsets_for_starter = find_all_subsets_totalling(
-        target_difficulty,
-        array_of_enemy_levels,
-          starter_array,
-        subsets
-	);
-	//console.log("found first subsets: " + subsets_for_starter[0]);
-	for (let count = 0; count < subsets_for_starter.length; count++){
-	    results.push(subsets_for_starter[count]);
-	}
+  for (let counter = 0; counter < array_of_enemy_levels.length; counter++) {
+    let starter = array_of_enemy_levels[counter];
+    let starter_array = new Array();
+    starter_array.push(starter);
+    let subsets = new Array();
+    //console.log(`calling for element: ${starter} of ${array_of_enemy_levels} with target ${target_difficulty}`);
+    let subsets_for_starter = find_all_subsets_totalling(
+      target_difficulty,
+      array_of_enemy_levels,
+      starter_array,
+      subsets
+    );
+    //console.log("found first subsets: " + subsets_for_starter[0]);
+    for (let count = 0; count < subsets_for_starter.length; count++) {
+      results.push(subsets_for_starter[count]);
+    }
   }
   return results;
 }
@@ -127,20 +129,25 @@ function difficulty_level_gen(target_difficulty, array_of_enemy_levels) {
     target_difficulty,
     array_of_enemy_levels.sort()
   );
-    //console.log("first call found" + results[0]);
+  //console.log("first call found" + results[0]);
   let HARD_LIMIT = 12; //To prevent infinite recursion from ridiculous inputs
   let counter = 0;
   while (results.length == 0 && counter < HARD_LIMIT) {
-      counter++;
-//      console.log("while trihggered count " + counter);
-      if ((target_difficulty - counter) > 1) {
-	  results =
-              find_all_caller(target_difficulty - counter, array_of_enemy_levels);
-      }
-      let more_res = find_all_caller(target_difficulty + counter, array_of_enemy_levels);
-      for (let i = 0; i < more_res.length; i++){
-	  results.push(more_res[i]);
-      }
+    counter++;
+    //      console.log("while trihggered count " + counter);
+    if (target_difficulty - counter > 1) {
+      results = find_all_caller(
+        target_difficulty - counter,
+        array_of_enemy_levels
+      );
+    }
+    let more_res = find_all_caller(
+      target_difficulty + counter,
+      array_of_enemy_levels
+    );
+    for (let i = 0; i < more_res.length; i++) {
+      results.push(more_res[i]);
+    }
   }
   return results;
 }
@@ -150,40 +157,44 @@ function pick_random_from_array(target_array) {
 }
 
 function pick_random_prefer_later(target_array, factor = 4) {
-    //Because random combos will make more encounters with many weaker enemies more likely
-    //created this to intentionally pick later possibilities sooner (which will have bigger enemies)
-    // larger weights will increase the chance of many small monsters.
-    // WEIGHT MUST BE GREATER THAN 2
-    let weight = factor;
-    if (weight < 3) {
-	weight = 3;
+  //Because random combos will make more encounters with many weaker enemies more likely
+  //created this to intentionally pick later possibilities sooner (which will have bigger enemies)
+  // larger weights will increase the chance of many small monsters.
+  // WEIGHT MUST BE GREATER THAN 2
+  let weight = factor;
+  if (weight < 3) {
+    weight = 3;
+  }
+  for (let counter = 1; counter <= target_array.length; counter++) {
+    if (Math.floor(Math.random() * weight) == 1) {
+      return target_array[target_array.length - counter];
     }
-    for (let counter = 1; counter <= target_array.length; counter++){
-	if (Math.floor(Math.random() * weight) == 1) {
-	    return target_array[target_array.length - counter];
-	}
-    }
-    return target_array[0];
+  }
+  return target_array[0];
 }
 
 function generate_encounter(target, all_levels, enemies, big_pref = 4) {
-    //console.log(`generating encounter: ${target}, ${all_levels}, ${enemies}`);
-    let level_mix = pick_random_prefer_later(
-	difficulty_level_gen(target, all_levels), big_pref
+  //console.log(`generating encounter: ${target}, ${all_levels}, ${enemies}`);
+  let level_mix = pick_random_prefer_later(
+    difficulty_level_gen(target, all_levels),
+    big_pref
   );
   let enemy_list = [];
-    for (let count = 0; count < level_mix.length; count++) {
-	let level = level_mix[count];
-	let start_index = Math.floor(Math.random() * enemies.length);
-//	console.log("start_index = " + start_index + " level is " + level);
-	for (let counter = 0; counter < enemies.length;  counter++) {
-	    if (level == parseInt(enemies[(counter + start_index) % enemies.length]["level"])) {
-//		console.log("found enemy " + ((counter + start_index) % enemies.length));
-		enemy_list.push(enemies[(counter + start_index) % enemies.length]);
-		break;
-	    }
-	}
+  for (let count = 0; count < level_mix.length; count++) {
+    let level = level_mix[count];
+    let start_index = Math.floor(Math.random() * enemies.length);
+    //	console.log("start_index = " + start_index + " level is " + level);
+    for (let counter = 0; counter < enemies.length; counter++) {
+      if (
+        level ==
+        parseInt(enemies[(counter + start_index) % enemies.length]["level"])
+      ) {
+        //		console.log("found enemy " + ((counter + start_index) % enemies.length));
+        enemy_list.push(enemies[(counter + start_index) % enemies.length]);
+        break;
+      }
     }
+  }
   //  console.log("made enemy list " + enemy_list + " starting with " + enemy_list[0]);
   return enemy_list;
 }
@@ -296,7 +307,165 @@ app.get("/games/:gameId/cards", async (req, res) => {
       allCards.push(curData);
     });
     allCards.sort(field_based_sorter("name"));
-    res.json(allCards);
+
+    // Now check if we are building a deck and build it if so
+    if ("deck" in req.query) {
+      let deck_size = parseInt(req.query.deck);
+      let game_query = db.collection("games").doc(gameId);
+      let game = await game_query.get();
+      if (
+        deck_size == NaN ||
+        deck_size < game.rules["cards_per_deck_min"] ||
+        deck_size > game.rules["cards_per_deck_max"]
+      ) {
+        res.status(400);
+        res.json({ error: "invalid deck size" });
+      } else {
+        let char_name =
+          req.query.character ||
+          pick_random_from_array(game.characters)["name"];
+        char_name = char_name.toUpperCase();
+        let deck_count = 0;
+        let iter_count = 0;
+        let deck = [];
+        let commons = [];
+        let rares = [];
+        let cur_card;
+        let avail_arr;
+
+        //add default cards mins
+        while (iter_count < allCards.length) {
+          cur_card = allCards[iter_count];
+          avail_arr = cur_card.availability.slice("_");
+          cur_card["use_count"] = 0;
+          if (
+            avail_arr[0] == "DEFAULT" &&
+            (avail_arr.length < 4 || avail_arr[3] == char_name)
+          ) {
+            deck_count = deck_count + parseInt(avail_arr[1]);
+            for (let i = 0; i < parseInt(avail_arr[1]); i++) {
+              deck.push(JSON.parse(JSON.stringify(cur_card)));
+            }
+            cur_card["use_count"] += parseInt(avail_arr[1]);
+            if (cur_card["use_count"] < parseInt(avail_arr[2])) {
+              defaults.push(cur_card);
+            }
+          } else if (avail_arr.length < 4 || avail_arr[3] == char_name) {
+            if (avail_arr[0] == "COMMON") {
+              commons.push(cur_card);
+            }
+            if (avail_arr[0] == "RARE") {
+              rares.push(cur_card);
+            }
+          }
+          iter_count++;
+        }
+
+        //if more cards can be added pick commons and rares
+        let rare_freq = req.query["rareFrequency"] || 4;
+        iter_count = 0;
+        let cur_index = 0;
+        let category_empty = false;
+        while (deck_count < deck_size) {
+          //use rare frequency to populate deck, pull from defaults if we run out of commons or rares
+          category_empty = false;
+          if (iter_count % rare_freq == 0) {
+            //pick rare
+            if (rares.length > 0) {
+              cur_index = Math.floor(Math.random() * rares.length);
+              cur_card = rares[cur_index];
+              avail_arr = cur_card["availability"].slice("_");
+              deck.push(JSON.parse(JSON.stringify(cur_card)));
+              cur_card["use_count"] = cur_card["use_count"] + 1;
+              deck_count++;
+              //get up to min number
+              while (cur_card["use_count"] < parseInt(avail_arr[1])) {
+                deck.push(JSON.parse(JSON.stringify(cur_card)));
+                cur_card["use_count"] = cur_card["use_count"] + 1;
+                deck_count++;
+              }
+
+              //check if at max, if so remove it from rares
+              if (cur_card["use_count"] >= parseInt(avail_arr[2])) {
+                rares.splice(cur_index, 1);
+              }
+            } else {
+              category_empty = true; //set this to say we need to grab from common or default
+            }
+          }
+          if (iter_count % rare_freq != 0 || category_empty) {
+            //pick common
+            category_empty = false;
+            if (commons.length > 0) {
+              cur_index = Math.floor(Math.random() * commons.length);
+              cur_card = commons[cur_index];
+              avail_arr = cur_card["availability"].slice("_");
+              deck.push(JSON.parse(JSON.stringify(cur_card)));
+              cur_card["use_count"] = cur_card["use_count"] + 1;
+              deck_count++;
+              //get up to min number
+              while (cur_card["use_count"] < parseInt(avail_arr[1])) {
+                deck.push(JSON.parse(JSON.stringify(cur_card)));
+                cur_card["use_count"] = cur_card["use_count"] + 1;
+                deck_count++;
+              }
+
+              //check if at max, if so remove it from commons
+              if (cur_card["use_count"] >= parseInt(avail_arr[2])) {
+                commons.splice(cur_index, 1);
+              }
+            } else {
+              category_empty = true; //set this to say we need to grab from common or default
+            }
+          }
+
+          if (category_empty) {
+            //pick from defaults if we didn't have defaults
+            if (defaults.length > 0) {
+              cur_index = Math.floor(Math.random() * defaults.length);
+              cur_card = defaults[cur_index];
+              avail_arr = cur_card["availability"].slice("_");
+              deck.push(JSON.parse(JSON.stringify(cur_card)));
+              cur_card["use_count"] = cur_card["use_count"] + 1;
+              deck_count++;
+              //get up to min number
+              while (cur_card["use_count"] < parseInt(avail_arr[1])) {
+                deck.push(JSON.parse(JSON.stringify(cur_card)));
+                cur_card["use_count"] = cur_card["use_count"] + 1;
+                deck_count++;
+              }
+
+              //check if at max, if so remove it from defaults
+              if (cur_card["use_count"] >= parseInt(avail_arr[2])) {
+                defaults.splice(cur_index, 1);
+              }
+            }
+          }
+
+          //stop if we have run out of cards
+          if (
+            rares.length == 0 &&
+            commons.length == 0 &&
+            defaults.length == 0
+          ) {
+            res.status(400);
+            res.json({ error: "cant build a deck with these specs" });
+            return;
+          }
+          iter_count++;
+        }
+
+        //remove excess cards if necessary
+        while (deck_count > deck_size) {
+          deck = deck.splice(Math.floor(Math.random() * deck.length), 1);
+          deck_count = deck_count - 1;
+        }
+        //set return value
+        res.json(deck);
+      }
+    } else {
+      res.json(allCards);
+    }
   }
 });
 
@@ -383,9 +552,9 @@ app.get("/games/:gameId/enemies", async (req, res) => {
   } else {
     let allenemies = [];
     snapshot.forEach((doc) => {
-	let curData = doc.data();
-	//console.log("cur data " + curData);
-	//console.log("cur data element name " + curData["name"] + " level " + curData["level"]);
+      let curData = doc.data();
+      //console.log("cur data " + curData);
+      //console.log("cur data element name " + curData["name"] + " level " + curData["level"]);
       curData["enemy_id"] = doc.id;
       allenemies.push(curData);
     });
@@ -399,30 +568,38 @@ app.get("/games/:gameId/enemies", async (req, res) => {
           error: `invalid difficulty param: ${req.params.difficulty}`,
         });
       }
-	let all_levels = [];
-	//console.log(`All enemies: ${allenemies} with length: ${allenemies.length}`);
-	//console.log("first enemy: " + allenemies[0]);
+      let all_levels = [];
+      //console.log(`All enemies: ${allenemies} with length: ${allenemies.length}`);
+      //console.log("first enemy: " + allenemies[0]);
       let valid_enemies = [];
-	for (let count = 0; count < allenemies.length; count++){
-	    let enemy = allenemies[count];
-	    //console.log("checking if enemy has level: " + enemy['name'] + enemy['level']);
-            if (enemy['level']) {
-	//	console.log("level in enemy" + enemy.name);
+      for (let count = 0; count < allenemies.length; count++) {
+        let enemy = allenemies[count];
+        //console.log("checking if enemy has level: " + enemy['name'] + enemy['level']);
+        if (enemy["level"]) {
+          //	console.log("level in enemy" + enemy.name);
           let cur_level = parseInt(enemy["level"]);
           if (cur_level == NaN) {
             continue;
           }
-		if (!(cur_level in all_levels)) {
+          if (!(cur_level in all_levels)) {
             all_levels.push(cur_level);
           }
           valid_enemies.push(enemy);
-            }
-	}
-	let factor = 4;
-	if ("randomFactor" in req.query && parseInt(req.query.randomFactor) != NaN){
-	    factor = parseInt(req.query.randomFactor);
-	}
-	allenemies = generate_encounter(target, all_levels, valid_enemies, factor);
+        }
+      }
+      let factor = 4;
+      if (
+        "randomFactor" in req.query &&
+        parseInt(req.query.randomFactor) != NaN
+      ) {
+        factor = parseInt(req.query.randomFactor);
+      }
+      allenemies = generate_encounter(
+        target,
+        all_levels,
+        valid_enemies,
+        factor
+      );
     }
 
     allenemies.sort(field_based_sorter("name"));
@@ -493,5 +670,128 @@ app.get("/users", async (req, res) => {
     });
     allUsers.sort(field_based_sorter("name"));
     res.json(allUsers);
+  }
+});
+
+//--------------------- OPTIONS ----------------------------------
+
+// Here are endpoints around retrieving and updating various option based fields
+// ALL POST ENDPOINTS ARE SLIGHTLY PROTECTED (just to avoid allowing users to alter
+// our customization option for cards and games)
+// Slight protection is enacted by requiring a query param "code=tcgadmin" for now
+
+UPDATE_CODE = "tcgadmin";
+
+//-------- EFFECTS ------------
+// Posting with same name as existing effect will overwrite
+app.post("/effects", async (req, res) => {
+  let effect = req.body;
+  if (!("code" in req.query) || req.query.code != UPDATE_CODE) {
+    res.status(401);
+    res.json({
+      error: "need to include the code query param with correct code",
+    });
+  } else if ("name" in effect) {
+    effect["name"] = effect["name"].toUpperCase();
+    let add_or_update = db
+      .collection("effects")
+      .doc(effect["name"])
+      .set(effect);
+    res.json({ effect_id: effect["name"] });
+  } else {
+    res.status(400);
+    res.json({ error: "effect must have a name to be created/editted" });
+  }
+});
+
+app.get("/effects", async (req, res) => {
+  let query = db.collection("effects");
+  let snapshot = await query.get();
+  if (snapshot.empty) {
+    res.status(404);
+    res.json({ error: "no effects found" });
+  } else {
+    let allEffects = [];
+    snapshot.forEach((doc) => {
+      let curUser = doc.data();
+      allEffects.push(curUser);
+    });
+    allEffects.sort(field_based_sorter("name"));
+    res.json(allEffects);
+  }
+});
+
+//------------- ABILITIES
+// Posting with same name as existing ability will overwrite
+app.post("/abilities", async (req, res) => {
+  let ability = req.body;
+  if (!("code" in req.query) || req.query.code != UPDATE_CODE) {
+    res.status(401);
+    res.json({
+      error: "need to include the code query param with correct code",
+    });
+  } else if ("name" in ability) {
+    ability["name"] = ability["name"].toUpperCase();
+    let add_or_update = db
+      .collection("abilities")
+      .doc(ability["name"])
+      .set(ability);
+    res.json({ ability_id: ability["name"] });
+  } else {
+    res.status(400);
+    res.json({ error: "ability must have a name to be created/editted" });
+  }
+});
+
+app.get("/abilities", async (req, res) => {
+  let query = db.collection("abilities");
+  let snapshot = await query.get();
+  if (snapshot.empty) {
+    res.status(404);
+    res.json({ error: "no abilities found" });
+  } else {
+    let allabilities = [];
+    snapshot.forEach((doc) => {
+      let curUser = doc.data();
+      allabilities.push(curUser);
+    });
+    allabilities.sort(field_based_sorter("name"));
+    res.json(allabilities);
+  }
+});
+
+//-------- RULES ------------
+// Posting with same name as existing rule will overwrite
+app.post("/rules", async (req, res) => {
+  let rule = req.body;
+  if (!("code" in req.query) || req.query.code != UPDATE_CODE) {
+    res.status(401);
+    res.json({
+      error: "need to include the code query param with correct code",
+    });
+  } else if ("name" in rule) {
+    rule["name"] = rule["name"].toLowerCase();
+    let add_or_update = db.collection("rules").doc(rule["name"]).set(rule);
+    res.json({ rule_id: rule["name"] });
+  } else {
+    res.status(400);
+    res.json({ error: "rule must have a name to be created/editted" });
+  }
+});
+
+app.get("/rules", async (req, res) => {
+  let query = db.collection("rules");
+  let snapshot = await query.get();
+  if (snapshot.empty) {
+    res.status(404);
+    res.json({ error: "no rules found" });
+  } else {
+    let allrules = [];
+    snapshot.forEach((doc) => {
+      let curUser = doc.data();
+      allrules.push(curUser);
+    });
+    allrules.sort(field_based_sorter("name"));
+    res.json(allrules);
   }
 });
