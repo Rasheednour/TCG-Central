@@ -2,8 +2,15 @@ import '../App.css';
 import tcg_logo from '../assets/images/tcg_logo.png'
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import { useNavigate } from "react-router-dom";
 
 function TopRibbon() {
+  let navigate = useNavigate(); 
+  const routeChange = () =>{ 
+    let path = `/signup`; 
+    navigate(path);
+  }
+
   return (
     <div className="TopRibbon">
 
@@ -16,8 +23,8 @@ function TopRibbon() {
         </div>
 
         <div className='login-buttons'>
-            <Button className='button1' variant="contained">Sign Up</Button>
-            <Button className='button2' variant="outlined">Log In</Button>
+            <Button className='button1' variant="contained" onClick={routeChange}>Sign Up</Button>
+            <Button className='button2' variant="outlined" onClick={routeChange}>Log In</Button>
         </div>
         
         
