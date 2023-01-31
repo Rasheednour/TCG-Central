@@ -14,7 +14,9 @@ export default class Game extends Phaser.Scene {
 
     preload() {
         // we can preload provided assets. We will eventually want to hook this up to our database.
-        this.load.image('cyanCardBack', 'src/assets/CyanCardBack.png')
+        this.load.image('cardBack', 'src/assets/Card_Back.png');
+        this.load.image('blazingGlory', 'src/assets/Blazing_Glory.png');
+        this.load.image('stonePath', 'src/assets/Stone_Path.png');
     }
 
     create() {

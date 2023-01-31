@@ -28,7 +28,7 @@ io.on('connection', function(socket) {
     }
 
     socket.on('dealDeck', function(socketId) {
-        players[socketId]. inDeck = shuffle(["boolean", "ping"]);
+        players[socketId].inDeck = shuffle(["stonePath", "blazingGlory"]);
         console.log(players);
         if (Object.keys(players).length < 2) return;
         io.emit('changeGameState', "Initializing");
@@ -38,7 +38,7 @@ io.on('connection', function(socket) {
         for (let i = 0; i < 5; i++) {
             //if deck is empty, reshuffle in cards. Change later, possibly to shuffle discard?
             if (players[socketId].inDeck.length === 0) {
-                players[socketId]. inDeck = shuffle(["boolean", "ping"]);
+                players[socketId]. inDeck = shuffle(["stonePath", "blazingGlory"]);
             }
             //deal top card from deck to hand
             players[socketId].inHand.push(players[socketId].inDeck.shift())

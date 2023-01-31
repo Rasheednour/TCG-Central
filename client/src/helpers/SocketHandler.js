@@ -21,7 +21,7 @@ export default class SocketHandler {
                 scene.DeckHandler.dealCard(1000, 860, "cardBack", 'playerCard');
                 scene.DeckHandler.dealCard(1000, 135, "cardBack", "enemyCard");
                 scene.dealCards.setInteractive();
-                scene.deaCards.setColor('#00ffff');
+                scene.dealCards.setColor('#00ffff');
             }
         })
 
@@ -46,8 +46,8 @@ export default class SocketHandler {
         //when a card is played.
         scene.socket.on('cardPlayed', (cardName, socketId) => {
             if (socketId !== scene.socket.id) {
-                scene.GameHandler.enemyHand.shift().destroy();
-                scene.DeckHandler.dealCard((scene.dropZone.x - 350) + (scene.dropZone.data.values.cards * 150), scene.dropZone.y, cardName, "enemyCard");
+                scene.GameHandler.enemies.shift().destroy();
+                scene.DeckHandler.dealCard((scene.dropZone.x - 350) + (scene.dropZone.data.values.cards * 150), scene.dropZone.y, cardName, "playerCard");
                 scene.dropZone.data.values.cards++;
             }
         })

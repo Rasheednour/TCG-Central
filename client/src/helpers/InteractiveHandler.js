@@ -29,21 +29,21 @@ export default class InteractiveHandler {
             let pointer = scene.input.activePointer;
             if (gameObjects[0].type === 'Image' && gameObjects[0].data.list.name !== 'cardBack') {
                 scene.cardPreview = scene.add.image(pointer.worldX, pointer.worldY, gameObjects[0].data.values.sprite).setScale(.5, .5);
-            }
-        })
+            };
+        });
 
         scene.input.on('pointerout', (event, gameObjects) => {
             if (gameObjects[0].type === 'Image' && gameObjects[0].data.list.name !== 'cardBack') {
-                scene.cardPreview.setVisable(false);
-            }
-        })
+                scene.cardPreview.setVisible(false);
+            };
+        });
 
         //Interactions for draggable elements (right now only cards)
         scene.input.on('dragstart', (pointer, gameObject) => {
             gameObject.setTint(0xff69b4);
             scene.children.bringToTop(gameObject);
             //turn off preview to prevent visual overlay
-            scene.cardPreview.setVisable(false);
+            scene.cardPreview.setVisible(false);
         })
 
         scene.input.on('dragend', (pointer, gameObject, dropped) => {
@@ -55,8 +55,8 @@ export default class InteractiveHandler {
         })
 
         scene.input.on('drop', (pointer, gameObject, dropZone) => {
-            if (scene.gameHandler.isMyTurn && scene.gameHandler.gameState === 'Ready') {
-                gameObject.x = (dropZone.x - 350) + (dopZone.data.values.cards * 150);
+            if (scene.GameHandler.isMyTurn && scene.GameHandler.gameState === 'Ready') {
+                gameObject.x = (dropZone.x - 350) + (dropZone.data.values.cards * 150);
                 gameObject.y = dropZone.y;
                 scene.dropZone.data.values.cards++;
                 //currently once a card is dropped into a dropzone, it can't be dragged again.
