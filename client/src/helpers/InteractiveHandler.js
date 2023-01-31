@@ -2,6 +2,8 @@
 export default class InteractiveHandler {
     constructor(scene) {
 
+        scene.cardPreview = null;
+
         //Interactions with deal cards button
         scene.dealCards.on('pointerdown', () => {
             scene.socket.emit("dealCards", scene.socket.id);
@@ -22,10 +24,26 @@ export default class InteractiveHandler {
             gameObject.y = dragY;
         })
 
+        //when we hover over the front of a card, we get a larger, easier to read highlight. 
+        scene.input.on('pointerover', (event, gameObjects) => {
+            let pointer = scene.input.activePointer;
+            if (gameObjects[0].type === 'Image' && gameObjects[0].data.list.name !== 'cardBack') {
+                scene.cardPreview = scene.add.image(pointer.worldX, pointer.worldY, gameObjects[0].data.values.sprite).setScale(.5, .5);
+            }
+        })
+
+        scene.input.on('pointerout', (event, gameObjects) => {
+            if (gameObjects[0].type === 'Image' && gameObjects[0].data.list.name !== 'cardBack') {
+                scene.cardPreview.setVisable(false);
+            }
+        })
+
         //Interactions for draggable elements (right now only cards)
         scene.input.on('dragstart', (pointer, gameObject) => {
             gameObject.setTint(0xff69b4);
             scene.children.bringToTop(gameObject);
+            //turn off preview to prevent visual overlay
+            scene.cardPreview.setVisable(false);
         })
 
         scene.input.on('dragend', (pointer, gameObject, dropped) => {
