@@ -70,6 +70,10 @@ function find_all_combinations(target, source_vals, current, completed) {
 
 function find_all_subsets_totalling(target, options, current_track, subsets){
     //console.log('recursing on ' + target + ' with track ' + current_track + ' and subsets ' + subsets);
+    if (current_track.length == 1 && current_track[0] == target){
+	subsets.push(current_track.slice(0,1));
+	return subsets;
+    }
     for (let counter = 0; counter < options.length; counter++){
 	let total = 0;
 	current_track.push(options[counter]);
@@ -128,15 +132,15 @@ function difficulty_level_gen(target_difficulty, array_of_enemy_levels) {
   let counter = 0;
   while (results.length == 0 && counter < HARD_LIMIT) {
       counter++;
-      //console.log("while trihggered");
-    if (target_difficulty > 1) {
-      results.concat(
-        find_all_caller(target_difficulty - counter, array_of_enemy_levels)
-      );
-    }
-    results.concat(
-      find_all_caller(target_difficulty + counter, array_of_enemy_levels)
-    );
+//      console.log("while trihggered count " + counter);
+      if ((target_difficulty - counter) > 1) {
+	  results =
+              find_all_caller(target_difficulty - counter, array_of_enemy_levels);
+      }
+      let more_res = find_all_caller(target_difficulty + counter, array_of_enemy_levels);
+      for (let i = 0; i < more_res.length; i++){
+	  results.push(more_res[i]);
+      }
   }
   return results;
 }
@@ -145,9 +149,20 @@ function pick_random_from_array(target_array) {
   return target_array[Math.floor(Math.random() * target_array.length)];
 }
 
+function pick_random_prefer_later(target_array) {
+    //Because random combos will make more encounters with many weaker enemies more likely
+    //created this to intentionally pick later possibilities sooner (which will have bigger enemies)
+    for (let counter = 1; counter <= target_array.length; counter++){
+	if (Math.floor(Math.random() * 3) == 1) {
+	    return target_array[target_array.length - counter];
+	}
+    }
+    return target_array[0];
+}
+
 function generate_encounter(target, all_levels, enemies) {
     //console.log(`generating encounter: ${target}, ${all_levels}, ${enemies}`);
-    let level_mix = pick_random_from_array(
+    let level_mix = pick_random_prefer_later(
     difficulty_level_gen(target, all_levels)
   );
   let enemy_list = [];
@@ -171,15 +186,15 @@ function generate_encounter(target, all_levels, enemies) {
 
 //GET all games - returns an object containing each game keyed to its game Id
 app.get("/games", async (req, res) => {
-  console.log("games endpoint was hit");
+  //console.log("games endpoint was hit");
   let query = db.collection("games");
   let snapshot = await query.get();
   if (snapshot.empty) {
-    console.log("no entries found for games");
+    //console.log("no entries found for games");
     res.status(404);
     res.json({ error: "no games found" });
   }
-  console.log(`Found ${snapshot.size} games`);
+  //console.log(`Found ${snapshot.size} games`);
   let allGames = [];
   snapshot.forEach((doc) => {
     let curGame = doc.data();
@@ -364,7 +379,7 @@ app.get("/games/:gameId/enemies", async (req, res) => {
     snapshot.forEach((doc) => {
 	let curData = doc.data();
 	//console.log("cur data " + curData);
-	console.log("cur data element name " + curData["name"] + " level " + curData["level"]);
+	//console.log("cur data element name " + curData["name"] + " level " + curData["level"]);
       curData["enemy_id"] = doc.id;
       allenemies.push(curData);
     });
@@ -379,14 +394,14 @@ app.get("/games/:gameId/enemies", async (req, res) => {
         });
       }
 	let all_levels = [];
-	console.log(`All enemies: ${allenemies} with length: ${allenemies.length}`);
-	console.log("first enemy: " + allenemies[0]);
+	//console.log(`All enemies: ${allenemies} with length: ${allenemies.length}`);
+	//console.log("first enemy: " + allenemies[0]);
       let valid_enemies = [];
 	for (let count = 0; count < allenemies.length; count++){
 	    let enemy = allenemies[count];
-	    console.log("checking if enemy has level: " + enemy['name'] + enemy['level']);
+	    //console.log("checking if enemy has level: " + enemy['name'] + enemy['level']);
             if (enemy['level']) {
-		console.log("level in enemy" + enemy.name);
+	//	console.log("level in enemy" + enemy.name);
           let cur_level = parseInt(enemy["level"]);
           if (cur_level == NaN) {
             continue;
