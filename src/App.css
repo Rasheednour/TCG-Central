@@ -161,28 +161,6 @@
 }
 
 
-.GameSummary {
-  background-color: rgb(234, 222, 214);
-  display: grid;
-  grid-template-columns: 500px 500px;
-  color: black;
-  margin-top: 2em;
-
-}
-
-.GameSummary .right-panel {
-  text-align: left;
-}
-
-.GameSummary .right-panel h1 {
-  font-size: 1.0em;
-}
-
-.GameSummary .right-panel h2 {
-  font-size: 0.7em;
-}
-
-
 
 .SignUpForm h1 {
   color: #2d2d2d;
