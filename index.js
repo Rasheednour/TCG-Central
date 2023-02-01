@@ -312,11 +312,12 @@ app.get("/games/:gameId/cards", async (req, res) => {
     if ("deck" in req.query) {
       let deck_size = parseInt(req.query.deck);
       let game_query = db.collection("games").doc(gameId);
-      let game = await game_query.get();
+	let game = await game_query.get();
+	game = game.data();
       if (
         deck_size == NaN ||
-        deck_size < game.rules["cards_per_deck_min"] ||
-        deck_size > game.rules["cards_per_deck_max"]
+        deck_size < game["rules"]["cards_per_deck_min"] ||
+        deck_size > game["rules"]["cards_per_deck_max"]
       ) {
         res.status(400);
         res.json({ error: "invalid deck size" });
@@ -330,15 +331,18 @@ app.get("/games/:gameId/cards", async (req, res) => {
         let deck = [];
         let commons = [];
         let rares = [];
-        let cur_card;
+	  let defaults = [];
+	  let cur_card;
         let avail_arr;
 
+	  console.log("adding default cards with all cards length equal to " + allCards.length);
         //add default cards mins
         while (iter_count < allCards.length) {
           cur_card = allCards[iter_count];
-          avail_arr = cur_card.availability.slice("_");
+          avail_arr = cur_card["availability"].split("_");
           cur_card["use_count"] = 0;
-          if (
+	    console.log(`cur card: ${cur_card} avail_arr: ${avail_arr} deck_size: ${deck_size} deck_count: ${deck_count}`);
+            if (
             avail_arr[0] == "DEFAULT" &&
             (avail_arr.length < 4 || avail_arr[3] == char_name)
           ) {
@@ -374,7 +378,7 @@ app.get("/games/:gameId/cards", async (req, res) => {
             if (rares.length > 0) {
               cur_index = Math.floor(Math.random() * rares.length);
               cur_card = rares[cur_index];
-              avail_arr = cur_card["availability"].slice("_");
+              avail_arr = cur_card["availability"].split("_");
               deck.push(JSON.parse(JSON.stringify(cur_card)));
               cur_card["use_count"] = cur_card["use_count"] + 1;
               deck_count++;
@@ -399,7 +403,7 @@ app.get("/games/:gameId/cards", async (req, res) => {
             if (commons.length > 0) {
               cur_index = Math.floor(Math.random() * commons.length);
               cur_card = commons[cur_index];
-              avail_arr = cur_card["availability"].slice("_");
+              avail_arr = cur_card["availability"].split("_");
               deck.push(JSON.parse(JSON.stringify(cur_card)));
               cur_card["use_count"] = cur_card["use_count"] + 1;
               deck_count++;
@@ -424,7 +428,7 @@ app.get("/games/:gameId/cards", async (req, res) => {
             if (defaults.length > 0) {
               cur_index = Math.floor(Math.random() * defaults.length);
               cur_card = defaults[cur_index];
-              avail_arr = cur_card["availability"].slice("_");
+              avail_arr = cur_card["availability"].split("_");
               deck.push(JSON.parse(JSON.stringify(cur_card)));
               cur_card["use_count"] = cur_card["use_count"] + 1;
               deck_count++;
@@ -448,6 +452,7 @@ app.get("/games/:gameId/cards", async (req, res) => {
             commons.length == 0 &&
             defaults.length == 0
           ) {
+	      console.log("current deck was: " + deck + " length " + deck.length + " first card " + deck[0]);
             res.status(400);
             res.json({ error: "cant build a deck with these specs" });
             return;
