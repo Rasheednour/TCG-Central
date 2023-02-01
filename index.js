@@ -35,36 +35,6 @@ function field_based_sorter(field) {
   };
 }
 
-// function find_all_combinations(target, source_vals, current, completed) {
-//   for (let count = 0; count < source_vals.length; count++) {
-//     value = source_vals[count];
-//     let total = current.reduce(
-//       (callbackFn = (a, b) => {
-//         a + b;
-//       }),
-//       (initialValue = value)
-//     );
-//     if (total == target) {
-//       current.push(value);
-//       completed.push(current.slice());
-//       current.pop();
-//     } else if (total < target) {
-//       current.push(value);
-//       completed = find_all_combinations(
-//         target,
-//         source_vals,
-//         current,
-//         completed
-//       );
-//       current.pop();
-//     } else {
-//       break;
-//     }
-//   }
-//   //    console.log("done with a find all call, completed is: " + completed);
-//   return completed;
-// }
-
 function find_all_subsets_totalling(target, options, current_track, subsets) {
   //console.log('recursing on ' + target + ' with track ' + current_track + ' and subsets ' + subsets);
   if (current_track.length == 1 && current_track[0] == target) {
@@ -312,8 +282,8 @@ app.get("/games/:gameId/cards", async (req, res) => {
     if ("deck" in req.query) {
       let deck_size = parseInt(req.query.deck);
       let game_query = db.collection("games").doc(gameId);
-	let game = await game_query.get();
-	game = game.data();
+      let game = await game_query.get();
+      game = game.data();
       if (
         deck_size == NaN ||
         deck_size < game["rules"]["cards_per_deck_min"] ||
@@ -331,18 +301,17 @@ app.get("/games/:gameId/cards", async (req, res) => {
         let deck = [];
         let commons = [];
         let rares = [];
-	  let defaults = [];
-	  let cur_card;
+        let defaults = [];
+        let cur_card;
         let avail_arr;
 
-	  console.log("adding default cards with all cards length equal to " + allCards.length);
         //add default cards mins
         while (iter_count < allCards.length) {
           cur_card = allCards[iter_count];
           avail_arr = cur_card["availability"].split("_");
           cur_card["use_count"] = 0;
-	    console.log(`cur card: ${cur_card} avail_arr: ${avail_arr} deck_size: ${deck_size} deck_count: ${deck_count}`);
-            if (
+
+          if (
             avail_arr[0] == "DEFAULT" &&
             (avail_arr.length < 4 || avail_arr[3] == char_name)
           ) {
@@ -452,7 +421,6 @@ app.get("/games/:gameId/cards", async (req, res) => {
             commons.length == 0 &&
             defaults.length == 0
           ) {
-	      console.log("current deck was: " + deck + " length " + deck.length + " first card " + deck[0]);
             res.status(400);
             res.json({ error: "cant build a deck with these specs" });
             return;
