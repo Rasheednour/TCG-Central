@@ -1,22 +1,47 @@
 .GameSummary {
-background-color: rgb(234, 222, 214);
-display: grid;
-grid-template-columns: 500px 500px;
+background-color: #f0efe7;
+display: flex;
+flex-direction: row;
 color: black;
 margin-top: 2em;
-width: 800px;
+border: 2px solid rgb(206, 204, 204);
+border-radius: 20px;
+box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+min-width: 800px;
+max-width: 800px;
+height: 500px;
+}
+
+.GameSummary img {
+  width: 400px;
+  height: 480px;
+  object-fit: fill;
+  border-radius: 20px;
+  margin: 10px 10px 10px 10px;
+}
+
+.cover-image{
 }
 
 .GameSummary .right-panel {
 text-align: left;
+margin-left: 10px;
+background-color: #e2e1da;
+margin: 10px 10px 10px 10px;
+border-radius: 10px;
+padding-left: 10px;
 }
 
 .GameSummary .right-panel h1 {
-font-size: 1.0em;
+font-size: 24px;
 }
 
 .GameSummary .right-panel h2 {
-font-size: 0.7em;
+font-size: 16px;
+}
+
+.GameSummary p {
+  font-size: 16px;
 }
 
 @font-face {

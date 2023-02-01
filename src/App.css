@@ -28,6 +28,10 @@
   height: 100%;
 }
 
+.HomePage .GS {
+  margin-right: 100px;
+}
+
 .home-upper-half {
   display: flex;
   flex-direction: row;
