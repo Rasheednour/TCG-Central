@@ -5,11 +5,10 @@ import TopRibbon from '../components/TopRibbon.js'
 
 function SignUpPage() {
   return (
-    <div className="SignUpPage">
-        <TopRibbon/>
-        <SignUpForm/>
-        
-    </div>
+    <>
+    <TopRibbon/>
+    <SignUpForm/>
+    </>
   );
 }
 

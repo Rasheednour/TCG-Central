@@ -1,4 +1,5 @@
-import '../App.css';
+import React from 'react';
+import './styles/TopRibbon.css';
 import tcg_logo from '../assets/images/tcg_logo.png'
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
