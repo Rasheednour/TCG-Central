@@ -1,4 +1,4 @@
-import '../App.css';
+import './styles/HomePage.css';
 import TopRibbon from '../components/TopRibbon.js'
 import Button from '@mui/material/Button';
 import GameSummary from '../components/GameSummary';

@@ -1,0 +1,64 @@
+.HomePage {
+    margin-top: 0px;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .HomePage .GS {
+    margin-right: 100px;
+  }
+  
+  .home-upper-half {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .home-intro {
+    margin-left: 10%;
+    margin-top: 3%;
+    text-align: left;
+    
+  }
+  
+  .home-intro h1 {
+    font-family: 'sans-bold';
+    color: #2d2d2d;
+    font-size: 2em;
+  }
+  
+  .home-intro p {
+    font-family: 'sans-regular';
+    color: #696969;
+    font-size: .8em;
+  }
+    
+  
+  .home-intro Button {
+    width: 20em;
+    height: 4em;
+    font-family: 'sans-bold';
+    font-size: .5em;
+    background-color: darkred;
+  }
+  
+  .home-intro Button:hover {
+    background-color: red;
+  }
+  
+  @font-face {
+    
+    font-family: 'sans-bold';
+    src: url(../../assets/fonts/SourceSans3-Bold.ttf);
+  }
+  
+  @font-face {
+    
+    font-family: 'sans-regular';
+    src: url(../../assets/fonts/SourceSans3-Regular.ttf);
+  }
+  
+  @font-face {
+    
+    font-family: 'sans-light';
+    src: url(../../assets/fonts/SourceSans3-Light.ttf);
+  }
