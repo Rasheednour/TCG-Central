@@ -2,12 +2,20 @@ import React, { useState } from "react";
 import './styles/SignUpForm.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { useNavigate } from "react-router-dom";
+
 
 
 const SignUpForm = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  let navigate = useNavigate(); 
+  const routeChange = () =>{ 
+    let path = `/user`; 
+    navigate(path);
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -30,7 +38,7 @@ const SignUpForm = () => {
         <br />
         <Button className="button1" variant="contained" type="submit">Get Started</Button>
         <br />
-        <Button className="button2" variant="contained" type="submit">Sign in with Google</Button>
+        <Button className="button2" variant="contained" type="submit" onClick={routeChange}>Sign in with Google</Button>
       </form>
     </div>
   );
