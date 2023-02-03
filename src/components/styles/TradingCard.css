@@ -1,0 +1,110 @@
+.card-container {
+    background: rgb(255,124,150);
+    background: radial-gradient(circle, rgba(255,124,150,1) 0%, rgba(255,21,68,1) 100%);
+    display: flex;
+    flex-direction: column;
+    color: black;
+    margin-top: 2em;
+    border: 10px solid rgb(0, 0, 0);
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    min-width: 320;
+    max-width: 320px;
+    max-height: 500px;
+    min-height: 500px;
+    }
+
+.card-container .card-title {
+    background-color: rgb(255, 255, 255, .5);
+    margin: 10px 10px 10px 10px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    display: flex;
+    flex-direction: row;
+    border-radius: 5px;
+    position: relative;
+    
+}
+
+.card-container .card-type {
+    background-color: rgb(255, 255, 255, .5);
+    margin: 5px 10px 0px 10px;
+    height: 30px;
+    align-items: center;
+    justify-content: left;
+    display: flex;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+
+.card-container img {
+    border-radius: 10px;
+    margin: 0px 0px 0px 0px;
+}
+
+.card-container .card-description {
+    background-color: rgb(255, 255, 255, .7);
+    border-radius: 5px;
+    margin: 10px 10px 10px 10px;
+    height: 150px;
+    position: relative;
+}
+
+.card-container p {
+    font-size: 14px;
+    text-align: left;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 5px;
+    font-family: 'card';
+}
+
+.card-container h3 {
+    font-size: 18px;
+    text-align: center;
+    font-family: 'card';
+    padding-top: 5px;
+}
+
+.card-container .card-title h4 {
+    background-color: white;
+    border-radius: 50%;
+    width: 30px;
+    position: absolute;
+    margin-left: 93%;
+    font-size: 28px;
+    font-family: 'card';
+    
+}
+
+.card-container .card-description .card-stats {
+    background-color: rgb(255, 255, 255, 0.6);
+    display: flex;
+    flex: row;
+    margin-top: 6%;
+    padding: 0px 0px 0px 0px;
+    height: 20px;
+    border-radius: 5px;
+    border-top: 1px solid black;
+    position: relative;
+    width: 100%;
+}
+
+.card-container .card-description .card-stats h5 {
+    font-size: 16px;
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+    padding-left: 10px;
+    
+    
+}
+
+@font-face {
+
+    font-family: 'card';
+    src: url(../../assets/fonts/card.ttf);
+    }
