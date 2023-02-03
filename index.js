@@ -10,6 +10,9 @@ const url = require('url');
 const jwt_decode = require('jwt-decode');
 const {expressjwt: jwt} = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
+const cors = require("cors");
+
+
 
 // get client ID, client SECRET, and redirect URI from the downloaded client_secret JSON file from GCP 
 const CLIENT_ID = json.web.client_id;
@@ -48,6 +51,14 @@ const checkJwt = jwt({
 const db = new Firestore();
 const app = express();
 app.use(express.json());
+// enable cross origin requests
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    credentials: true,
+  })
+);
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log(`Running on port: ${port}`);
@@ -236,6 +247,24 @@ function obtainAuthUrl() {
   return authorizationUrl;
 }
 
+ function getUser(userID) {
+    let query = db.collection("users").where("userID", "==", userID);
+    return query.get().then(snapshot => {
+      if (snapshot.empty) {
+        return false;
+      } else {
+        return true
+      }
+    });
+}
+
+  function createUser(name, userID) {
+    return db.collection("users").doc(userID).set({"name": name}).then(newUser=>{
+      return newUser
+    });
+    
+    
+  }
 //---------------------------------- GAMES --------------------------------
 
 //GET all games - returns an object containing each game keyed to its game Id
@@ -713,10 +742,17 @@ app.get("/users", async (req, res) => {
   }
 });
 
+app.get('/register', function(req, res){
+  // construct Google Oauth endpoint
+  const authUrl = obtainAuthUrl();
+  res.redirect(authUrl);
+});
+
 /*
 Redirect route from SignUpPage to the Google OAuth 2.0 endpoint
 */
-router.get('/oauth', function(req,res){
+app.get('/oauth', function(req,res){
+  console.log(req.url);
   // Receive the callback from Google's OAuth 2.0 server.
   if (req.url.startsWith('/oauth')) {
       // Handle the OAuth 2.0 server response
@@ -735,35 +771,21 @@ router.get('/oauth', function(req,res){
 
           // before creating a new user, check if the user is already registered
           // get list of users
-          getUsers().then(users => {
-              // create variable to keep track of user status
-              let userExists = false;
-              // iterate through list of users
-              for (let i=0; i < users.length; i++) {
-                  const user = users[i];
-                  const id = user.userID;
-                  if (id === userID) {
-                      userExists = true;
-                      break;
-                  }
-              }
-              // if the user doesn't exist in Datastore, create new user
+          getUser(userID).then(userExists => {
+        
+              // if the user doesn't exist in Firestore, create new user
               if (!userExists) {
                   // create a new user in Datastore with the above attributes
                   createUser(name, userID).then(user => {
                   // redirect to the user page and 
-                  res.render('user-page', {"userID": userID, "jwt": jwt});
+                  res.json({"userID": userID, "jwt": jwt, "userName": name});
                    });
               // if user already exists, don't create new user, and redirect to user page
               } else {
-                  res.render('user-page', {"userID": userID, "jwt": jwt});
+                res.json({"stat": "user exists","userID": userID, "jwt": jwt, "userName": name});
               }
           })
       });
-  } else {
-    // construct Google Oauth endpoint
-    const authUrl = obtainAuthUrl();
-    res.redirect(authUrl);
   }
 });
 
