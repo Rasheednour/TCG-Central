@@ -19,10 +19,8 @@ export default class UIHandler {
         }
         
         this.buildEnemyArea= () => {
-            scene.enemyArea = scene.add.rectangle(470, 135, 850, 230);
+            scene.enemyArea = scene.add.rectangle(470, 135, 1155, 230);
             scene.enemyArea.setStrokeStyle(4, 0x880808);
-            scene.enemyArea = scene.add.rectangle(1000, 135, 155, 215);
-            scene.enemyArea.setStrokeStyle(3, 0x880808);
         }
 
         this.buildGameText = () => {

@@ -1,4 +1,4 @@
-import CardHandler from "../CardHandler";
+import CardHandler from "../handlers/CardHandler";
 
 export default class Card {
     constructor(scene) {
