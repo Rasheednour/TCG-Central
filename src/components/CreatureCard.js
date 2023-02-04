@@ -4,22 +4,22 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import monster_art from '../assets/temp_db/monster_art.png'
-import './styles/TradingCard.css';
+import './styles/CreatureCard.css';
 
-function TradingCard({title, cost, image, backgroundColor, type, description, effect, stats}) {
+function CreatureCard({title, cost, image, backgroundColor, type, description, effect, stats}) {
     const backgroundStyle = "background-color: " + backgroundColor;
   return (
     <div className="card-container" >
         <div className='card-title'>
             <h3>{title}</h3>
-            <h4>2</h4>
+            <h4>{cost}</h4>
         </div>
         <div className='background-image'>
             <img src={monster_art} width="300" height="240" alt='trading card image'/>
         </div>
 
         <div className='card-type'>
-            <h3>{type}</h3>
+            <h3>Type: {type}</h3>
         </div>
         
         <div className='card-description'>
@@ -36,4 +36,4 @@ function TradingCard({title, cost, image, backgroundColor, type, description, ef
   );
 }
 
-export default TradingCard;
+export default CreatureCard;

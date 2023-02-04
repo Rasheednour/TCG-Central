@@ -8,16 +8,18 @@
     border: 10px solid rgb(0, 0, 0);
     border-radius: 15px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-    min-width: 320;
+    min-width: 320px;
     max-width: 320px;
     max-height: 500px;
     min-height: 500px;
+    position: relative;
+    font-size: 16px;
     }
 
 .card-container .card-title {
     background-color: rgb(255, 255, 255, .5);
-    margin: 10px 10px 10px 10px;
-    height: 30px;
+    margin: 3%;
+    height: 5%;
     align-items: center;
     justify-content: center;
     justify-content: center;
@@ -25,80 +27,100 @@
     align-content: center;
     display: flex;
     flex-direction: row;
-    border-radius: 5px;
-    position: relative;
-    
-}
-
-.card-container .card-type {
-    background-color: rgb(255, 255, 255, .5);
-    margin: 5px 10px 0px 10px;
-    height: 30px;
-    align-items: center;
-    justify-content: left;
-    display: flex;
-    border-radius: 5px;
-    padding-left: 10px;
-}
-
-.card-container img {
-    border-radius: 10px;
-    margin: 0px 0px 0px 0px;
-}
-
-.card-container .card-description {
-    background-color: rgb(255, 255, 255, .7);
-    border-radius: 5px;
-    margin: 10px 10px 10px 10px;
-    height: 150px;
-    position: relative;
-}
-
-.card-container p {
-    font-size: 14px;
-    text-align: left;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-top: 5px;
-    font-family: 'card';
-}
-
-.card-container h3 {
-    font-size: 18px;
-    text-align: center;
-    font-family: 'card';
-    padding-top: 5px;
+    border-radius: .4em;
+    position: absolute;
+    width: 93%;
+    height: 6%;
 }
 
 .card-container .card-title h4 {
     background-color: white;
     border-radius: 50%;
-    width: 30px;
+    width: 1.2em;
     position: absolute;
     margin-left: 93%;
-    font-size: 28px;
+    font-size: 1.8em;
     font-family: 'card';
     
 }
+
+.card-container .card-title h3 {
+    font-size: 1.1em;
+    text-align: center;
+    font-family: 'card';
+    padding-top: 1%;
+    position: absolute;
+}
+
+.card-container .background-image {
+    position: absolute;
+    margin: 3%;
+    top: 8%;
+}
+
+.card-container .background-image img {
+    border-radius: .4em;
+    margin: 0px 0px 0px 0px;
+}
+
+.card-container .card-type {
+    background-color: rgb(255, 255, 255, .5);
+    margin: 3%;
+    height: 6%;
+    width: 91%;
+    top: 58%;
+    align-items: center;
+    justify-content: left;
+    display: flex;
+    border-radius: .4em;
+    padding-left: 10px;
+    position: absolute;
+}
+
+.card-container .card-type h3 {
+    font-size: 1em;
+    font-family: 'card';
+    padding-top: 0.3em;
+}
+
+
+
+.card-container .card-description {
+    margin: 3%;
+    background-color: rgb(255, 255, 255, .7);
+    border-radius: 0.4em;
+    height: 30%;
+    position: absolute;
+    top: 66%;
+}
+
+.card-container p {
+    font-size: .9em;
+    text-align: left;
+    margin: 3%;
+    font-family: 'card';
+}
+
+
+
 
 .card-container .card-description .card-stats {
     background-color: rgb(255, 255, 255, 0.6);
     display: flex;
     flex: row;
     margin-top: 6%;
-    padding: 0px 0px 0px 0px;
-    height: 20px;
-    border-radius: 5px;
+    height: 1.3em;
+    border-radius: .4em;
     border-top: 1px solid black;
-    position: relative;
+    position: absolute;
     width: 100%;
+    top: 73%;
 }
 
 .card-container .card-description .card-stats h5 {
-    font-size: 16px;
-    padding: 0px 0px 0px 0px;
+    font-size: 1em;
     margin: 0px 0px 0px 0px;
-    padding-left: 10px;
+    padding-left: .5em;
     
     
 }
