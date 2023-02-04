@@ -10,6 +10,7 @@ export default class DeckHandler {
     constructor(scene) {
         this.dealCard = (x, y, name, type) => {
             let cards = {
+                //This is where we will load the player deck's cards
                 cardBack: new CardBack(scene),
                 blazingGlory: new BlazingGlory(scene),
                 stonePath: new StonePath(scene)

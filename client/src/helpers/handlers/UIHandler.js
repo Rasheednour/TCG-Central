@@ -25,6 +25,16 @@ export default class UIHandler {
 
         this.buildGameText = () => {
             scene.dealCards = scene.add.text(960, 465, "Deal Cards").setFontSize(14).setFontFamily("Treubuchet MS");
+            scene.endTurn = scene.add.text(960, 365, "End Turn").setFontSize(14).setFontFamily("Treubuchet MS");
+        }
+
+        this.setPlayerHealth = (Health) => {
+            healthString = `Player Health: ${Health}`;
+            scene.playerHealth = scene.add.text(960, 415, healthString).setFontSize(14).setFontFamily("Treubuchet MS");
+        }
+
+        this.updatePlayerHealth = (Health) => {
+            playerHealth.setText('Player Health' + Health);
         }
 
         this.buildUI = () => {
@@ -32,6 +42,7 @@ export default class UIHandler {
             this.buildPlayerArea();
             this.buildEnemyArea();
             this.buildGameText();
+            this.setPlayerHealth(20);
         }
 
     }
