@@ -12,6 +12,7 @@ const {expressjwt: jwt} = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 const cors = require("cors");
 
+const userPageURL = 'http://localhost:3000/user'
 
 
 // get client ID, client SECRET, and redirect URI from the downloaded client_secret JSON file from GCP 
@@ -250,6 +251,7 @@ function obtainAuthUrl() {
  function getUser(userID) {
     let query = db.collection("users").where("userID", "==", userID);
     return query.get().then(snapshot => {
+      console.log("snapshot is", snapshot);
       if (snapshot.empty) {
         return false;
       } else {
@@ -778,12 +780,13 @@ app.get('/oauth', function(req,res){
                   // create a new user in Datastore with the above attributes
                   createUser(name, userID).then(user => {
                   // redirect to the user page and 
-                  res.json({"userID": userID, "jwt": jwt, "userName": name});
+                  res.redirect(userPageURL + '#' + jwt);
                    });
               // if user already exists, don't create new user, and redirect to user page
               } else {
                 res.json({"stat": "user exists","userID": userID, "jwt": jwt, "userName": name});
               }
+
           })
       });
   }
