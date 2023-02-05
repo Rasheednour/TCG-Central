@@ -780,7 +780,7 @@ app.get('/oauth', function(req,res){
                   // create a new user in Datastore with the above attributes
                   createUser(name, userID).then(user => {
                   // redirect to the user page and 
-                  res.redirect(userPageURL + '#' + jwt);
+                  res.redirect(userPageURL + '?' + 'name=' + name + '&' + 'access_token=' + jwt);
                    });
               // if user already exists, don't create new user, and redirect to user page
               } else {
