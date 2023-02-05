@@ -4,14 +4,16 @@ import TopRibbon from '../components/TopRibbon.js'
 import Button from '@mui/material/Button';
 import GameSummary from '../components/GameSummary';
 import axios from 'axios';
-import CreatureCard from '../components/CreatureCard';
-import SpellCard from '../components/SpellCard';
-import EnemyCard from '../components/EnemyCard';
+
+import {useLocation} from "react-router-dom";
+
 const backendURL = 'http://localhost:8080/register';
 
 function UserPage() {
   const [response, setResponse] = useState("userredirect data here");
   console.log("this is the user page");
+  const location = useLocation();
+  console.log("hash is", location.hash);
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -28,20 +30,8 @@ function UserPage() {
     <div className="UserPage">
 
         <TopRibbon/>
-        <div className='cards'>
-          <div className='trading-crad'>
-            <CreatureCard title={'Knight Of The Golden Order'} type={'Human Warrior'} cost={2} 
-                        backgroundColor={'#ffffff'} description={'Brave and chivalrous warrior. Wields shining sword of justice against evil. Trusty steed and enchanted armor make them a powerful force on the battlefield, inspiring all. Name revered by friend and foe.'} effect={'Strike twice if enemy defense is high.'} stats={[600, 400, 500]}/>
-          </div>
-          <div className='trading-card'>
-            <SpellCard title={'The Lost Oasis'} type={'Spell'} cost={1} 
-                        backgroundColor={'#ffffff'} description={'Enemies health is cut by half for one turn.'}/>
-          </div>
-          <div className='trading-card'>
-            <EnemyCard title={'General Zimar'} level={6} 
-                        backgroundColor={'#ffffff'} description={'Brave and chivalrous warrior. Wields shining sword of justice against evil. Trusty steed and enchanted armor make them a powerful force on the battlefield, inspiring all. Name revered by friend and foe.'} effect={'Cut all Creature defenses by half.'} stats={[800, 600, 700]}/>
-          </div>
-        </div>
+        <div>hash is {location.hash}</div>
+        
 
 
 

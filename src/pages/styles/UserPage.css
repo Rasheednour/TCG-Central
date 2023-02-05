@@ -3,12 +3,3 @@
     flex-direction: column;
 }
 
-.cards {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
-
-.trading-card {
-    margin-left: 10px;
-}
