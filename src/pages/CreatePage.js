@@ -1,4 +1,4 @@
-import "./styles/HomePage.css";
+import "./styles/SignUpPage.css";
 import TopRibbon from "../components/TopRibbon.js";
 import GameBuilder from "../components/GameBuilder";
 import { useNavigate } from "react-router-dom";

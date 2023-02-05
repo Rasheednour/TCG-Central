@@ -13,7 +13,7 @@ export default async function getAllFetch(
   })
     .then((res) => {
       if (res.status < 300) {
-        console.log("got a response from " + url);
+        //console.log("got a response from " + url);
         return res.json();
       } else {
         console.log(

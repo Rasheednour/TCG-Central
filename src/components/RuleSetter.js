@@ -9,14 +9,32 @@ import {
   Stack,
   Select,
 } from "@mui/material";
-import cover from "../assets/temp_db/cover1.png";
-import "./styles/GameSummary.css";
+//import "./styles/GameSummary.css";
 import { getAllRules } from "../utils/getAllRules";
 import { getAllFetch } from "../utils/getAllFetch";
 
 export default function RuleSetter(theRules, setGameRules) {
-  console.log(theRules.theRules);
-  theRules = theRules.theRules;
+  //console.log("the rules started as", theRules.theRules);
+  const [allRules, setAllRules] = useState([]);
+
+  const [currentRule, setCurrentRule] = useState({
+    name: "",
+    title: "",
+    value_type: "INT",
+    description: "",
+  });
+  useEffect(() => {
+    //INitializing
+    if (allRules.length == 0) {
+      setAllRules(theRules.theRules);
+      console.log("but allRules started as", allRules);
+    }
+    if (currentRule.length == 0) {
+      setCurrentRule(allRules[0]);
+      console.log("current rule started as", currentRule);
+    }
+  }, [allRules, currentRule]);
+
   function ruleZoneSelect(allRules) {
     let result = [];
     for (let i = 0; i < allRules.length; i++) {
@@ -27,6 +45,12 @@ export default function RuleSetter(theRules, setGameRules) {
     return result;
   }
 
+  const changeSelected = (event) => {
+    //setGameRules(allRules);
+    console.log("changed with event", event);
+    setCurrentRule(allRules.filter((el) => el.name === event.value));
+  };
+
   function generateRuleZone(rule, setGameRules) {
     function fillSelects(cur) {
       let result = [];
@@ -35,6 +59,7 @@ export default function RuleSetter(theRules, setGameRules) {
       }
       return result;
     }
+    console.log("generating rule zone for rule:", rule);
 
     return (
       <Grid container spacing={2}>
@@ -54,16 +79,31 @@ export default function RuleSetter(theRules, setGameRules) {
 
   return (
     <Container>
-      <SELECT id="ruleSelect">{ruleZoneSelect(theRules)}</SELECT>
-      {generateRuleZone(
-        theRules.filter((el) => {
-          document.getElementById("ruleSelect").value == el.name;
-        })[0]
-      )}
+      <Select
+        id="ruleSelect"
+        labelId="rule-select-label-id"
+        value={currentRule.title}
+        label="Select Rule to Edit"
+        onChange={changeSelected}
+      >
+        {ruleZoneSelect(allRules)}
+      </Select>
+      {allRules.length > 0 &&
+        generateRuleZone(
+          currentRule
+          //   allRules.filter((el) => {
+          //     console.log(
+          //       "checking equality between,",
+          //       currentRule["name"],
+          //       el.name
+          //     );
+          //     return currentRule["name"] == el.name;
+          //   })[0]
+        )}
     </Container>
     // <List>
-    //   {theRules.length != 0 ? (
-    //     theRules.map((cur) => {
+    //   {allRules.length != 0 ? (
+    //     allRules.map((cur) => {
     //       return <li key={cur.name}>{generateRuleZone(cur, setGameRules)}</li>;
     //     })
     //   ) : (

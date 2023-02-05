@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Container, Stack } from "@mui/material";
-import "./styles/GameSummary.css";
+import "./styles/SignUpForm.css";
 import getAllFetch from "../utils/getAllFetch";
 import RuleSetter from "./RuleSetter";
 
@@ -69,7 +69,7 @@ export default function GameBuilder(gameId) {
       ).catch((err) => {
         console.log(`error fetching abilities: ${err}`);
       });
-      if (id) {
+      if (id && gameName == "") {
         let gameInfo = await getAllFetch(
           BACKEND_URL,
           BACKEND_CODE,
@@ -94,7 +94,7 @@ export default function GameBuilder(gameId) {
     <div>
       <Container>
         <Stack direction="column" spacing={2}>
-          <RuleSetter theRules={rules}></RuleSetter>
+          <RuleSetter theRules={rules} setGameRules={setGameRules}></RuleSetter>
         </Stack>
       </Container>
     </div>
