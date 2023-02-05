@@ -43,6 +43,7 @@ function TCGPortal() {
           <h2>Browse Published Trading Card Games</h2>
           <SearchBar/>
         </div>
+        
         <div className='cards'>
           <div className='trading-crad'>
             <CreatureCard title={'Knight Of The Golden Order'} type={'Human Warrior'} cost={2} 

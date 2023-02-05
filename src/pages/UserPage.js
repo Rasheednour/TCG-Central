@@ -5,15 +5,11 @@ import Button from '@mui/material/Button';
 import GameSummary from '../components/GameSummary';
 import axios from 'axios';
 
-import {useLocation} from "react-router-dom";
-
+import { useSearchParams } from 'react-router-dom';
 const backendURL = 'http://localhost:8080/register';
 
 function UserPage() {
-  const [response, setResponse] = useState("userredirect data here");
-  console.log("this is the user page");
-  const location = useLocation();
-  console.log("hash is", location.hash);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -30,14 +26,17 @@ function UserPage() {
     <div className="UserPage">
 
         <TopRibbon/>
-        <div>hash is {location.hash}</div>
+        <div className='redirect-info'>
+          <p>User Name is: {searchParams.get("name")}</p>
+          <p>Access Token is: {searchParams.get('access_token')}</p>
+        </div>
+        
         
 
 
 
         <div className='User-Container'>
 
-          <h1>{response}</h1>
           <h1>User Profile</h1>
           <h2>Private Information</h2>
           <h2>User TCGs</h2>
