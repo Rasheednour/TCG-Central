@@ -19,5 +19,10 @@ export default class GameHandler{
             this.gameState = gameState;
             console.log("GameState: " + this.gameState);
         }
+
+        this.gameOver = () => {
+            alert('GAME OVER');
+            location.reload();
+        }
     }
 }

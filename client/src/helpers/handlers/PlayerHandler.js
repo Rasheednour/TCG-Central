@@ -8,8 +8,7 @@ export default class PlayerHandler {
         this.takeDamage = (damageNumber) => {
             this.health = this.health - damageNumber;
             if (this.health < 1) {
-                //Game over
-                
+                scene.GameHandler.gameOver();
             }
         }
     }

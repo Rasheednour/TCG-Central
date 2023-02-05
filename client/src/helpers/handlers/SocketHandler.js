@@ -19,7 +19,6 @@ export default class SocketHandler {
             scene.GameHandler.changeGameState(gameState);
             if (gameState === 'Initializing') {
                 scene.DeckHandler.dealCard(1000, 860, "cardBack", 'playerCard');
-                scene.DeckHandler.dealCard(1000, 135, "cardBack", "enemyCard");
                 scene.dealCards.setInteractive();
                 scene.dealCards.setColor('#00ffff');
             }

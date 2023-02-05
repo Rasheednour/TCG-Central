@@ -8,5 +8,12 @@ export default class Ally extends Card {
         this.defense = defense;
         this.health = health;
         this.ability = ability;
+
+        this.takeDamage = (damage) => {
+            this.health = this.health - damage;
+            if(this.health <= 0) {
+                delete(this);
+            }
+        } 
     }
 }

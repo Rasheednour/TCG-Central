@@ -18,6 +18,19 @@ export default class InteractiveHandler {
             scene.dealCards.setColor('#00ffff');
         })
 
+        //use the end turn button to end the turn
+        scene.endTurn.on('pointerdown', () => {
+            scene.socket.emit('changeTurn', scene.socket.id);
+        })
+
+        scene.endTurn.on('pointerover', () => {
+            scene.endTurn.setColor('#ff69b4');
+        })
+
+        scene.endTurn.on('pointerout', () => {
+            scene.endTurn.setColor('#00ffff');
+        })
+
         //dragged objects follow mouse.
         scene.input.on('drag', (pointer, gameObject, dragX, dragY) => {
             gameObject.x = dragX;
