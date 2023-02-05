@@ -1,11 +1,34 @@
+import React from 'react';
 import './styles/TCGPortal.css'
 import TopRibbon from '../components/TopRibbon.js'
-import Button from '@mui/material/Button';
+import { useState } from "react";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+import SearchIcon from "@mui/icons-material/Search";
 import GameSummary from '../components/GameSummary';
 import CreatureCard from '../components/CreatureCard';
 import SpellCard from '../components/SpellCard';
 import EnemyCard from '../components/EnemyCard';
 import tcg_portal_cover from '../assets/images/tcg_portal_cover.png'
+
+
+const SearchBar = () => (
+  <form>
+    <TextField
+      id="search-bar"
+      className="text"
+      label="Enter a TCG name"
+      variant="outlined"
+      placeholder="Search..."
+      size="small"
+      style={{ width: "300px" }}
+    />
+    <IconButton type="submit" aria-label="search">
+      <SearchIcon style={{ fill: "blue" }} />
+    </IconButton>
+  </form>
+);
+
 
 function TCGPortal() {
   return (
@@ -18,6 +41,7 @@ function TCGPortal() {
         <div className='TCG-Container'>
           <h1>TCG Portal</h1>
           <h2>Browse Published Trading Card Games</h2>
+          <SearchBar/>
         </div>
         <div className='cards'>
           <div className='trading-crad'>

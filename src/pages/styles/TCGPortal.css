@@ -1,7 +1,25 @@
 .TCG-Container{
     display: flex;
     flex-direction: column;
+    margin-bottom: 50px;
 }
+
+.TCG-Container h1 {
+    font-family: 'sans-bold';
+    color: rgb(48, 48, 48);
+    margin-bottom: 0px;
+    font-size: 3em;
+
+}
+
+.TCG-Container h2 {
+    font-family: 'sans-bold';
+    color: rgb(48, 48, 48);
+    font-size: 1em;
+    margin-top: 0px;
+
+}
+
 .cards {
     display: flex;
     flex-direction: row;
@@ -17,3 +35,17 @@
     width: 100%;
     height: 300px;
 }
+
+
+
+@font-face {
+    
+    font-family: 'sans-bold';
+    src: url(../../assets/fonts/SourceSans3-Bold.ttf);
+  }
+  
+  @font-face {
+    
+    font-family: 'sans-regular';
+    src: url(../../assets/fonts/SourceSans3-Regular.ttf);
+  }
