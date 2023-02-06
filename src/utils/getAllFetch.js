@@ -25,7 +25,7 @@ export default async function getAllFetch(
       }
     })
     .then((data) => {
-      console.log("returning data", data);
+      //console.log("returning data", data);
       return data;
     });
 }

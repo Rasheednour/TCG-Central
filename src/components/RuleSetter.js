@@ -15,31 +15,27 @@ import { getAllFetch } from "../utils/getAllFetch";
 
 export default function RuleSetter(theRules, setGameRules) {
   //console.log("the rules started as", theRules.theRules);
-  const [allRules, setAllRules] = useState([]);
+  const [allRules, setAllRules] = useState(theRules.theRules);
 
-  const [currentRule, setCurrentRule] = useState({
-    name: "",
-    title: "",
-    value_type: "INT",
-    description: "",
-  });
-  useEffect(() => {
-    //INitializing
-    if (allRules.length == 0) {
-      setAllRules(theRules.theRules);
-      console.log("but allRules started as", allRules);
-    }
-    if (currentRule.length == 0) {
-      setCurrentRule(allRules[0]);
-      console.log("current rule started as", currentRule);
-    }
-  }, [allRules, currentRule]);
+  const [currentRule, setCurrentRule] = useState(allRules[0]);
+  //   useEffect(() => {
+  //     //INitializing
+  //     if (allRules.length == 0) {
+  //       setAllRules(theRules.theRules);
+  //       console.log("but allRules started as", allRules);
+  //     }
+  //     if (!("name" in currentRule)) {
+  //       setCurrentRule(allRules[0]);
+  //       console.log("current rule started as", currentRule);
+  //     }
+  //   }, [allRules, currentRule]);
+  console.log("rule setter rendering rules:", allRules);
 
   function ruleZoneSelect(allRules) {
     let result = [];
     for (let i = 0; i < allRules.length; i++) {
       result.push(
-        <MenuItem value={allRules[i].name}>{allRules[i].title}</MenuItem>
+        <option value={allRules[i].name}>{allRules[i].title}</option>
       );
     }
     return result;
@@ -48,59 +44,54 @@ export default function RuleSetter(theRules, setGameRules) {
   const changeSelected = (event) => {
     //setGameRules(allRules);
     console.log("changed with event", event);
-    setCurrentRule(allRules.filter((el) => el.name === event.value));
+    setCurrentRule(allRules.filter((el) => el.name === event.target.value)[0]);
   };
 
   function generateRuleZone(rule, setGameRules) {
     function fillSelects(cur) {
       let result = [];
       for (let i = 0; i < cur["values"].length; i++) {
-        result.push(<MenuItem value={cur.values[i]}>{cur.values[i]}</MenuItem>);
+        result.push(<option value={cur.values[i]}>{cur.values[i]}</option>);
       }
       return result;
     }
     console.log("generating rule zone for rule:", rule);
 
     return (
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
+      <div>
+        <div>
           {rule.title}
           <br />
           {rule.description}
-        </Grid>
-        <Grid item xs={6}>
-          {rule["value_type"] == "INT" && <input type="number"></input>}
-          {rule["value_type"] == "ENUM" && <Select>{fillSelects(rule)}</Select>}
+        </div>
+        <div>
+          {rule["value_type"] == "INT" && (
+            <input
+              type="number"
+              name={rule["name"] + "-value"}
+              id={rule["name"] + "-value"}
+            ></input>
+          )}
+          {rule["value_type"] == "ENUM" && <select>{fillSelects(rule)}</select>}
           {rule.value_type == "STR" && <input type="text"></input>}
-        </Grid>
-      </Grid>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Container>
-      <Select
+    <form>
+      <label for="ruleSelect">Customize Ruleset </label>
+      <select
         id="ruleSelect"
-        labelId="rule-select-label-id"
+        name="ruleSelect"
         value={currentRule.title}
-        label="Select Rule to Edit"
         onChange={changeSelected}
       >
         {ruleZoneSelect(allRules)}
-      </Select>
-      {allRules.length > 0 &&
-        generateRuleZone(
-          currentRule
-          //   allRules.filter((el) => {
-          //     console.log(
-          //       "checking equality between,",
-          //       currentRule["name"],
-          //       el.name
-          //     );
-          //     return currentRule["name"] == el.name;
-          //   })[0]
-        )}
-    </Container>
+      </select>
+      {allRules.length > 0 && generateRuleZone(currentRule)}
+    </form>
     // <List>
     //   {allRules.length != 0 ? (
     //     allRules.map((cur) => {

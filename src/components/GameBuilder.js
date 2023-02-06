@@ -12,39 +12,34 @@ const BACKEND_URL = "https://tcgbackend-s2kqyb5vna-wl.a.run.app";
 const BACKEND_CODE = "tcgadmin";
 const ACCESS_TOKEN = null;
 
-// function GameSummary({title, creator, description}) {
-//   return (
-//     <div className="GameSummary">
-//         <div className='cover-image'>
-//             <img src={cover} width="400" height="500" alt='game cover logo'/>
-//         </div>
-
-//         <div className='right-panel'>
-//             <h1>{title}</h1>
-//             <h2>Created by: {creator}</h2>
-//             <p>{description}</p>
-//             <div className='card-samples'>
-
-//             </div>
-//         </div>
-
-//     </div>
-//   );
-// }
-
 export default function GameBuilder(gameId) {
-  const [rules, setRules] = useState([]);
+  const [rules, setRules] = useState([
+    {
+      name: "example_rule",
+      title: "Loading...",
+      value_type: "INT",
+      description: "Loading rule options...",
+    },
+    {
+      name: "other_example",
+      title: "still loading",
+      value_type: "STR",
+      description: "still loading rule customization options...",
+    },
+  ]);
   const [effects, setEffects] = useState([]);
   const [abilities, setAbilities] = useState([]);
   const [gameRules, setGameRules] = useState({});
   const [gameCharacters, setGameCharacters] = useState([]);
   const [gameName, setGameName] = useState("");
   const [id, setId] = useState(gameId.gameId || "");
+  const [setupDone, setSetupDone] = useState(false);
   //console.log("game builder is called, game id is", gameId, id);
 
   useEffect(() => {
-    console.log("calling setup useeffect");
+    //console.log("calling setup useeffect");
     async function fetchData() {
+      console.log("fetch data called");
       let loadrules = await getAllFetch(
         BACKEND_URL,
         BACKEND_CODE,
@@ -83,18 +78,28 @@ export default function GameBuilder(gameId) {
         setGameRules(gameInfo["rules"]);
       }
       setEffects(loadeffects);
-      setRules(loadrules);
+      console.log("about to set rules to:", loadrules);
+      setRules(loadrules.slice());
+      console.log("rules now are:", rules);
       setAbilities(loadabilities);
+      setSetupDone(true);
       //console.log("here's what rules looks like:", rules);
     }
-    fetchData();
-  }, []);
+    if (!setupDone) {
+      fetchData().catch(console.error);
+    }
+    console.log("rules currently are:", rules);
+  }, [rules, effects, abilities, setupDone]);
 
   return (
     <div>
       <Container>
         <Stack direction="column" spacing={2}>
-          <RuleSetter theRules={rules} setGameRules={setGameRules}></RuleSetter>
+          <RuleSetter
+            theRules={rules}
+            setGameRules={setGameRules}
+            key={rules[0].name}
+          ></RuleSetter>
         </Stack>
       </Container>
     </div>
