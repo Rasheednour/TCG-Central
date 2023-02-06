@@ -7,8 +7,17 @@ import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import cover from '../assets/temp_db/cover1.png'
 import './styles/GameSummary.css';
+import { useNavigate } from "react-router-dom";
 
-function GameSummary({title, creator, description}) {
+
+function GameSummary({title, creator, description, imageURL, game_id}) {
+
+  let navigate = useNavigate(); 
+  const routeChange = () =>{ 
+    let path = `/play`; 
+    navigate(path, {state:{game_id: game_id}});
+  }
+
   return (
     <div className="GameSummary">
         <div className='cover-image'>
@@ -20,11 +29,9 @@ function GameSummary({title, creator, description}) {
             <h2>Created by: {creator}</h2>
             <p>{description}</p>
             <div className='card-samples'>
-
+            <Button variant="contained" onClick={routeChange}>PLAY</Button>
             </div>
         </div>
-        
-        
     </div>
   );
 }

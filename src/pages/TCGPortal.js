@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {userState} from 'react';
 import './styles/TCGPortal.css'
 import TopRibbon from '../components/TopRibbon.js'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
@@ -10,7 +10,9 @@ import CreatureCard from '../components/CreatureCard';
 import SpellCard from '../components/SpellCard';
 import EnemyCard from '../components/EnemyCard';
 import tcg_portal_cover from '../assets/images/tcg_portal_cover.png'
+import axios from 'axios';
 
+const api = 'http://localhost:8080/';
 
 const SearchBar = () => (
   <form>
@@ -31,6 +33,21 @@ const SearchBar = () => (
 
 
 function TCGPortal() {
+  const [games, setGames] = useState([]);
+  const [fetched, setFetched] = useState(false);
+
+  useEffect(() => {
+    const url = api + 'games';
+    axios.get(url).then((res) => {
+      setGames(res.data);
+      setFetched(true);
+    })
+    .catch ((error) => {
+      console.log("fetch error" + error);
+    });
+  }, {});
+  
+
   return (
     <div className="TCGPortal">
 
@@ -43,20 +60,17 @@ function TCGPortal() {
           <h2>Browse Published Trading Card Games</h2>
           <SearchBar/>
         </div>
-        
-        <div className='cards'>
-          <div className='trading-crad'>
-            <CreatureCard title={'Knight Of The Golden Order'} type={'Human Warrior'} cost={2} 
-                        backgroundColor={'#ffffff'} description={'Brave and chivalrous warrior. Wields shining sword of justice against evil. Trusty steed and enchanted armor make them a powerful force on the battlefield, inspiring all. Name revered by friend and foe.'} effect={'Strike twice if enemy defense is high.'} stats={[600, 400, 500]}/>
+        <div>
+          {fetched ? ( 
+          <div className='tcgames'>
+              {games.map(game => (
+                <div key={game.name} className="tcg-card">
+                  <GameSummary  title={game.name} description={game.description} game_id={game.game_id}/>
+                </div>
+              ))}
+               
           </div>
-          <div className='trading-card'>
-            <SpellCard title={'The Lost Oasis'} type={'Spell'} cost={1} 
-                        backgroundColor={'#ffffff'} description={'Enemies health is cut by half for one turn.'}/>
-          </div>
-          <div className='trading-card'>
-            <EnemyCard title={'General Zimar'} level={6} 
-                        backgroundColor={'#ffffff'} description={'Brave and chivalrous warrior. Wields shining sword of justice against evil. Trusty steed and enchanted armor make them a powerful force on the battlefield, inspiring all. Name revered by friend and foe.'} effect={'Cut all Creature defenses by half.'} stats={[800, 600, 700]}/>
-          </div>
+          ) : ( <h3>no games found</h3> )}
         </div>
         
     </div>
