@@ -61,6 +61,7 @@ export default function GameBuilder(gameId) {
           Authorization: "Bearer " + ACCESS_TOKEN,
         },
         method: "POST",
+        body: JSON.stringify(aGame),
       })
         .then((res) => {
           console.log("first res is", res.status);
@@ -83,7 +84,8 @@ export default function GameBuilder(gameId) {
     if (gameSaving) {
       let new_rules = {};
       for (let rule in gameRules) {
-        new_rules[rule] = document.getElementById(rule + "-value").value;
+        let curEl = document.getElementById(rule + "-value");
+        new_rules[rule] = curEl ? curEl.value : gameRules[rule];
       }
       let game = {
         rules: new_rules,

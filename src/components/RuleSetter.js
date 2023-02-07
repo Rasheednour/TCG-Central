@@ -2,12 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Button,
+  Box,
   Container,
+  FormControl,
   Grid,
+  InputLabel,
   List,
+  ListItem,
+  ListItemText,
   MenuItem,
   Stack,
   Select,
+  TextField,
 } from "@mui/material";
 
 export default function RuleSetter({ theRules, setGameRules, gameRules }) {
@@ -48,41 +54,108 @@ export default function RuleSetter({ theRules, setGameRules, gameRules }) {
     function fillSelects(cur) {
       let result = [];
       for (let i = 0; i < cur["values"].length; i++) {
-        result.push(<option value={cur.values[i]}>{cur.values[i]}</option>);
+        result.push(<MenuItem value={cur.values[i]}>{cur.values[i]}</MenuItem>);
       }
       return result;
     }
-    console.log("generating rule zone for rule:", rule);
+    function ruleDescriptionParser(desc, type) {
+      if (type == "ENUM") {
+        let segmented = desc.split("[");
+        let main_desc = segmented[0];
+        let list_desc = [];
+        for (let i = 1; i < segmented.length; i++) {
+          list_desc.push(segmented[i].substring(2));
+        }
+        //console.log("parsed", main_desc, list_desc);
+        return (
+          <Box>
+            {main_desc}
+            <List>
+              {list_desc.map((el) => {
+                return (
+                  <ListItem
+                    key={el.substring(0, el.indexOf(" ")) + "-description"}
+                    disablePadding
+                  >
+                    <ListItemText primary={el}></ListItemText>
+                  </ListItem>
+                );
+              })}
+            </List>
+          </Box>
+        );
+      } else {
+        return <Box>{desc}</Box>;
+      }
+    }
 
     return (
-      <div>
-        <div>
-          {rule.title}
-          <br />
-          {rule.description}
-        </div>
-        <div>
+      <Grid item xs={4}>
+        <Box>{rule.title}</Box>
+        <Box padding={2}>
           {rule["value_type"] == "INT" && (
-            <input
-              type="number"
+            <TextField
               name={rule["name"] + "-value"}
+              label={rule["title"]}
+              variant="outlined"
               id={rule["name"] + "-value"}
-              value={gameRules[rule["name"]]}
-            ></input>
+              type={"number"}
+              onChange={(event) =>
+                event.target.value < 0
+                  ? (event.target.value = 0)
+                  : event.target.value
+              }
+              defaultValue={gameRules[rule["name"]]}
+            />
           )}
-          {rule["value_type"] == "ENUM" && <select>{fillSelects(rule)}</select>}
-          {rule.value_type == "STR" && <input type="text"></input>}
-        </div>
-      </div>
+          {rule["value_type"] == "ENUM" && (
+            <FormControl>
+              <InputLabel id={rule["name"] + "-value-label"}>
+                {rule["title"]}
+              </InputLabel>
+              <Select
+                labelId={rule["name"] + "-value-label"}
+                id={rule["name"] + "-value"}
+                value={gameRules[rule["name"]]}
+                onChange={(event) => {
+                  console.log("heres the change event", event);
+                  document.getElementById(rule["name"] + "-value").value =
+                    event.target.value;
+                  document.getElementById(rule["name"] + "-value").textContent =
+                    event.target.value;
+                  console.log(
+                    "Post change",
+                    document.getElementById(rule["name"] + "-value"),
+                    "and value of",
+                    document.getElementById(rule["name"] + "-value").value
+                  );
+                  //   this.setState({ [rule["name"]]: event.target.value });
+                }}
+              >
+                {fillSelects(rule)}
+              </Select>
+            </FormControl>
+          )}
+          {rule.value_type == "STR" && (
+            <TextField
+              id={rule["name"] + "-value"}
+              label={rule["title"]}
+              defaultValue={gameRules[rule["name"]] || ""}
+              variant="outlined"
+            ></TextField>
+          )}
+        </Box>
+        <Box> {ruleDescriptionParser(rule.description, rule.value_type)}</Box>
+      </Grid>
     );
   }
 
   return (
-    <form>
+    <Grid container spacing={1}>
       {allRules.map((currentRule) => {
         return generateRuleZone(currentRule);
       })}
-    </form>
+    </Grid>
     // <List>
     //   {allRules.length != 0 ? (
     //     allRules.map((cur) => {
