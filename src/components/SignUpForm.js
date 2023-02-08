@@ -24,7 +24,7 @@ const SignUpForm = () => {
   useEffect(() => {
     const url = api + 'register';
     axios.get(url).then((res) => {
-      console.log(res);
+      console.log(res.data);
       setURL(res.data);
       setFetched(true);
     })
@@ -55,7 +55,7 @@ const SignUpForm = () => {
         <Button className="button1" variant="contained" type="submit">Get Started</Button>
         <br /> */}
         <div>
-          {fetched ? (<Button className="button2" variant="contained" type="submit" onClick={routeChange}>Sign in with Google</Button>):(<p>oauth url not yet fetched</p>)}
+          {fetched ? (<Button className="button2" variant="contained" type="submit" href={url}>Sign in with Google</Button>):(<p>oauth url not yet fetched</p>)}
         
         </div>
       </form>
