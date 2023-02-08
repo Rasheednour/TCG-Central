@@ -1,4 +1,4 @@
-import React, {userState} from 'react';
+import React from 'react';
 import './styles/TCGPortal.css'
 import TopRibbon from '../components/TopRibbon.js'
 import { useEffect, useState } from "react";

@@ -4,12 +4,14 @@ import TopRibbon from '../components/TopRibbon.js'
 import Button from '@mui/material/Button';
 import GameSummary from '../components/GameSummary';
 import axios from 'axios';
+import UserProfile from '../components/UserProfile';
 
 import { useSearchParams } from 'react-router-dom';
 const backendURL = 'http://localhost:8080/register';
 
 function UserPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [loggedIn, setLoggedIn] = useState(true);
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -24,24 +26,14 @@ function UserPage() {
 
   return (
     <div className="UserPage">
-
         <TopRibbon/>
-        <div className='redirect-info'>
+        <div className='page-content'>
+          {loggedIn?(<UserProfile user_name={'Joe Doe'} user_email={'joedoe@gmail.com'}/>):(<h3>Please Log-in to Continue</h3>)}
+        </div>
+        {/* <div className='redirect-info'>
           <p>User Name is: {searchParams.get("name")}</p>
           <p>Access Token is: {searchParams.get('access_token')}</p>
-        </div>
-        
-        
-
-
-
-        <div className='User-Container'>
-
-          <h1>User Profile</h1>
-          <h2>Private Information</h2>
-          <h2>User TCGs</h2>
-          <Button variant='contained'>Create a new TCG</Button>
-        </div>
+        </div> */}
         
     </div>
   );
