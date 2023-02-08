@@ -12,6 +12,11 @@ function TopRibbon() {
     navigate(path);
   }
 
+  const loginRedirect = () =>{ 
+    let path = `/user`; 
+    navigate(path);
+  }
+
   return (
     <div className="TopRibbon">
 
@@ -25,7 +30,7 @@ function TopRibbon() {
 
         <div className='login-buttons'>
             <Button className='button1' variant="contained" onClick={routeChange}>Sign Up</Button>
-            <Button className='button2' variant="outlined" onClick={routeChange}>Log In</Button>
+            <Button className='button2' variant="outlined" onClick={loginRedirect}>Log In</Button>
         </div>
         
         
