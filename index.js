@@ -1,9 +1,66 @@
 const express = require("express");
 const Firestore = require("@google-cloud/firestore");
 
+//---------------------------- Google OAuth -----------------
+
+// required libraries 
+const json = require('./client_secret.json');
+const {google} = require('googleapis');
+const url = require('url');
+const jwt_decode = require('jwt-decode');
+const {expressjwt: jwt} = require('express-jwt');
+const jwksRsa = require('jwks-rsa');
+const cors = require("cors");
+
+const userPageURL = 'https://tcg-maker-frontend-123.uc.r.appspot.com/user'
+
+
+// get client ID, client SECRET, and redirect URI from the downloaded client_secret JSON file from GCP 
+const CLIENT_ID = json.web.client_id;
+const CLIENT_SECRET = json.web.client_secret;
+const REDIRECT_URI = json.web.redirect_uris[0];
+
+// create a new oauth2Client
+const oauth2Client = new google.auth.OAuth2(
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI
+);
+
+// Access scopes
+const scopes = [
+  'https://www.googleapis.com/auth/userinfo.profile'
+];
+
+// create a function to verify JWTs
+const checkJwt = jwt({
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://www.googleapis.com/oauth2/v3/certs`
+  }),
+
+  // Validate the audience and the issuer.
+  issuer: `https://accounts.google.com`,
+  algorithms: ['RS256']
+});
+
+
+//---------------------------- Initiate DB and start Server -----------------
+
 const db = new Firestore();
 const app = express();
 app.use(express.json());
+// enable cross origin requests
+app.use(
+  cors({
+    origin: ["https://tcg-maker-frontend-123.uc.r.appspot.com"],
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    credentials: true,
+  })
+);
+
 const port = process.env.PORT || 8080;
 app.use((req, res, next) => {
       res.setHeader("Access-Control-Allow-Origin", "*");
@@ -180,6 +237,59 @@ function generate_encounter(target, all_levels, enemies, big_pref = 4) {
   //  console.log("made enemy list " + enemy_list + " starting with " + enemy_list[0]);
   return enemy_list;
 }
+
+
+
+/* -------------Google OAuth Model Functions ------------- */
+
+/*
+A function that constructs an endpoint to the Google Oauth 2.0
+returns: the authorization URL
+*/
+function obtainAuthUrl() {
+      
+  // Generate a url that asks permissions for the Drive activity scope
+  const authorizationUrl = oauth2Client.generateAuthUrl({
+    // 'online' (default) or 'offline' (gets refresh_token)
+    access_type: 'online',
+    /** Pass in the scopes array defined above.
+      * Alternatively, if only one scope is needed, you can pass a scope URL as a string */
+    scope: scopes,
+    // Enable incremental authorization. Recommended as a best practice.
+    include_granted_scopes: true
+  });
+
+  return authorizationUrl;
+}
+
+//  function getUser(userID) {
+//     let query = db.collection("users").doc(userID);
+//     return query.get().then(snapshot => {
+//       if (snapshot.exists) {
+//         return false;
+//       } else {
+//         return true
+//       }
+//     });
+// }
+
+async function getUser(userID) {
+  let query = db.collection("users").doc(userID);
+  let doc = await query.get();
+  if (doc.exists) {
+    return true
+  } else {
+    return false
+  }
+}
+
+  function createUser(name, userID) {
+    return db.collection("users").doc(userID).set({"name": name, "games": []}).then(newUser=>{
+      return newUser
+    });
+    
+    
+  }
 
 //---------------------------------- GAMES --------------------------------
 
@@ -657,6 +767,53 @@ app.get("/users", async (req, res) => {
     res.json(allUsers);
   }
 });
+
+app.get('/register', function(req, res){
+  // construct Google Oauth endpoint
+  const authUrl = obtainAuthUrl();
+  res.send(authUrl);
+});
+
+/*
+Redirect route from SignUpPage to the Google OAuth 2.0 endpoint
+*/
+app.get('/oauth', function(req,res){
+  // Receive the callback from Google's OAuth 2.0 server.
+  if (req.url.startsWith('/oauth')) {
+      // Handle the OAuth 2.0 server response
+      let q = url.parse(req.url, true).query;
+  
+      // Get access token
+      oauth2Client.getToken(q.code).then(tokens => {
+          oauth2Client.setCredentials(tokens);
+          // get the JWT 
+          const jwt = tokens.tokens.id_token;
+          // decode the JWT
+          const decodedJwt = jwt_decode(jwt);
+          // obtain the value of sub and the name from the decoded JWT
+          const userID = decodedJwt.sub;
+          const name = decodedJwt.name;
+
+          // before creating a new user, check if the user is already registered
+          // get list of users
+          getUser(userID).then(result => {
+        
+              // if the user doesn't exist in Firestore, create new user
+              if (result === false) {
+                    // create a new user in Datastore with the above attributes
+                    createUser(name, userID).then(user => {
+                    // redirect to the user page and 
+                    res.redirect(userPageURL + '?' + 'name=' + name + '&' + 'user_id=' + userID + '&' + 'access_token=' + jwt);
+                   });
+              // if user already exists, don't create new user, and redirect to user page
+              } else {
+                res.redirect(userPageURL + '?' + 'name=' + name + '&' + 'user_id=' + userID + '&' + 'access_token=' + jwt);
+              }
+          })
+      });
+  }
+});
+
 
 //--------------------- OPTIONS ----------------------------------
 
