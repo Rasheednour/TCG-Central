@@ -14,7 +14,7 @@ function HomePage() {
   }
 
   const loginRedirect = () =>{ 
-    let path = `/user`; 
+    let path = `/signup`; 
     navigate(path);
   }
 
