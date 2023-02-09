@@ -248,20 +248,29 @@ function obtainAuthUrl() {
   return authorizationUrl;
 }
 
- function getUser(userID) {
-    let query = db.collection("users").where("userID", "==", userID);
-    return query.get().then(snapshot => {
-      console.log("snapshot is", snapshot);
-      if (snapshot.empty) {
-        return false;
-      } else {
-        return true
-      }
-    });
+//  function getUser(userID) {
+//     let query = db.collection("users").doc(userID);
+//     return query.get().then(snapshot => {
+//       if (snapshot.exists) {
+//         return false;
+//       } else {
+//         return true
+//       }
+//     });
+// }
+
+async function getUser(userID) {
+  let query = db.collection("users").doc(userID);
+  let doc = await query.get();
+  if (doc.exists) {
+    return true
+  } else {
+    return false
+  }
 }
 
   function createUser(name, userID) {
-    return db.collection("users").doc(userID).set({"name": name}).then(newUser=>{
+    return db.collection("users").doc(userID).set({"name": name, "games": []}).then(newUser=>{
       return newUser
     });
     
@@ -747,14 +756,13 @@ app.get("/users", async (req, res) => {
 app.get('/register', function(req, res){
   // construct Google Oauth endpoint
   const authUrl = obtainAuthUrl();
-  res.redirect(authUrl);
+  res.send(authUrl);
 });
 
 /*
 Redirect route from SignUpPage to the Google OAuth 2.0 endpoint
 */
 app.get('/oauth', function(req,res){
-  console.log(req.url);
   // Receive the callback from Google's OAuth 2.0 server.
   if (req.url.startsWith('/oauth')) {
       // Handle the OAuth 2.0 server response
@@ -773,20 +781,19 @@ app.get('/oauth', function(req,res){
 
           // before creating a new user, check if the user is already registered
           // get list of users
-          getUser(userID).then(userExists => {
+          getUser(userID).then(result => {
         
               // if the user doesn't exist in Firestore, create new user
-              if (!userExists) {
-                  // create a new user in Datastore with the above attributes
-                  createUser(name, userID).then(user => {
-                  // redirect to the user page and 
-                  res.redirect(userPageURL + '?' + 'name=' + name + '&' + 'access_token=' + jwt);
+              if (result === false) {
+                    // create a new user in Datastore with the above attributes
+                    createUser(name, userID).then(user => {
+                    // redirect to the user page and 
+                    res.redirect(userPageURL + '?' + 'name=' + name + '&' + 'user_id=' + userID + '&' + 'access_token=' + jwt);
                    });
               // if user already exists, don't create new user, and redirect to user page
               } else {
-                res.json({"stat": "user exists","userID": userID, "jwt": jwt, "userName": name});
+                res.redirect(userPageURL + '?' + 'name=' + name + '&' + 'user_id=' + userID + '&' + 'access_token=' + jwt);
               }
-
           })
       });
   }
