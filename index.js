@@ -12,7 +12,7 @@ const {expressjwt: jwt} = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 const cors = require("cors");
 
-const userPageURL = 'http://localhost:3000/user'
+const userPageURL = 'https://tcg-maker-frontend-123.uc.r.appspot.com/user'
 
 
 // get client ID, client SECRET, and redirect URI from the downloaded client_secret JSON file from GCP 
@@ -55,7 +55,7 @@ app.use(express.json());
 // enable cross origin requests
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["https://tcg-maker-frontend-123.uc.r.appspot.com"],
     methods: "GET,POST,PUT,DELETE,OPTIONS",
     credentials: true,
   })
