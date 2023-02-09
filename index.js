@@ -60,7 +60,20 @@ app.use(
     credentials: true,
   })
 );
+
 const port = process.env.PORT || 8080;
+app.use((req, res, next) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.setHeader(
+        "Access-Control-Allow-Methods",
+        "OPTIONS, GET, POST, PUT, PATCH, DELETE"
+      );
+      res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+      if (req.method === "OPTIONS") {
+        return res.sendStatus(200);
+      }
+      next();
+    });
 app.listen(port, () => {
   console.log(`Running on port: ${port}`);
 });
@@ -226,6 +239,7 @@ function generate_encounter(target, all_levels, enemies, big_pref = 4) {
 }
 
 
+
 /* -------------Google OAuth Model Functions ------------- */
 
 /*
@@ -276,6 +290,7 @@ async function getUser(userID) {
     
     
   }
+
 //---------------------------------- GAMES --------------------------------
 
 //GET all games - returns an object containing each game keyed to its game Id
@@ -720,7 +735,7 @@ app.delete("/enemies/:enemyId", async (req, res) => {
   res.json({ result: `deleted enemy: ${req.params.enemyId}` });
 });
 
-//--------------------- USERS & OAUTH----------------------------
+//--------------------- USERS ----------------------------
 app.post("/users", async (req, res) => {
   let user = req.body;
   let id;
@@ -798,6 +813,7 @@ app.get('/oauth', function(req,res){
       });
   }
 });
+
 
 //--------------------- OPTIONS ----------------------------------
 
