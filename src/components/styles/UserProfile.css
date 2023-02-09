@@ -82,6 +82,7 @@
     margin-left: 20px;
     margin-right: 20px;
     background-color: rgb(241, 241, 241);
+    border-radius: 5px;
 }
 
 @font-face {

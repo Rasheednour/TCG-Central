@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import './styles/UserProfile.css';
 import { useNavigate } from "react-router-dom";
@@ -10,7 +9,7 @@ import UserGame from './UserGame';
 
 const api = 'http://localhost:8080/';
 
-function UserProfile({user_id, user_name, user_email}) {
+function UserProfile({user_id, user_name}) {
 
   let navigate = useNavigate(); 
   const routeChange = () =>{ 
@@ -49,7 +48,7 @@ function UserProfile({user_id, user_name, user_email}) {
         <div className='about'>
             
             <h3>Name:   {user_name}</h3>
-            <h3>Email:  {user_email}</h3>
+            <h3>User ID:  {user_id}</h3>
         </div>
         
         <div className='create-button'>

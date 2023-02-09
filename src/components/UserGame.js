@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import cover from '../assets/temp_db/cover1.png'
 import './styles/UserGame.css';
