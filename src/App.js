@@ -4,7 +4,8 @@ import HomePage from './pages/HomePage';
 import SignUpPage from './pages/SignUpPage';
 import TCGPortal from './pages/TCGPortal';
 import UserPage from './pages/UserPage';
-
+import PlayPage from './pages/PlayPage';
+import CreatePage from './pages/CreatePage';
 function App() {
   return (
     <div className="App">
@@ -15,6 +16,8 @@ function App() {
           <Route path="/signup" element={<SignUpPage/>} />
           <Route path="/tcgportal" element={<TCGPortal/>} />
           <Route path="/user" element={<UserPage/>} />
+          <Route path="/play" element={<PlayPage/>} />
+          <Route path="/create" element={<CreatePage/>} />
           </Routes>
         </header>
       </Router>

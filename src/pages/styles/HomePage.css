@@ -2,40 +2,43 @@
     margin-top: 0px;
     width: 100%;
     height: 100%;
+    background: linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1));
+    height: 100vh;
   }
-  
-  .HomePage .GS {
-    margin-right: 100px;
-  }
-  
-  .home-upper-half {
-    display: flex;
-    flex-direction: row;
-  }
-  
-  .home-intro {
-    margin-left: 10%;
-    margin-top: 3%;
+
+
+.HomePage .home-container {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  align-items: center;
+}
+
+  .HomePage .home-intro {
     text-align: left;
+    width: 40%;
+    height: 80%;
+    margin-right: 10%;
+    margin-left: 10%;
     
   }
   
   .home-intro h1 {
     font-family: 'sans-bold';
     color: #2d2d2d;
-    font-size: 2em;
+    font-size: 3em;
   }
   
   .home-intro p {
     font-family: 'sans-regular';
     color: #696969;
-    font-size: .8em;
+    font-size: 1em;
   }
     
   
   .home-intro Button {
-    width: 20em;
-    height: 4em;
+    width: 280px;
+    height: 50px;
     font-family: 'sans-bold';
     font-size: .5em;
     background-color: darkred;
@@ -43,6 +46,31 @@
   
   .home-intro Button:hover {
     background-color: red;
+  }
+  
+  .HomePage .GS {
+    margin-right: 5%;
+    margin-top: 4%;
+  }
+  
+  .HomePage .home-container .home-intro button {
+    width: 300px;
+    margin-right: 20px;
+    margin-top: 10px;
+  }
+
+  .HomePage span {
+    font-family: 'sans-bold';
+    margin-right: 20px;
+    font-size: .7em;
+  }
+
+  .HomePage .login-button {
+    background-color: rgb(0, 113, 193);
+  }
+
+  .HomePage .login-button:hover {
+    background-color: rgb(0, 136, 233);
   }
   
   @font-face {

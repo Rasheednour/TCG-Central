@@ -1,0 +1,12 @@
+.UserPage {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1));
+    min-height: 1080px;}
+
+.UserPage .page-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
