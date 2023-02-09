@@ -6,13 +6,10 @@ import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import GameSummary from '../components/GameSummary';
-import CreatureCard from '../components/CreatureCard';
-import SpellCard from '../components/SpellCard';
-import EnemyCard from '../components/EnemyCard';
 import tcg_portal_cover from '../assets/images/tcg_portal_cover.png'
 import axios from 'axios';
 
-const api = 'http://localhost:8080/';
+const api = 'https://tcgbackend-s2kqyb5vna-wl.a.run.app/';
 
 const SearchBar = () => (
   <form>

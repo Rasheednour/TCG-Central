@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-const api = 'http://localhost:8080/';
+const api = 'https://tcgbackend-s2kqyb5vna-wl.a.run.app/';
 
 
 const SignUpForm = () => {

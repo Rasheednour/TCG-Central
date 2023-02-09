@@ -7,8 +7,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 function UserPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [loggedIn, setLoggedIn] = useState(false);
-  const saveData = () => {
-  }
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user_name");
@@ -33,12 +31,7 @@ function UserPage() {
         <TopRibbon/>
         <div className='page-content'>
           {loggedIn?(<UserProfile user_name={ localStorage.getItem("user_name")} user_id={localStorage.getItem("user_id")}/>):(<h3>User not logged in</h3>)}
-        </div>
-        {/* <div className='redirect-info'>
-          <p>User Name is: {searchParams.get("name")}</p>
-          <p>Access Token is: {searchParams.get('access_token')}</p>
-        </div> */}
-        
+        </div>    
     </div>
   );
 }

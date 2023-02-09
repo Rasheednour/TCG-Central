@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
 import enemy from '../assets/temp_db/enemy.png'
 import './styles/EnemyCard.css';
 

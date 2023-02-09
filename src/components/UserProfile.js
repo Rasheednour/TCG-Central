@@ -7,7 +7,7 @@ import axios from 'axios';
 import UserGame from './UserGame';
 
 
-const api = 'http://localhost:8080/';
+const api = 'https://tcgbackend-s2kqyb5vna-wl.a.run.app/';
 
 function UserProfile({user_id, user_name}) {
 
