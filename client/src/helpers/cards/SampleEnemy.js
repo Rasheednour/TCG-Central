@@ -9,6 +9,5 @@ export default class SampleEnemy extends Enemy {
         this.defense = 0;
         this.health = 2;
         this.ability = "";
-        this.playerCardSprite = "blazingGlory";
     }
 }
