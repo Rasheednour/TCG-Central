@@ -18,7 +18,7 @@ const userPageURL = 'https://tcg-maker-frontend-123.uc.r.appspot.com/user'
 // get client ID, client SECRET, and redirect URI from the downloaded client_secret JSON file from GCP 
 const CLIENT_ID = json.web.client_id;
 const CLIENT_SECRET = json.web.client_secret;
-const REDIRECT_URI = json.web.redirect_uris[0];
+const REDIRECT_URI = 'https://tcgbackend-s2kqyb5vna-wl.a.run.app/oauth';
 
 // create a new oauth2Client
 const oauth2Client = new google.auth.OAuth2(
