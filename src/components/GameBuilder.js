@@ -8,12 +8,12 @@ import getAllFetch from "../utils/getAllFetch";
 import RuleSetter from "./RuleSetter";
 import GameNameSetter from "./GameNameSetter";
 
-// TODO: make this value come from a config, rather than hardcoded
-const BACKEND_URL = "https://tcgbackend-s2kqyb5vna-wl.a.run.app";
-const BACKEND_CODE = "tcgadmin";
-const ACCESS_TOKEN = null;
-
 export default function GameBuilder(gameId) {
+  // TODO: make this value come from a config, rather than hardcoded
+  const BACKEND_URL = "https://tcgbackend-s2kqyb5vna-wl.a.run.app";
+  const BACKEND_CODE = "tcgadmin";
+  const ACCESS_TOKEN = null;
+
   const [rules, setRules] = useState([
     {
       name: "example_rule",
@@ -44,10 +44,17 @@ export default function GameBuilder(gameId) {
   const [gameSaving, setGameSaving] = useState(false);
   //console.log("game builder is called, game id is", gameId, id);
 
+  function ruleSorter(first, second) {
+    if ("description" in first && "description" in second) {
+      return first.description.length - second.description.length;
+    }
+    return 0;
+  }
+
   function saveGame(event) {
     //This save the game, makes a post request
     if (!gameSaving) {
-      console.log("attempting game save");
+      //console.log("attempting game save");
       setGameSaving(true);
     }
   }
@@ -155,7 +162,7 @@ export default function GameBuilder(gameId) {
         }
         setGameRules(rule_object);
       }
-
+      loadrules.sort(ruleSorter);
       setRules(loadrules.slice());
       //console.log("rules now are:", rules);
       setAbilities(loadabilities.slice());

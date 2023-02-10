@@ -1,4 +1,19 @@
 import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Box,
+  Container,
+  FormControl,
+  Grid,
+  InputLabel,
+  List,
+  ListItem,
+  ListItemText,
+  MenuItem,
+  Stack,
+  Select,
+  TextField,
+} from "@mui/material";
 
 export default function GameNameSetter({ current, setGameName }) {
   //const { name, setName } = useState(current);
@@ -11,19 +26,21 @@ export default function GameNameSetter({ current, setGameName }) {
   }
 
   return (
-    <div>
-      <h3>
-        Game Name: <div id="current-name-display">{current}</div>
-      </h3>
-      <div>
-        <label>
-          New Name:
-          <input type="text" id="game-name-input">
-            {/* {current} */}
-          </input>
-        </label>
-        <button onClick={updateName}>Update Name</button>
-      </div>
-    </div>
+    <Grid container>
+      <Grid item>
+        <h3>
+          Game Name: <div id="current-name-display">{current}</div>
+        </h3>
+        <div>
+          <label>
+            New Name:
+            <input type="text" id="game-name-input">
+              {/* {current} */}
+            </input>
+          </label>
+          <button onClick={updateName}>Update Name</button>
+        </div>
+      </Grid>
+    </Grid>
   );
 }
