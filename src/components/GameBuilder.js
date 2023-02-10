@@ -2,7 +2,7 @@
 // Can be used to build a new game or to modify an existing game
 
 import React, { useEffect, useState } from "react";
-import { Container, Stack } from "@mui/material";
+import { Button, Container, Stack } from "@mui/material";
 import "./styles/SignUpForm.css";
 import getAllFetch from "../utils/getAllFetch";
 import RuleSetter from "./RuleSetter";
@@ -118,9 +118,15 @@ export default function GameBuilder(gameId) {
 
     if (gameSaving) {
       let new_rules = {};
-      for (let rule in gameRules) {
-        let curEl = document.getElementById(rule + "-value");
-        new_rules[rule] = curEl ? curEl.value : gameRules[rule];
+      for (let i = 0; i < rules.length; i++) {
+        let rule = rules[i];
+        let curEl = document.getElementById(rule["name"] + "-value");
+        console.log("saving ", rule, "with value", curEl.value, curEl);
+        new_rules[rule["name"]] = curEl
+          ? curEl.value
+            ? curEl.value
+            : curEl.textContent
+          : gameRules[rule["name"]];
       }
       let game = {
         rules: new_rules,
@@ -233,7 +239,9 @@ export default function GameBuilder(gameId) {
   return (
     <div>
       <h1>
-        <button onClick={saveGame}>SAVE GAME</button>
+        <Button variant="contained" color="secondary" onClick={saveGame}>
+          SAVE GAME
+        </Button>
       </h1>
       <Container>
         <Stack direction="column" spacing={2}>

@@ -20,7 +20,11 @@ export default function GameNameSetter({
   setGameName,
   gameDesc,
   setGameDesc,
+  gameImage,
+  setGameImage,
 }) {
+  const DEFAULT_IMAGE =
+    "https://tcg-maker-frontend-123.uc.r.appspot.com/static/media/cover1.5a4e4b1dc837f8ce878b.png";
   //const { name, setName } = useState(current);
   //console.log("set game name is:", setGameName, "and current is", current);
   function updateName(event) {
@@ -44,27 +48,56 @@ export default function GameNameSetter({
           Game Name: <div id="current-name-display">{gameNameProp}</div>
         </h3>
         <div>
-          <label>
-            New Name:
-            <input type="text" id="game-name-input">
-              {/* {current} */}
-            </input>
-          </label>
-          <button onClick={updateName}>Update Name</button>
+          <form onSubmit={updateName}>
+            <label>
+              New Name:
+              <input type="text" id="game-name-input">
+                {/* {current} */}
+              </input>
+            </label>
+            <Button variant="contained" onClick={updateName}>
+              Update Name
+            </Button>
+          </form>
         </div>
       </Grid>
       <Grid item xs={4}>
         Game Description:
         <br /> <span id="current-desc">{gameDesc}</span>
+        <br />
         <TextField
           id={"game-desc-value"}
           label={"Game Description"}
+          multiline
           defaultValue={gameDesc || ""}
           variant="outlined"
         ></TextField>
         <Button variant="contained" onClick={updateDesc}>
           Update Description
         </Button>
+      </Grid>
+      <Grid item xs={4}>
+        Game Profile Image:
+        <br />
+        <Box
+          component="img"
+          sx={{
+            height: 233,
+            width: 350,
+            maxHeight: { xs: 233, md: 167 },
+            maxWidth: { xs: 350, md: 250 },
+          }}
+          alt="The image for your game."
+          src={gameImage || DEFAULT_IMAGE}
+        />
+        <br />
+        <TextField
+          id={"game-iamge-value"}
+          label={"Game Image URL"}
+          multiline
+          defaultValue={gameImage || DEFAULT_IMAGE}
+          variant="outlined"
+        ></TextField>
       </Grid>
     </Grid>
   );

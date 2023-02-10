@@ -20,6 +20,13 @@ export default function RuleSetter({ theRules, setGameRules, gameRules }) {
   console.log("the rules started as", theRules, gameRules);
   const [allRules, setAllRules] = useState(theRules);
 
+  function retrieveStartVal(rule) {
+    if (rule["name"] in gameRules) {
+      return gameRules[rule["name"]];
+    }
+    return rule["values"][0];
+  }
+
   //   const [currentRule, setCurrentRule] = useState(allRules[0]);
   //   useEffect(() => {
   //     //INitializing
@@ -120,7 +127,8 @@ export default function RuleSetter({ theRules, setGameRules, gameRules }) {
               <Select
                 labelId={rule["name"] + "-value-label"}
                 id={rule["name"] + "-value"}
-                value={gameRules[rule["name"]]}
+                defaultValue={retrieveStartVal(rule)}
+                //value={retrieveStartVal(rule)}
                 onChange={(event) => {
                   console.log("heres the change event", event);
                   document.getElementById(rule["name"] + "-value").value =
