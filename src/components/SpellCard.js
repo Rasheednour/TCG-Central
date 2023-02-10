@@ -1,8 +1,6 @@
 
 
 import React from 'react';
-import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
 import spell_art from '../assets/temp_db/spell_art.png'
 import './styles/SpellCard.css';
 

@@ -1,13 +1,14 @@
 
 .SignUpForm h1 {
-color: #2d2d2d;
+color: #ffffff;
 font-size: 1.5em;
 margin-top: 5%;
 font-family: 'sans-bold';
+text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 .SignUpForm h2 {
-color: #807e7e;
+color: #000000;
 font-size: 0.7em;
 font-family: 'sans-regular';
 margin-bottom: 2%;

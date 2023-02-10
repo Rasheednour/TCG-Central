@@ -1,8 +1,6 @@
 
 
 import React from 'react';
-import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
 import monster_art from '../assets/temp_db/monster_art.png'
 import './styles/CreatureCard.css';
 

@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  color: black;
 }
 
 .App-logo {
@@ -13,9 +14,15 @@
   display: flex;
   flex-direction: column;
   font-size: calc(10px + 2vmin);
-  color: black;
+  color: rgb(45, 45, 45);
+  font-family: "sans-regular";
 }
 
 .App-link {
   color: #61dafb;
+}
+
+@font-face {
+  font-family: "sans-regular";
+  src: url(./assets/fonts/SourceSans3-Regular.ttf);
 }

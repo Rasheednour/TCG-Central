@@ -1,4 +1,4 @@
-.UserPage{
-    display: flex;
-    flex-direction: row;
+.SignUpPage{
+    background: linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1));
+    height: 100vh;
 }

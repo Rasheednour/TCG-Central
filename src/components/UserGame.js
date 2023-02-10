@@ -1,15 +1,11 @@
-
-// This is the Game Summary card component, which is a box that shows a brief summary
-// about any given TCG to the user (title, description, creator, cover art, sample cards, play button)
-
 import React from 'react';
 import Button from '@mui/material/Button';
 import cover from '../assets/temp_db/cover1.png'
-import './styles/GameSummary.css';
+import './styles/UserGame.css';
 import { useNavigate } from "react-router-dom";
 
 
-function GameSummary({title, creator, description, imageURL, game_id}) {
+function UserGame({title, description, imageURL, game_id}) {
 
   let navigate = useNavigate(); 
   const routeChange = () =>{ 
@@ -25,14 +21,14 @@ function GameSummary({title, creator, description, imageURL, game_id}) {
 
         <div className='right-panel'>
             <h1>{title}</h1>
-            <h2>Created by: {creator}</h2>
             <p>{description}</p>
-            <div>
-            <Button variant="contained" onClick={routeChange}>PLAY</Button>
+            <div className='card-samples'>
+            <Button variant="contained" onClick={routeChange}>PLAY GAME</Button>
+            <Button variant="contained" onClick={routeChange}>EDIT GAME</Button>
             </div>
         </div>
     </div>
   );
 }
 
-export default GameSummary;
+export default UserGame;
