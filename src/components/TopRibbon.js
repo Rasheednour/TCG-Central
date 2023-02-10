@@ -14,10 +14,10 @@ function TopRibbon() {
     navigate(path);
   };
 
+  const visitProfile = () => {};
+
   return (
     <div className="TopRibbon">
-      <img src={tcg_logo} alt="tcg central logo" />
-
       <img src={tcg_logo} alt="tcg central logo" />
 
       <div className="redirect-links">
@@ -29,7 +29,7 @@ function TopRibbon() {
           <Link to="/signup">Create TCGs</Link>
         )}
       </div>
-      {loggedIn ? (
+      {/* {loggedIn ? (
         <div className="login-buttons">
           <Button
             className="button3"
@@ -51,7 +51,7 @@ function TopRibbon() {
             Login
           </Button>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

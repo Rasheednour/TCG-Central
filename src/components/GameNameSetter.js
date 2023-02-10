@@ -15,7 +15,12 @@ import {
   TextField,
 } from "@mui/material";
 
-export default function GameNameSetter({ current, setGameName }) {
+export default function GameNameSetter({
+  gameNameProp,
+  setGameName,
+  gameDesc,
+  setGameDesc,
+}) {
   //const { name, setName } = useState(current);
   //console.log("set game name is:", setGameName, "and current is", current);
   function updateName(event) {
@@ -24,12 +29,19 @@ export default function GameNameSetter({ current, setGameName }) {
     document.getElementById("current-name-display").textContent = new_name;
     setGameName(new_name);
   }
+  function updateDesc(event) {
+    let new_desc = document.getElementById("game-desc-value").value;
+    // console.log("updating game name to: ", new_name);
+    document.getElementById("current-desc").textContent = new_desc;
+    setGameDesc(new_desc);
+  }
+  console.log("game name current is", gameNameProp);
 
   return (
     <Grid container>
-      <Grid item>
+      <Grid item xs={4}>
         <h3>
-          Game Name: <div id="current-name-display">{current}</div>
+          Game Name: <div id="current-name-display">{gameNameProp}</div>
         </h3>
         <div>
           <label>
@@ -40,6 +52,19 @@ export default function GameNameSetter({ current, setGameName }) {
           </label>
           <button onClick={updateName}>Update Name</button>
         </div>
+      </Grid>
+      <Grid item xs={4}>
+        Game Description:
+        <br /> <span id="current-desc">{gameDesc}</span>
+        <TextField
+          id={"game-desc-value"}
+          label={"Game Description"}
+          defaultValue={gameDesc || ""}
+          variant="outlined"
+        ></TextField>
+        <Button variant="contained" onClick={updateDesc}>
+          Update Description
+        </Button>
       </Grid>
     </Grid>
   );

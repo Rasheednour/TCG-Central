@@ -1,7 +1,7 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import SignUpPage from "./pages/SignUpPage";
+import SignUpPage from "./pages/SignupPage";
 import TCGPortal from "./pages/TCGPortal";
 import UserPage from "./pages/UserPage";
 import PlayPage from "./pages/PlayPage";
@@ -18,6 +18,7 @@ function App() {
             <Route path="/user" element={<UserPage />} />
             <Route path="/play" element={<PlayPage />} />
             <Route path="/create" element={<CreatePage />} />
+            <Route path="/create/:game_id" element={<CreatePage />} />
           </Routes>
         </header>
       </Router>

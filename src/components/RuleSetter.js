@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 
 export default function RuleSetter({ theRules, setGameRules, gameRules }) {
-  //console.log("the rules started as", theRules);
+  console.log("the rules started as", theRules, gameRules);
   const [allRules, setAllRules] = useState(theRules);
 
   //   const [currentRule, setCurrentRule] = useState(allRules[0]);
@@ -54,7 +54,11 @@ export default function RuleSetter({ theRules, setGameRules, gameRules }) {
     function fillSelects(cur) {
       let result = [];
       for (let i = 0; i < cur["values"].length; i++) {
-        result.push(<MenuItem value={cur.values[i]}>{cur.values[i]}</MenuItem>);
+        result.push(
+          <MenuItem value={cur.values[i]} key={cur.values[i] + "-menu-item"}>
+            {cur.values[i]}
+          </MenuItem>
+        );
       }
       return result;
     }

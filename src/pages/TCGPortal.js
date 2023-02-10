@@ -4,7 +4,7 @@ import TopRibbon from "../components/TopRibbon.js";
 import { useEffect, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
-import SearchIcon from "@mui/icons-material/Search";
+//import SearchIcon from "@mui/icons-material/SearchIcon";
 import GameSummary from "../components/GameSummary";
 import tcg_portal_cover from "../assets/images/tcg_portal_cover.png";
 import axios from "axios";
@@ -23,7 +23,7 @@ const SearchBar = () => (
       style={{ width: "300px" }}
     />
     <IconButton type="submit" aria-label="search">
-      <SearchIcon style={{ fill: "blue" }} />
+      {/* <SearchIcon style={{ fill: "blue" }} /> */}
     </IconButton>
   </form>
 );
@@ -40,7 +40,7 @@ function TCGPortal() {
         <h2>Browse Published Trading Card Games</h2>
         <SearchBar />
       </div>
-      <div>
+      {/* <div>
         {fetched ? (
           <div className="tcgames">
             {games.map((game) => (
@@ -56,7 +56,7 @@ function TCGPortal() {
         ) : (
           <h3>no games found</h3>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }
