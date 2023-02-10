@@ -29,7 +29,7 @@ export default class UIHandler {
         }
 
         this.setPlayerHealth = (Health) => {
-            healthString = `Player Health: ${Health}`;
+            let healthString = `Player Health: ${Health}`;
             scene.playerHealth = scene.add.text(960, 415, healthString).setFontSize(14).setFontFamily("Treubuchet MS");
         }
 
