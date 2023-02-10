@@ -35,20 +35,13 @@ export default class SocketHandler {
                 for (let i in cards) {
                     let card = scene.GameHandler.playerHand.push(scene.DeckHandler.dealCard(155 + (i* 155), 860, cards[i], "playerCard"));
                 }
-            } else {
-                for (let i in cards) {
-                    let card = scene.GameHandler.enemies.push(scene.DeckHandler.dealCard(155 + (i * 155), 135, "cardBack", "enemyCard"));
-                }
             }
         })
 
-        //when a card is played.
-        scene.socket.on('cardPlayed', (cardName, socketId) => {
-            if (socketId !== scene.socket.id) {
-                scene.GameHandler.enemies.shift().destroy();
-                scene.DeckHandler.dealCard((scene.dropZone.x - 350) + (scene.dropZone.data.values.cards * 150), scene.dropZone.y, cardName, "playerCard");
-                scene.dropZone.data.values.cards++;
-            }
-        })
+        //when a card is played. This is currently a remnant of the 2-player card game. I don't think it is required for our purposes.
+        //scene.socket.on('cardPlayed', (cardName) => {
+            //scene.DeckHandler.dealCard((scene.dropZone.x - 350) + (scene.dropZone.data.values.cards * 150), scene.dropZone.y, cardName, "playerCard");
+            //scene.dropZone.data.values.cards++;
+        //})
     }
 }

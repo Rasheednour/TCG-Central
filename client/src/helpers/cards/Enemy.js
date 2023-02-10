@@ -11,7 +11,7 @@ export default class Enemy {
         this.takeDamage = (damage) => {
             this.health = this.health - damage;
             if(this.health <= 0) {
-                delete(this);
+                //destroy the enemy
             }
         }
     }

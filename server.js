@@ -43,9 +43,9 @@ io.on('connection', function(socket) {
     })
 
     //right now, when a card is played, the turn changes. This will be changed.
-    socket.on('cardPlayed', function (cardName, socketId) {
-        io.emit('cardPlayed', cardName, socketId);
-        io.emit('changeTurn');
+    socket.on('cardPlayed', function (cardName) {
+        io.emit('cardPlayed', cardName);
+        //io.emit('changeTurn');
     })
 })
 
