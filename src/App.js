@@ -1,6 +1,7 @@
 import './App.css';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import HomePage from './pages/HomePage';
+// fixed signup page naming
 import SignUpPage from './pages/SignUpPage';
 import TCGPortal from './pages/TCGPortal';
 import UserPage from './pages/UserPage';
