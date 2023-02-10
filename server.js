@@ -19,18 +19,11 @@ io.on('connection', function(socket) {
     players[socket.id] = {
         inDeck: [],
         inHand: [],
-        isPlayerA: false
-    }
-
-    if (Object.keys(players).length < 2) {
-        players[socket.id].isPlayerA = true;
-        io.emit('firstTurn');
     }
 
     socket.on('dealDeck', function(socketId) {
         players[socketId].inDeck = shuffle(["stonePath", "blazingGlory"]);
         console.log(players);
-        if (Object.keys(players).length < 2) return;
         io.emit('changeGameState', "Initializing");
     })
 
@@ -45,11 +38,8 @@ io.on('connection', function(socket) {
         }
         console.log(players);
         io.emit('dealCards', socketId, players[socketId].inHand);
-        readyCheck++
-        if(readyCheck >= 2) {
-            gameState = 'Ready';
-            io.emit('changeGameState', 'Ready');
-        }
+        gameState = 'Ready';
+        io.emit('changeGameState', 'Ready'); 
     })
 
     //right now, when a card is played, the turn changes. This will be changed.
