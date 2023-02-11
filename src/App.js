@@ -1,11 +1,13 @@
-import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import SignUpPage from "./pages/SignupPage";
-import TCGPortal from "./pages/TCGPortal";
-import UserPage from "./pages/UserPage";
-import PlayPage from "./pages/PlayPage";
-import CreatePage from "./pages/CreatePage";
+import './App.css';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import HomePage from './pages/HomePage';
+// fixed signup page naming
+import SignUpPage from './pages/SignupPage';
+import TCGPortal from './pages/TCGPortal';
+import UserPage from './pages/UserPage';
+import PlayPage from './pages/PlayPage';
+import CreatePage from './pages/CreatePage';
+
 function App() {
   return (
     <div className="App">

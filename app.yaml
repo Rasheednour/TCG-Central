@@ -1,9 +1,18 @@
 runtime: nodejs16
-
 env: standard
+
 handlers:
-- url: /
+- url: /(.*\.(gif|png|jpg|js|css|ico|ttf))$
+  static_files: build/\1
+  upload: build/.*\.(gif|png|jpg|js|css|ico|ttf)$
+
+- url: /.*
   static_files: build/index.html
   upload: build/index.html
-- url: /
-  static_dir: build 
+
+# The nodejs version to use
+env_variables:
+  NODE_ENV: production
+
+# The entry point for the application
+entrypoint: npm run serve

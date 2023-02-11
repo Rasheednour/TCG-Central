@@ -14,7 +14,8 @@ function UserPage() {
       localStorage.setItem('user_name', searchParams.get("name"));
       localStorage.setItem('access_token', searchParams.get("access_token"));
       localStorage.setItem('user_id', searchParams.get("user_id"));
-    } else {
+      setLoggedIn(true);}
+    else {
       setLoggedIn(true);
     }
   }, []);

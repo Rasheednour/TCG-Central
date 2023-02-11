@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import './styles/SignUpForm.css';
 import Button from '@mui/material/Button';
-import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const api = 'https://tcgbackend-s2kqyb5vna-wl.a.run.app/';
@@ -15,15 +14,9 @@ const SignUpForm = () => {
   const [fetched, setFetched] = useState(false);
   const [url, setURL] = useState("");
 
-  let navigate = useNavigate(); 
-  const routeChange = () =>{ 
-    navigate(url);
-  }
-
   useEffect(() => {
     const url = api + 'register';
     axios.get(url).then((res) => {
-      console.log(res.data);
       setURL(res.data);
       setFetched(true);
     })
