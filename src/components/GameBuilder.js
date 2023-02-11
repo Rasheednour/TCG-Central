@@ -7,6 +7,7 @@ import "./styles/SignUpForm.css";
 import getAllFetch from "../utils/getAllFetch";
 import RuleSetter from "./RuleSetter";
 import GameNameSetter from "./GameNameSetter";
+import CharacterCustomizer from "./CharacterCustomizer";
 
 export default function GameBuilder(gameId) {
   // TODO: make this value come from a config, rather than hardcoded
@@ -63,7 +64,7 @@ export default function GameBuilder(gameId) {
   }
 
   function setupDefaultGame(loadrules, loadabilities) {
-    if (!("starting_hand" in gameRules)) {
+    if (loadrules && !("starting_hand" in gameRules)) {
       let rule_object = {};
       for (let i = 0; i < loadrules.length; i++) {
         if (!(loadrules[i].name in rule_object)) {
@@ -121,7 +122,7 @@ export default function GameBuilder(gameId) {
       for (let i = 0; i < rules.length; i++) {
         let rule = rules[i];
         let curEl = document.getElementById(rule["name"] + "-value");
-        console.log("saving ", rule, "with value", curEl.value, curEl);
+
         new_rules[rule["name"]] = curEl
           ? curEl.value
             ? curEl.value
@@ -133,6 +134,7 @@ export default function GameBuilder(gameId) {
         name: gameName,
         description: gameDescription,
         characters: gameCharacters,
+        image: gameImage,
       };
       if (id.length > 0) {
         game["game_id"] = id;
@@ -180,7 +182,7 @@ export default function GameBuilder(gameId) {
               setGameName(gameInfo["name"]);
               setGameRules(gameInfo["rules"]);
               setGameDescription(gameInfo["description"]);
-              setGameImage(gameInfo["image"]);
+              setGameImage(gameInfo["image"] || "");
             } else {
               console.log(
                 "building up default game rules, when gameRules are currently",
@@ -235,6 +237,10 @@ export default function GameBuilder(gameId) {
     setGameDescription(event);
   }
 
+  function handleGameImageChange(event) {
+    setGameImage(event);
+  }
+
   console.log("game name before return of component", gameName);
   return (
     <div>
@@ -250,8 +256,14 @@ export default function GameBuilder(gameId) {
             setGameName={handleGameNameChange}
             gameDesc={gameDescription}
             setGameDesc={handleGameDescChange}
+            gameImage={gameImage}
+            setGameImage={handleGameImageChange}
             key={gameName}
           ></GameNameSetter>
+          <CharacterCustomizer
+            characters={gameCharacters}
+            setCharacters={setGameCharacters}
+          />
           <RuleSetter
             theRules={rules}
             setGameRules={setGameRules}

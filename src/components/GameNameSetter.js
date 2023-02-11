@@ -39,6 +39,12 @@ export default function GameNameSetter({
     document.getElementById("current-desc").textContent = new_desc;
     setGameDesc(new_desc);
   }
+  function updateImage(event) {
+    let new_image = document.getElementById("game-image-value").value;
+    // console.log("updating game name to: ", new_name);
+    document.getElementById("displayed-game-image").src = new_image;
+    setGameImage(new_image);
+  }
   console.log("game name current is", gameNameProp);
 
   return (
@@ -49,12 +55,12 @@ export default function GameNameSetter({
         </h3>
         <div>
           <form onSubmit={updateName}>
-            <label>
-              New Name:
-              <input type="text" id="game-name-input">
-                {/* {current} */}
-              </input>
-            </label>
+            <TextField
+              id="game-name-input"
+              label={"New Name"}
+              defaultValue={gameNameProp}
+              variant="outlined"
+            />
             <Button variant="contained" onClick={updateName}>
               Update Name
             </Button>
@@ -87,17 +93,23 @@ export default function GameNameSetter({
             maxHeight: { xs: 233, md: 167 },
             maxWidth: { xs: 350, md: 250 },
           }}
+          id="displayed-game-image"
           alt="The image for your game."
           src={gameImage || DEFAULT_IMAGE}
         />
         <br />
-        <TextField
-          id={"game-iamge-value"}
-          label={"Game Image URL"}
-          multiline
-          defaultValue={gameImage || DEFAULT_IMAGE}
-          variant="outlined"
-        ></TextField>
+        <form onSubmit={updateImage}>
+          <TextField
+            id={"game-image-value"}
+            label={"Game Image URL"}
+            multiline
+            defaultValue={gameImage || DEFAULT_IMAGE}
+            variant="outlined"
+          ></TextField>
+          <Button variant="contained" onClick={updateImage}>
+            Stage Update
+          </Button>
+        </form>
       </Grid>
     </Grid>
   );

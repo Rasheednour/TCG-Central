@@ -14,10 +14,11 @@ import {
   Stack,
   Select,
   TextField,
+  ToolTip,
 } from "@mui/material";
 
 export default function RuleSetter({ theRules, setGameRules, gameRules }) {
-  console.log("the rules started as", theRules, gameRules);
+  // console.log("the rules started as", theRules, gameRules);
   const [allRules, setAllRules] = useState(theRules);
 
   function retrieveStartVal(rule) {
@@ -26,36 +27,6 @@ export default function RuleSetter({ theRules, setGameRules, gameRules }) {
     }
     return rule["values"][0];
   }
-
-  //   const [currentRule, setCurrentRule] = useState(allRules[0]);
-  //   useEffect(() => {
-  //     //INitializing
-  //     if (allRules.length == 0) {
-  //       setAllRules(theRules.theRules);
-  //       console.log("but allRules started as", allRules);
-  //     }
-  //     if (!("name" in currentRule)) {
-  //       setCurrentRule(allRules[0]);
-  //       console.log("current rule started as", currentRule);
-  //     }
-  //   }, [allRules, currentRule]);
-  //   console.log("rule setter rendering rules:", allRules);
-
-  //   function ruleZoneSelect(allRules) {
-  //     let result = [];
-  //     for (let i = 0; i < allRules.length; i++) {
-  //       result.push(
-  //         <option value={allRules[i].name}>{allRules[i].title}</option>
-  //       );
-  //     }
-  //     return result;
-  //   }
-
-  //   const changeSelected = (event) => {
-  //     //setGameRules(allRules);
-  //     console.log("changed with event", event);
-  //     setCurrentRule(allRules.filter((el) => el.name === event.target.value)[0]);
-  //   };
 
   function generateRuleZone(rule, setGameRules) {
     function fillSelects(cur) {

@@ -9,7 +9,7 @@ export default async function getAllFetch(
       "Content-Type": "application/json",
       Authorization: "Bearer " + accessToken,
     },
-    mehod: "GET",
+    method: "GET",
   })
     .then((res) => {
       if (res.status < 300) {
