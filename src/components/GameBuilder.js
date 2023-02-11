@@ -57,6 +57,7 @@ export default function GameBuilder(gameId) {
 
   function saveGame(event) {
     //This save the game, makes a post request
+    updateCharState();
     if (!gameSaving) {
       //console.log("attempting game save");
       setGameSaving(true);
@@ -129,6 +130,7 @@ export default function GameBuilder(gameId) {
             : curEl.textContent
           : gameRules[rule["name"]];
       }
+
       let game = {
         rules: new_rules,
         name: gameName,
@@ -227,6 +229,43 @@ export default function GameBuilder(gameId) {
     // gameCharacters,
     // gameImage,
   ]);
+
+  function updateCharState() {
+    let char_copy = [];
+    for (let i = 0; i < gameCharacters.length; i++) {
+      char_copy.push({
+        name: document
+          .getElementById(
+            "character-value-" +
+              (i + 1) +
+              gameCharacters[i].name.split(" ").join("")
+          )
+          .value.toUpperCase(),
+        attack: parseInt(
+          document.getElementById(
+            "character-attack-" +
+              (i + 1) +
+              gameCharacters[i].name.split(" ").join("")
+          ).value
+        ),
+        health_mod: parseInt(
+          document.getElementById(
+            "character-health-" +
+              (i + 1) +
+              gameCharacters[i].name.split(" ").join("")
+          ).value
+        ),
+        defense: parseInt(
+          document.getElementById(
+            "character-defense-" +
+              (i + 1) +
+              gameCharacters[i].name.split(" ").join("")
+          ).value
+        ),
+      });
+    }
+    setGameCharacters(char_copy);
+  }
 
   function handleGameNameChange(event) {
     console.log("this is the input that we get for setting name:", event);

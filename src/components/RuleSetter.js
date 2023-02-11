@@ -63,7 +63,7 @@ export default function RuleSetter({ theRules, setGameRules, gameRules }) {
               {list_desc.map((el) => {
                 return (
                   <ListItem
-                    key={el.substring(0, el.indexOf(" ")) + "-description"}
+                    key={el.split(" ").join("").slice(0, 20) + "-description"}
                     disablePadding
                   >
                     <ListItemText primary={el}></ListItemText>
@@ -79,7 +79,7 @@ export default function RuleSetter({ theRules, setGameRules, gameRules }) {
     }
 
     return (
-      <Grid item xs={4}>
+      <Grid item xs={4} key={rule.name + "-grid-item-wrapper"}>
         <Tooltip title={ruleMainDescParse(rule.description)}>
           <Container>
             <Box>{rule.title}</Box>

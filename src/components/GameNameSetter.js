@@ -75,6 +75,7 @@ export default function GameNameSetter({
           id={"game-desc-value"}
           label={"Game Description"}
           multiline
+          rows={2}
           defaultValue={gameDesc || ""}
           variant="outlined"
         ></TextField>
@@ -103,6 +104,7 @@ export default function GameNameSetter({
             id={"game-image-value"}
             label={"Game Image URL"}
             multiline
+            rows={5}
             defaultValue={gameImage || DEFAULT_IMAGE}
             variant="outlined"
           ></TextField>

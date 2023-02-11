@@ -21,16 +21,17 @@ export default function CharacterCustomizer({
   setCharacters,
   abilities,
 }) {
-  const [value, setValue] = useState("");
+  //   const [value, setValue] = useState("");
 
-  const queueTimer = (event) => {
-    setValue(event.target.value);
-  };
+  //   const queueTimer = (event) => {
+  //     console.log("queueing timer with", event.target.value);
+  //     setValue(event.target.value);
+  //   };
 
-  useEffect(() => {
-    const timeoutId = setTimeout(() => updateCharDetail(), 1000);
-    return () => clearTimeout(timeoutId);
-  }, [value]);
+  //   useEffect(() => {
+  //     const timeoutId = setTimeout(() => updateCharDetail(), 1000);
+  //     return () => clearTimeout(timeoutId);
+  //   }, [value]);
 
   function convertNameDisplay(allCaps) {
     let subStrs = allCaps.split(" ");
@@ -46,6 +47,7 @@ export default function CharacterCustomizer({
   }
   function grabCharState(skip = -1) {
     let char_copy = [];
+    console.log("copying with", characters, skip);
     for (let i = 0; i < characters.length; i++) {
       if (i != skip - 1) {
         char_copy.push({
@@ -105,7 +107,9 @@ export default function CharacterCustomizer({
     console.log("mapping for characters", characters);
     if (characters && characters.length > 0) {
       let char_items = [];
+      let inputTracker = [];
       for (let i = 0; i < characters.length; i++) {
+        inputTracker.push(characters[i].name);
         char_items.push(
           <Stack
             direction="column"
@@ -122,9 +126,6 @@ export default function CharacterCustomizer({
                 inputProps={{ maxLength: 42 }}
                 defaultValue={convertNameDisplay(characters[i].name)}
                 variant="outlined"
-                onChange={() => {
-                  queueTimer();
-                }}
               />
             </Box>
             <Box>
@@ -163,11 +164,12 @@ export default function CharacterCustomizer({
                     characters[i].name.split(" ").join("")
                   }
                   type={"number"}
-                  onChange={(event) =>
-                    event.target.value < 0
+                  onChange={(event) => {
+                    updateCharDetail();
+                    return event.target.value < 0
                       ? (event.target.value = 0)
-                      : event.target.value
-                  }
+                      : event.target.value;
+                  }}
                   defaultValue={parseInt(characters[i].attack || 0)}
                 />
               </Tooltip>
