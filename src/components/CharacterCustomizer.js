@@ -21,6 +21,17 @@ export default function CharacterCustomizer({
   setCharacters,
   abilities,
 }) {
+  const [value, setValue] = useState("");
+
+  const queueTimer = (event) => {
+    setValue(event.target.value);
+  };
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => updateCharDetail(), 1000);
+    return () => clearTimeout(timeoutId);
+  }, [value]);
+
   function convertNameDisplay(allCaps) {
     let subStrs = allCaps.split(" ");
     let res = "";
@@ -98,7 +109,7 @@ export default function CharacterCustomizer({
         char_items.push(
           <Stack
             direction="column"
-            key={characters[i].name.split(" ").join("")}
+            key={characters[i].name.split(" ").join("") + i}
           >
             <Box padding={2}>
               <TextField
@@ -108,11 +119,11 @@ export default function CharacterCustomizer({
                   characters[i].name.split(" ").join("")
                 }
                 label={"Character Name"}
-                maxLength={42}
+                inputProps={{ maxLength: 42 }}
                 defaultValue={convertNameDisplay(characters[i].name)}
                 variant="outlined"
                 onChange={() => {
-                  updateCharDetail();
+                  queueTimer();
                 }}
               />
             </Box>

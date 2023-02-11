@@ -245,9 +245,16 @@ export default function GameBuilder(gameId) {
   return (
     <div>
       <h1>
-        <Button variant="contained" color="secondary" onClick={saveGame}>
-          SAVE GAME
-        </Button>
+        <Container sx={{ width: 4 / 7 }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={saveGame}
+            fullWidth
+          >
+            SAVE GAME
+          </Button>
+        </Container>
       </h1>
       <Container>
         <Stack direction="column" spacing={2}>
