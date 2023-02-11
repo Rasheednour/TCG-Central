@@ -14,7 +14,29 @@ function TopRibbon() {
     navigate(path);
   };
 
-  const visitProfile = () => {};
+  const visitProfile = () => {
+    let path = `/user`;
+    navigate(path);
+  };
+
+  const goHome = () => {
+    let path = `/`;
+    navigate(path);
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("user_name")) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  }, {});
+
+  const logout = () => {
+    localStorage.clear();
+    setLoggedIn(false);
+    goHome();
+  };
 
   return (
     <div className="TopRibbon">
@@ -24,12 +46,12 @@ function TopRibbon() {
         <Link to="/">Home</Link>
         <Link to="/tcgportal">TCG Portal</Link>
         {loggedIn ? (
-          <Link to="/user">Create TCGs</Link>
+          <Link to="/create">Create TCGs</Link>
         ) : (
           <Link to="/signup">Create TCGs</Link>
         )}
       </div>
-      {/* {loggedIn ? (
+      {loggedIn ? (
         <div className="login-buttons">
           <Button
             className="button3"
@@ -51,7 +73,7 @@ function TopRibbon() {
             Login
           </Button>
         </div>
-      )} */}
+      )}
     </div>
   );
 }

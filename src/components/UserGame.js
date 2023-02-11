@@ -11,14 +11,19 @@ function UserGame({ title, description, imageURL, game_id }) {
     navigate(path, { state: { game_id: game_id } });
   };
   const gameEditRout = () => {
-    let path = `/create`;
+    let path = `/create/${game_id}`;
     navigate(path, { state: { game_id: game_id } });
   };
 
   return (
     <div className="GameSummary">
       <div className="cover-image">
-        <img src={cover} width="400" height="500" alt="game cover logo" />
+        <img
+          src={imageURL || cover}
+          width="400"
+          height="500"
+          alt="game cover logo"
+        />
       </div>
 
       <div className="right-panel">
@@ -28,7 +33,7 @@ function UserGame({ title, description, imageURL, game_id }) {
           <Button variant="contained" onClick={routeChange}>
             PLAY GAME
           </Button>
-          <Button variant="contained" onClick={routeChange}>
+          <Button variant="contained" onClick={gameEditRout}>
             EDIT GAME
           </Button>
         </div>

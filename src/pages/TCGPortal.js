@@ -29,6 +29,22 @@ const SearchBar = () => (
 );
 
 function TCGPortal() {
+  const [games, setGames] = useState([]);
+  const [fetched, setFetched] = useState(false);
+
+  useEffect(() => {
+    const url = api + "games";
+    axios
+      .get(url)
+      .then((res) => {
+        setGames(res.data);
+        setFetched(true);
+      })
+      .catch((error) => {
+        console.log("fetch error" + error);
+      });
+  }, {});
+
   return (
     <div className="TCGPortal">
       <TopRibbon />
@@ -40,7 +56,7 @@ function TCGPortal() {
         <h2>Browse Published Trading Card Games</h2>
         <SearchBar />
       </div>
-      {/* <div>
+      <div>
         {fetched ? (
           <div className="tcgames">
             {games.map((game) => (
@@ -49,6 +65,7 @@ function TCGPortal() {
                   title={game.name}
                   description={game.description}
                   game_id={game.game_id}
+                  imageURL={game.image}
                 />
               </div>
             ))}
@@ -56,7 +73,7 @@ function TCGPortal() {
         ) : (
           <h3>no games found</h3>
         )}
-      </div> */}
+      </div>
     </div>
   );
 }
