@@ -1,38 +1,11 @@
-import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Box,
-  Container,
-  FormControl,
-  Grid,
-  InputLabel,
-  List,
-  ListItem,
-  ListItemText,
-  MenuItem,
-  Stack,
-  Select,
-  TextField,
-  Tooltip,
-} from "@mui/material";
+import React from "react";
+import { Button, Box, Stack, TextField, Tooltip } from "@mui/material";
 
 export default function CharacterCustomizer({
   characters,
   setCharacters,
   abilities,
 }) {
-  //   const [value, setValue] = useState("");
-
-  //   const queueTimer = (event) => {
-  //     console.log("queueing timer with", event.target.value);
-  //     setValue(event.target.value);
-  //   };
-
-  //   useEffect(() => {
-  //     const timeoutId = setTimeout(() => updateCharDetail(), 1000);
-  //     return () => clearTimeout(timeoutId);
-  //   }, [value]);
-
   function convertNameDisplay(allCaps) {
     let subStrs = allCaps.split(" ");
     let res = "";
@@ -47,9 +20,9 @@ export default function CharacterCustomizer({
   }
   function grabCharState(skip = -1) {
     let char_copy = [];
-    console.log("copying with", characters, skip);
+
     for (let i = 0; i < characters.length; i++) {
-      if (i != skip - 1) {
+      if (i !== skip - 1) {
         char_copy.push({
           name: document
             .getElementById(
@@ -82,7 +55,7 @@ export default function CharacterCustomizer({
         });
       }
     }
-    console.log("returning char list", char_copy);
+
     return char_copy;
   }
 
@@ -92,7 +65,6 @@ export default function CharacterCustomizer({
   }
 
   function deleteChar(charNum) {
-    console.log("deleting ", charNum);
     let char_copy = grabCharState(parseInt(charNum));
     setCharacters(char_copy);
   }
@@ -104,7 +76,6 @@ export default function CharacterCustomizer({
   }
 
   function fillCharacters() {
-    console.log("mapping for characters", characters);
     if (characters && characters.length > 0) {
       let char_items = [];
       let inputTracker = [];
@@ -211,14 +182,6 @@ export default function CharacterCustomizer({
       return char_items;
     }
   }
-
-  //   function handleSelectedCharChange(event) {
-  //     console.log("event is ", event.target.value);
-  //     document.getElementById("current-characters-select").value =
-  //       event.target.value;
-  //     document.getElementById("current-characters-select").textContent =
-  //       convertNameDisplay(event.target.value);
-  //   }
 
   return (
     <Stack direction="row">

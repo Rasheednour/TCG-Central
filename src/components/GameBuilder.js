@@ -64,34 +64,9 @@ export default function GameBuilder(gameId) {
     }
   }
 
-  function setupDefaultGame(loadrules, loadabilities) {
-    if (loadrules && !("starting_hand" in gameRules)) {
-      let rule_object = {};
-      for (let i = 0; i < loadrules.length; i++) {
-        if (!(loadrules[i].name in rule_object)) {
-          switch (loadrules[i].value_type) {
-            case "INT":
-              rule_object[loadrules[i].name] = 1;
-              break;
-            case "ENUM":
-              rule_object[loadrules[i].name] = loadrules[i].values[0];
-              break;
-            default:
-              //This is always INT, ENUM or STR, so must be STR
-              rule_object[loadrules[i].name] = "None";
-          }
-        }
-      }
-      setGameRules(rule_object);
-      return rule_object;
-    }
-    return gameRules;
-  }
-
   useEffect(() => {
-    console.log("game save effect triggered");
+    // console.log("game save effect triggered");
     async function updateGame(aGame) {
-      console.log("and update game actually called");
       let the_game_id = await fetch(BACKEND_URL + "/games", {
         headers: {
           "Content-Type": "application/json",
@@ -101,7 +76,6 @@ export default function GameBuilder(gameId) {
         body: JSON.stringify(aGame),
       })
         .then((res) => {
-          console.log("first res is", res.status);
           if (res.status < 300) {
             return res.json();
           } else {
@@ -110,7 +84,6 @@ export default function GameBuilder(gameId) {
           }
         })
         .then((data) => {
-          console.log("returning data", data);
           if ("game_id" in data) {
             setId(data["game_id"]);
           }
@@ -141,17 +114,47 @@ export default function GameBuilder(gameId) {
       if (id.length > 0) {
         game["game_id"] = id;
       }
-      console.log("sending post request with,", game);
+
       updateGame(game).catch(console.error);
       setGameRules(new_rules);
       setGameSaving(false);
     }
-  }, [gameSaving]);
+  }, [
+    gameSaving,
+    gameCharacters,
+    gameDescription,
+    gameImage,
+    gameName,
+    gameRules,
+    id,
+    rules,
+  ]);
 
   useEffect(() => {
-    //console.log("calling setup useeffect");
+    function setupDefaultGame(loadrules) {
+      if (loadrules && !("starting_hand" in gameRules)) {
+        let rule_object = {};
+        for (let i = 0; i < loadrules.length; i++) {
+          if (!(loadrules[i].name in rule_object)) {
+            switch (loadrules[i].value_type) {
+              case "INT":
+                rule_object[loadrules[i].name] = 1;
+                break;
+              case "ENUM":
+                rule_object[loadrules[i].name] = loadrules[i].values[0];
+                break;
+              default:
+                //This is always INT, ENUM or STR, so must be STR
+                rule_object[loadrules[i].name] = "None";
+            }
+          }
+        }
+        setGameRules(rule_object);
+        return rule_object;
+      }
+      return gameRules;
+    }
     async function fetchData() {
-      console.log("fetch data called");
       let loadrules = await getAllFetch(
         BACKEND_URL,
         BACKEND_CODE,
@@ -169,16 +172,13 @@ export default function GameBuilder(gameId) {
         console.log(`error fetching abilities: ${err}`);
       });
       if (id) {
-        console.log("game fetch triggered", id, gameName);
-
-        let gameFetch = await getAllFetch(
+        await getAllFetch(
           BACKEND_URL,
           BACKEND_CODE,
           ACCESS_TOKEN,
           `/games/${id}`
         )
           .then((gameInfo) => {
-            console.log("game info is", gameInfo);
             if ("name" in gameInfo) {
               setGameCharacters(gameInfo["characters"]);
               setGameName(gameInfo["name"]);
@@ -201,10 +201,6 @@ export default function GameBuilder(gameId) {
         // setSetupDone(true);
       } else {
         //setup default game
-        console.log(
-          "setting up default game rules, when gameRules are currently",
-          gameRules
-        );
         setupDefaultGame(loadrules, loadabilities);
         // setSetupDone(true);
       }
@@ -219,16 +215,7 @@ export default function GameBuilder(gameId) {
     if (!setupDone) {
       fetchData().catch(console.error);
     }
-    //console.log("rules currently are:", rules);
-  }, [
-    rules,
-    abilities,
-    setupDone,
-    // gameName,
-    // gameDescription,
-    // gameCharacters,
-    // gameImage,
-  ]);
+  }, [rules, abilities, setupDone, gameRules, id]);
 
   function updateCharState() {
     let char_copy = [];
@@ -268,7 +255,6 @@ export default function GameBuilder(gameId) {
   }
 
   function handleGameNameChange(event) {
-    console.log("this is the input that we get for setting name:", event);
     setGameName(event);
   }
 
@@ -280,7 +266,6 @@ export default function GameBuilder(gameId) {
     setGameImage(event);
   }
 
-  console.log("game name before return of component", gameName);
   return (
     <div>
       <h1>

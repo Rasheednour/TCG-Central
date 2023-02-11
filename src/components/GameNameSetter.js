@@ -1,19 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Box,
-  Container,
-  FormControl,
-  Grid,
-  InputLabel,
-  List,
-  ListItem,
-  ListItemText,
-  MenuItem,
-  Stack,
-  Select,
-  TextField,
-} from "@mui/material";
+import React from "react";
+import { Button, Box, Grid, TextField } from "@mui/material";
 
 export default function GameNameSetter({
   gameNameProp,
@@ -45,7 +31,6 @@ export default function GameNameSetter({
     document.getElementById("displayed-game-image").src = new_image;
     setGameImage(new_image);
   }
-  console.log("game name current is", gameNameProp);
 
   return (
     <Grid container>
