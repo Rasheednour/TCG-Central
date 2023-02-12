@@ -8,7 +8,6 @@
   pointer-events: none;
 }
 
-
 .App-header {
   background-color: #f7f6f6;
   min-height: 100vh;
@@ -16,7 +15,7 @@
   flex-direction: column;
   font-size: calc(10px + 2vmin);
   color: rgb(45, 45, 45);
-  font-family: 'sans-regular';
+  font-family: "sans-regular";
 }
 
 .App-link {
@@ -24,7 +23,6 @@
 }
 
 @font-face {
-    
-  font-family: 'sans-regular';
+  font-family: "sans-regular";
   src: url(./assets/fonts/SourceSans3-Regular.ttf);
-  }
+}
