@@ -12,7 +12,7 @@ export default class Ally extends Card {
         this.takeDamage = (damage) => {
             this.health = this.health - damage;
             if(this.health <= 0) {
-                //destroy the enemy
+                console.log("ally destroyed");
             }
         }
         
@@ -21,7 +21,7 @@ export default class Ally extends Card {
                 const target = Math.floor(Math.random() * scene.GameHandler.enemies.length);
                 scene.GameHandler.enemies[target].takeDamage(this.attack);
             } else {
-                console.log("No enemies to Target!")
+                console.log("No enemies to Target!");
                 return;
             }
         }
