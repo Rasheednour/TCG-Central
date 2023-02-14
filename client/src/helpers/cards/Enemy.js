@@ -15,11 +15,11 @@ export default class Enemy {
         }
 
         this.strike = () => {
-            if(scene.gameHandler.allies.length === 0) {
-                scene.playerHandler.takeDamage(this.attack);
+            if(scene.GameHandler.allies.length === 0) {
+                scene.PlayerHandler.takeDamage(this.attack);
             } else {
-                const target = Math.floor(Math.random() * scene.gameHandler.allies.length);
-                scene.gameHandler.allies[target].takeDamage(this.attack);
+                const target = Math.floor(Math.random() * scene.GameHandler.allies.length);
+                scene.GameHandler.allies[target].takeDamage(this.attack);
             }
         }
 

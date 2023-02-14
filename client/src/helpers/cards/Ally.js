@@ -17,9 +17,9 @@ export default class Ally extends Card {
         }
         
         this.strike = () => {
-            if(scene.gameHandler.enemies.length > 0) {
-                const target = Math.floor(Math.random() * scene.gameHandler.enemies.length);
-                scene.gameHandler.enemies[target].takeDamage(this.attack);
+            if(scene.GameHandler.enemies.length > 0) {
+                const target = Math.floor(Math.random() * scene.GameHandler.enemies.length);
+                scene.GameHandler.enemies[target].takeDamage(this.attack);
             } else {
                 console.log("No enemies to Target!")
                 return;
