@@ -8,12 +8,13 @@ import getAllFetch from "../utils/getAllFetch";
 import RuleSetter from "./RuleSetter";
 import GameNameSetter from "./GameNameSetter";
 import CharacterCustomizer from "./CharacterCustomizer";
+import { CONFIG } from "../config";
 
 export default function GameBuilder(gameId) {
   // TODO: make this value come from a config, rather than hardcoded
-  const BACKEND_URL = "https://tcgbackend-s2kqyb5vna-wl.a.run.app";
-  const BACKEND_CODE = "tcgadmin";
-  const ACCESS_TOKEN = null;
+  const BACKEND_URL = CONFIG.BACKEND_URL;
+  const BACKEND_CODE = CONFIG.BACKEND_CODE;
+  const ACCESS_TOKEN = CONFIG.ACCESS_TOKEN;
 
   const [rules, setRules] = useState([
     {
