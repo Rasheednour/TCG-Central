@@ -20,7 +20,7 @@ export default class InteractiveHandler {
 
         //use the end turn button to end the turn
         scene.endTurn.on('pointerdown', () => {
-            scene.socket.emit('changeTurn', scene.socket.id);
+            scene.socket.emit("changeTurn", scene.socket.id);
         })
 
         scene.endTurn.on('pointerover', () => {
@@ -68,12 +68,12 @@ export default class InteractiveHandler {
         })
 
         scene.input.on('drop', (pointer, gameObject, dropZone) => {
-            if (scene.GameHandler.isMyTurn && scene.GameHandler.gameState === 'Ready') {
+            if (scene.GameHandler.isMyTurn && scene.GameHandler.gameState === 'Ready' && scene.gameHandler.allies.length < 6) {
                 gameObject.x = (dropZone.x - 350) + (dropZone.data.values.cards * 150);
                 gameObject.y = dropZone.y;
                 scene.dropZone.data.values.cards++;
                 //currently once a card is dropped into a dropzone, it can't be dragged again.
-                scene.input.setDraggable(gameObject, false);
+                //scene.input.setDraggable(gameObject, false);
                 scene.socket.emit('cardPlayed', gameObject.data.values.name, scene.socket.id);
             }
             else {

@@ -14,6 +14,9 @@ export default class GameHandler{
             this.isMyTurn = !this.isMyTurn;
             console.log("isMyTurn: " + this.isMyTurn);
             //Enemies take turn here
+            for(i = 0 ; i < this.enemies.length; i++) {
+                this.enemies[i].strike();
+            }
             //reset resources, etc. and return to player turn.
             this.isMyTurn = !this.isMyTurn;
         }

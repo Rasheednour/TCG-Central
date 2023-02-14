@@ -10,7 +10,16 @@ export default class Enemy {
         this.takeDamage = (damage) => {
             this.health = this.health - damage;
             if(this.health <= 0) {
-                //destroy the enemy
+                console.log("enemy destroyed");
+            }
+        }
+
+        this.strike = () => {
+            if(scene.gameHandler.allies.length === 0) {
+                scene.playerHandler.takeDamage(this.attack);
+            } else {
+                const target = Math.floor(Math.random() * scene.gameHandler.allies.length);
+                scene.gameHandler.allies[target].takeDamage(this.attack);
             }
         }
 
