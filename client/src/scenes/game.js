@@ -1,4 +1,4 @@
-import CardHandler from '../helpers/handlers/CardHandler';
+//import CardHandler from '../helpers/handlers/CardHandler';
 import DeckHandler from '../helpers/handlers/DeckHandler';
 import InteractiveHandler from '../helpers/handlers/InteractiveHandler';
 import GameHandler from '../helpers/handlers/GameHandler';
@@ -29,13 +29,14 @@ export default class Game extends Phaser.Scene {
         this.EnemyHandler = new EnemyHandler(this);
         this.PlayerHandler = new PlayerHandler(this);
         this.AllyHandler = new AllyHandler(this);
-        this.CardHandler = new CardHandler();
+        //this.CardHandler = new CardHandler();
         this.DeckHandler = new DeckHandler(this);
         this.GameHandler = new GameHandler(this);
         this.SocketHandler = new SocketHandler(this);
         this.UIHandler = new UIHandler(this);
         this.UIHandler.buildUI();
         this.InteractiveHandler = new InteractiveHandler(this);
+        this.GameHandler.spawnEnemies();
     }
 
     update() {

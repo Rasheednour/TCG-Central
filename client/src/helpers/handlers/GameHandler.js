@@ -5,20 +5,20 @@ export default class GameHandler{
         this.gameState = "Initializing";
         this.isMyTurn = true;
         this.playerDeck = [];
-        this.enemyDeck= [];
         this.playerHand = [];
-        this.enemies = [];
         this.allies = [];
 
         this.changeTurn = () => {
             this.isMyTurn = !this.isMyTurn;
             console.log("isMyTurn: " + this.isMyTurn);
             //Enemies take turn here
-            for(i = 0 ; i < this.enemies.length; i++) {
-                this.enemies[i].strike();
-            }
+            scene.EnemyHandler.enemiesAttack();
             //reset resources, etc. and return to player turn.
             this.isMyTurn = !this.isMyTurn;
+        }
+
+        this.spawnEnemies = () => {
+            
         }
 
         this.changeGameState = (gameState) => {
