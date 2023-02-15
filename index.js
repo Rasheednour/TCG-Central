@@ -777,25 +777,39 @@ app.get("/users/:user_id/games", async (req, res) => {
   if (doc.exists){
     const userData = doc.data();
     const games = userData.games;
-    res.json(games);
+    res.status(200).json(games);
   } else {
-    res.json({ error: "no user with this user_id exists" });
+    res.status(404).send('User not found');
   }
 });
 
 // add a game ID to the user's list of games
-app.post("/users/:user_id/games", async (req, res) => {
-  let user = req.body;
-  let id;
-  if ("user_id" in user) {
-    id = user["user_id"];
-    delete user.user_id;
-    let newUser = await db.collection("users").doc(id).set(user);
-  } else {
-    let newUser = await db.collection("users").add(user);
-    id = newUser.id;
+app.put("/users/:user_id/games", async (req, res) => {
+  // get userId and gameId from the request
+  const userId = req.params.user_id;
+  const gameId = req.body.game_id;
+  // construct the query
+  const query = db.collection("users").doc(userId);
+  // get the user document
+  const userDoc = await query.get();
+
+  // check if the user exists
+  if (!userDoc.exists) {
+    return res.status(404).send('User not found');
   }
-  res.json({ user_id: id });
+
+  // add the new game ID to the user's list of games
+  const userGames = userDoc.data().games;
+
+  if (! userGames.includes(gameId)) {
+    userGames.push(gameId);
+    // update the user document
+    await query.update({games: userGames});
+    return res.status(200).send('Game added successfully');
+  } else {
+    return res.status(200).send('Game already exists');
+  }
+  
 });
 
 app.get('/register', function(req, res){
