@@ -3,7 +3,7 @@ import TopRibbon from "../components/TopRibbon.js";
 import EnemyCard from "../components/EnemyCard";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, Link } from "react-router-dom";
 import { CONFIG } from "../config";
 import getAllFetch from "../utils/getAllFetch";
 import { Button, Container, Stack } from "@mui/material";
@@ -52,24 +52,24 @@ function CardsAndEnemiesPage() {
     console.log("new card");
   }
 
-  document.addEventListener("click", (ev) => {
-    let e = ev.target;
-    let counter = 0;
-    while (counter < 3 && e.parentNode) {
-      if (e.id.startsWith("id-card-")) {
-        console.log(e.id);
-        navigate(`/${location.pathname}/${e.id.slice(8)}`);
-      }
-      e = e.parentNode;
-      counter++;
-    }
-
-    // if (isOnId(e.path, "two")) {
-    //   //you clicked on or in element with an id two
-    // } else {
-    //   //you clicked on something else
-    // }
-  });
+  //   document.addEventListener("click", (ev) => {
+  //     // let e = ev.target;
+  //     // let counter = 0;
+  //     // while (counter < 3 && e.parentNode) {
+  //     //   if (e.id.startsWith("id-card-")) {
+  //     //     console.log(e.id);
+  //     //     let path = `/${location.pathname}/${e.id.slice(8)}`;
+  //     //     navigate(path);
+  //     //   }
+  //     //   e = e.parentNode;
+  //     //   counter++;
+  //     // }
+  //     // if (isOnId(e.path, "two")) {
+  //     //   //you clicked on or in element with an id two
+  //     // } else {
+  //     //   //you clicked on something else
+  //     // }
+  //   });
 
   return (
     <div className="CreatePage">
@@ -96,17 +96,19 @@ function CardsAndEnemiesPage() {
           {pageType == "enemies" &&
             info.map((enemy) => {
               return (
-                <EnemyCard
-                  domId={`id-card-${enemy.enemy_id}`}
-                  key={`enemy-${enemy.enemy_id}`}
-                  title={enemy.name}
-                  level={enemy.level}
-                  image={enemy.image}
-                  backgroundColor={enemy.bg_color || "purple"}
-                  description={enemy.description}
-                  effect={enemy.effect || "None"}
-                  stats={[enemy.attack, enemy.defense, enemy.health]}
-                />
+                <Link to={`${location.pathname}/${enemy.enemy_id}`}>
+                  <EnemyCard
+                    domId={`id-card-${enemy.enemy_id}`}
+                    key={`enemy-${enemy.enemy_id}`}
+                    title={enemy.name}
+                    level={enemy.level}
+                    image={enemy.image}
+                    backgroundColor={enemy.bg_color || "purple"}
+                    description={enemy.description}
+                    effect={enemy.effect || "None"}
+                    stats={[enemy.attack, enemy.defense, enemy.health]}
+                  />
+                </Link>
               );
             })}
           {pageType == "cards" &&
@@ -122,42 +124,45 @@ function CardsAndEnemiesPage() {
               }
               if (card.type.startsWith("CREATURE")) {
                 return (
-                  <CreatureCard
-                    domId={`id-card-${card.card_id}`}
-                    key={`card-${card.card_id}`}
-                    title={card.name}
-                    cost={card.cost}
-                    type={card.type}
-                    image={card.image_url || card.image}
-                    backgroundColor={card.bg_color || "blue"}
-                    description={card.description}
-                    effect={
-                      card.effect && card.effect.length > 0
-                        ? card.effect
-                        : ["None"]
-                    }
-                    stats={[card.attack, card.defense, card.health]}
-                  />
+                  <Link to={`${location.pathname}/${card.card_id}`}>
+                    <CreatureCard
+                      domId={`id-card-${card.card_id}`}
+                      key={`card-${card.card_id}`}
+                      title={card.name}
+                      cost={card.cost}
+                      type={card.type}
+                      image={card.image_url || card.image}
+                      backgroundColor={card.bg_color || "blue"}
+                      description={card.description}
+                      effect={
+                        card.effect && card.effect.length > 0
+                          ? card.effect
+                          : ["None"]
+                      }
+                      stats={[card.attack, card.defense, card.health]}
+                    />
+                  </Link>
                 );
               }
               if (card.type.startsWith("SPELL")) {
                 return (
-                  <SpellCard
-                    domId={`id-card-${card.card_id}`}
-                    key={`card-${card.card_id}`}
-                    title={card.name}
-                    cost={card.cost}
-                    type={card.type}
-                    image={card.image_url || card.image}
-                    backgroundColor={card.bg_color || "blue"}
-                    description={card.description}
-                    effect={
-                      card.effect && card.effect.length > 0
-                        ? card.effect
-                        : ["None"]
-                    }
-                    stats={[card.attack, card.defense, card.health]}
-                  />
+                  <Link to={`${location.pathname}/${card.card_id}`}>
+                    <SpellCard
+                      domId={`id-card-${card.card_id}`}
+                      key={`card-${card.card_id}`}
+                      title={card.name}
+                      cost={card.cost}
+                      type={card.type}
+                      image={card.image_url || card.image}
+                      backgroundColor={card.bg_color || "blue"}
+                      description={card.description}
+                      effect={
+                        card.effect && card.effect.length > 0
+                          ? card.effect
+                          : ["None"]
+                      }
+                    />
+                  </Link>
                 );
               }
             })}
