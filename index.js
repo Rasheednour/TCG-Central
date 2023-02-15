@@ -768,6 +768,36 @@ app.get("/users", async (req, res) => {
   }
 });
 
+// get the user list of games (list of IDs)
+app.get("/users/:user_id/games", async (req, res) => {
+  const user_id = req.params.user_id;
+  let query = db.collection("users").doc(user_id);
+  let doc = await query.get();
+
+  if (doc.exists){
+    const userData = doc.data();
+    const games = userData.games;
+    res.json(games);
+  } else {
+    res.json({ error: "no user with this user_id exists" });
+  }
+});
+
+// add a game ID to the user's list of games
+app.post("/users/:user_id/games", async (req, res) => {
+  let user = req.body;
+  let id;
+  if ("user_id" in user) {
+    id = user["user_id"];
+    delete user.user_id;
+    let newUser = await db.collection("users").doc(id).set(user);
+  } else {
+    let newUser = await db.collection("users").add(user);
+    id = newUser.id;
+  }
+  res.json({ user_id: id });
+});
+
 app.get('/register', function(req, res){
   // construct Google Oauth endpoint
   const authUrl = obtainAuthUrl();
