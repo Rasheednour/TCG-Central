@@ -9,7 +9,7 @@ import RuleSetter from "./RuleSetter";
 import GameNameSetter from "./GameNameSetter";
 import CharacterCustomizer from "./CharacterCustomizer";
 
-export default function GameBuilder({gameId, userId}) {
+export default function GameBuilder({ gameId, userId }) {
   // TODO: make this value come from a config, rather than hardcoded
   const BACKEND_URL = "https://tcgbackend-s2kqyb5vna-wl.a.run.app";
   const BACKEND_CODE = "tcgadmin";
@@ -42,6 +42,7 @@ export default function GameBuilder({gameId, userId}) {
   const [gameImage, setGameImage] = useState(
     "https://tcg-maker-frontend-123.uc.r.appspot.com/static/media/cover1.5a4e4b1dc837f8ce878b.png"
   );
+  const [imageFile, setImageFile] = useState(null);
   const [gameName, setGameName] = useState("");
   const [id, setId] = useState(gameId || "");
   const [setupDone, setSetupDone] = useState(false);
@@ -93,7 +94,7 @@ export default function GameBuilder({gameId, userId}) {
 
     async function updateUser(id) {
       const url = `${BACKEND_URL}/users/${userId}/games`;
-      const game = {game_id: id};
+      const game = { game_id: id };
       let user_id = await fetch(url, {
         headers: {
           "Content-Type": "application/json",
@@ -101,15 +102,14 @@ export default function GameBuilder({gameId, userId}) {
         },
         method: "PUT",
         body: JSON.stringify(game),
-      })
-        .then((res) => {
-          if (res.status < 300) {
-            return res.json();
-          } else {
-            console.log(`error in adding user game`, res.status, res.json());
-            return {};
-          }
-        });
+      }).then((res) => {
+        if (res.status < 300) {
+          return res.json();
+        } else {
+          console.log(`error in adding user game`, res.status, res.json());
+          return {};
+        }
+      });
     }
 
     if (gameSaving) {
@@ -243,7 +243,7 @@ export default function GameBuilder({gameId, userId}) {
     }
   }, [rules, abilities, setupDone, gameRules, id]);
 
-  function updateCharState() { 
+  function updateCharState() {
     let char_copy = [];
     for (let i = 0; i < gameCharacters.length; i++) {
       char_copy.push({
@@ -315,6 +315,8 @@ export default function GameBuilder({gameId, userId}) {
             setGameDesc={handleGameDescChange}
             gameImage={gameImage}
             setGameImage={handleGameImageChange}
+            imageFile={imageFile}
+            setImageFile={setImageFile}
             key={gameName}
           ></GameNameSetter>
           <CharacterCustomizer

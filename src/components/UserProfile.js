@@ -8,7 +8,6 @@ import UserGame from "./UserGame";
 
 const API_ENDPOINT = "https://tcgbackend-s2kqyb5vna-wl.a.run.app";
 
-
 function UserProfile({ user_id, user_name }) {
   let navigate = useNavigate();
   const routeChange = () => {
@@ -90,6 +89,7 @@ function UserProfile({ user_id, user_name }) {
                   description={game.description}
                   imageURL={game.image}
                   game_id={game.game_id}
+                  user_id={user_id}
                 />
               </div>
             ))}
