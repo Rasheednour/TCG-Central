@@ -6,13 +6,15 @@ export default class GameHandler{
         this.isMyTurn = true;
         this.playerDeck = [];
         this.playerHand = [];
-        this.allies = [];
+        
 
         this.changeTurn = () => {
             this.isMyTurn = !this.isMyTurn;
             console.log("isMyTurn: " + this.isMyTurn);
             //Enemies take turn here
             scene.EnemyHandler.enemiesAttack();
+            //Allies take turn here WILL CHANGE SOON:
+            scene.AllyHandler.alliesAttack();
             //reset resources, etc. and return to player turn.
             scene.UIHandler.updatePlayerHealth(scene.PlayerHandler.health);
             this.isMyTurn = !this.isMyTurn;
@@ -31,6 +33,11 @@ export default class GameHandler{
 
         this.gameOver = () => {
             alert('GAME OVER');
+            location.reload();
+        }
+
+        this.gameWon = () => {
+            alert('GAME WON!')
             location.reload();
         }
     }

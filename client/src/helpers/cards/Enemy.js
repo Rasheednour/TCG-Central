@@ -11,15 +11,19 @@ export default class Enemy {
             this.health = this.health - damage;
             if(this.health <= 0) {
                 console.log("enemy destroyed");
+                scene.EnemyHandler.enemyIndex --;
+                if(scene.EnemyHandler.enemyIndex < 1) {
+                    scene.GameHandler.gameWon();
+                }
             }
         }
 
         this.strike = () => {
-            if(scene.GameHandler.allies.length === 0) {
+            if(scene.AllyHandler.allies.length === 0) {
                 scene.PlayerHandler.takeDamage(this.attack);
             } else {
-                const target = Math.floor(Math.random() * scene.GameHandler.allies.length);
-                scene.GameHandler.allies[target].takeDamage(this.attack);
+                const target = 0;
+                scene.AllyHandler.allies[target].takeDamage(this.attack);
             }
         }
 

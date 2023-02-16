@@ -32,7 +32,7 @@ io.on('connection', function(socket) {
         for (let i = 0; i < 5; i++) {
             //if deck is empty, reshuffle in cards. Change later, possibly to shuffle discard?
             if (players[socketId].inDeck.length === 0) {
-                players[socketId]. inDeck = shuffle(["stonePath", "blazingGlory"]);
+                players[socketId]. inDeck = shuffle(["Sample_Ally"]);
             }
             //deal top card from deck to hand
             players[socketId].inHand.push(players[socketId].inDeck.shift())

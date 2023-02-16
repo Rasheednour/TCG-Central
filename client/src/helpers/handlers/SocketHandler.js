@@ -39,11 +39,5 @@ export default class SocketHandler {
                 }
             }
         })
-
-        //when a card is played. This is currently a remnant of the 2-player card game. I don't think it is required for our purposes.
-        //scene.socket.on('cardPlayed', (cardName) => {
-            //scene.DeckHandler.dealCard((scene.dropZone.x - 350) + (scene.dropZone.data.values.cards * 150), scene.dropZone.y, cardName, "playerCard");
-            //scene.dropZone.data.values.cards++;
-        //})
     }
 }
