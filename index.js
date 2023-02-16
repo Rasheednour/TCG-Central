@@ -795,7 +795,7 @@ app.put("/users/:user_id/games", async (req, res) => {
 
   // check if the user exists
   if (!userDoc.exists) {
-    return res.status(404).send('User not found');
+    return res.status(404).json({error: 'User not found'});
   }
 
   // add the new game ID to the user's list of games
@@ -805,9 +805,9 @@ app.put("/users/:user_id/games", async (req, res) => {
     userGames.push(gameId);
     // update the user document
     await query.update({games: userGames});
-    return res.status(200).send('Game added successfully');
+    return res.status(200).json({server: 'Game added successfully'});
   } else {
-    return res.status(200).send('Game already exists');
+    return res.status(200).json({server: 'Game already exists'});
   }
   
 });
