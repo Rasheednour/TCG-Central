@@ -20,7 +20,7 @@ export default class InteractiveHandler {
 
         //use the end turn button to end the turn
         scene.endTurn.on('pointerdown', () => {
-            scene.socket.emit("changeTurn", scene.socket.id);
+            scene.GameHandler.changeTurn();
         })
 
         scene.endTurn.on('pointerover', () => {

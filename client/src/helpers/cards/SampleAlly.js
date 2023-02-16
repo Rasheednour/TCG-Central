@@ -3,7 +3,7 @@ import Ally from "./Ally";
 export default class SampleAlly extends Ally {
     constructor(scene) {
         super(scene);
-        this.name = "Sample Ally";
+        this.name = "Sample_Ally";
         this.enemyCardSprite = "stonePath";
         this.attack = 1;
         this.defense = 0;

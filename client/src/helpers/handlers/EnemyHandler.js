@@ -2,10 +2,12 @@ import SampleEnemy from "../cards/SampleEnemy";
 
 export default class EnemyHandler {
     constructor(scene) {
-        this.enemies = ["Sample_Enemy"];
+        this.enemyNames = ["Sample_Enemy"];
+        this.enemyIndex = 0;
+        this.enemies = []
 
         this.enemiesAttack = () => {
-            for(i = 0 ; i < this.enemies.length; i++) {
+            for(let i in this.enemies) {
                 this.enemies[i].strike();
             }
         }
@@ -16,6 +18,8 @@ export default class EnemyHandler {
                 Sample_Enemy: new SampleEnemy(scene)
             }
             let newEnemy = enemies[name];
+            this.enemies[this.enemyIndex] = newEnemy;
+            this.enemyIndex = this.enemyIndex + 1;
             return(newEnemy.render(x, y));
         }
     }

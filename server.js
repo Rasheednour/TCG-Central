@@ -22,7 +22,8 @@ io.on('connection', function(socket) {
     }
 
     socket.on('dealDeck', function(socketId) {
-        players[socketId].inDeck = shuffle(["stonePath", "blazingGlory"]);
+        //where cards are currently loaded in.
+        players[socketId].inDeck = shuffle(["Sample_Ally"]);
         console.log(players);
         io.emit('changeGameState', "Initializing");
     })

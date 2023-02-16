@@ -34,7 +34,7 @@ export default class UIHandler {
         }
         
         this.updatePlayerResources = (Resources) => {
-            playerResources.setText('Resources: ' + Resources);
+            scene.playerResources.setText('Resources: ' + Resources);
         }
 
         this.setPlayerHealth = (Health) => {
@@ -43,7 +43,7 @@ export default class UIHandler {
         }
 
         this.updatePlayerHealth = (Health) => {
-            playerHealth.setText('Player Health: ' + Health);
+            scene.playerHealth.setText('Player Health: ' + Health);
         }
 
         this.buildUI = () => {
