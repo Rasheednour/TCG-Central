@@ -1,5 +1,8 @@
 import React from "react";
-import { Button, Box, Grid, TextField } from "@mui/material";
+import { Button, Box, Grid, TextField, Input } from "@mui/material";
+import { storage } from "../config/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 } from "uuid";
 
 export default function GameNameSetter({
   gameNameProp,
@@ -8,6 +11,8 @@ export default function GameNameSetter({
   setGameDesc,
   gameImage,
   setGameImage,
+  imageFile,
+  setImageFile,
 }) {
   const DEFAULT_IMAGE =
     "https://tcg-maker-frontend-123.uc.r.appspot.com/static/media/cover1.5a4e4b1dc837f8ce878b.png";
@@ -25,12 +30,20 @@ export default function GameNameSetter({
     document.getElementById("current-desc").textContent = new_desc;
     setGameDesc(new_desc);
   }
-  function updateImage(event) {
-    let new_image = document.getElementById("game-image-value").value;
-    // console.log("updating game name to: ", new_name);
-    document.getElementById("displayed-game-image").src = new_image;
-    setGameImage(new_image);
-  }
+
+  // handle image upload to Firebase
+  const uploadImage = () => {
+    if (imageFile == null) return;
+    // specify the image file name and storage folder location
+    const imageRef = ref(storage, `game_covers/${imageFile.name + v4()}`);
+    // start image upload
+    uploadBytes(imageRef, imageFile).then((snapshot) => {
+      // get the image's public URL
+      getDownloadURL(imageRef).then((downloadURL) => {
+        setGameImage(downloadURL);
+      });
+    });
+  };
 
   return (
     <Grid container>
@@ -84,17 +97,16 @@ export default function GameNameSetter({
           src={gameImage || DEFAULT_IMAGE}
         />
         <br />
-        <form onSubmit={updateImage}>
-          <TextField
-            id={"game-image-value"}
-            label={"Game Image URL"}
-            multiline
-            rows={5}
-            defaultValue={gameImage || DEFAULT_IMAGE}
-            variant="outlined"
-          ></TextField>
-          <Button variant="contained" onClick={updateImage}>
-            Stage Update
+        <form onSubmit={uploadImage}>
+          <Input
+            type="file"
+            accept=".png, .jpg, .jpeg"
+            onChange={(event) => {
+              setImageFile(event.target.files[0]);
+            }}
+          />
+          <Button variant="contained" onClick={uploadImage}>
+            Upload Image
           </Button>
         </form>
       </Grid>

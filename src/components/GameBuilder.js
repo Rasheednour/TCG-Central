@@ -10,7 +10,7 @@ import GameNameSetter from "./GameNameSetter";
 import CharacterCustomizer from "./CharacterCustomizer";
 import { CONFIG } from "../config";
 
-export default function GameBuilder(gameId) {
+export default function GameBuilder({ gameId, userId }) {
   // TODO: make this value come from a config, rather than hardcoded
   const BACKEND_URL = CONFIG.BACKEND_URL;
   const BACKEND_CODE = CONFIG.BACKEND_CODE;
@@ -43,8 +43,9 @@ export default function GameBuilder(gameId) {
   const [gameImage, setGameImage] = useState(
     "https://tcg-maker-frontend-123.uc.r.appspot.com/static/media/cover1.5a4e4b1dc837f8ce878b.png"
   );
+  const [imageFile, setImageFile] = useState(null);
   const [gameName, setGameName] = useState("");
-  const [id, setId] = useState(gameId.gameId || "");
+  const [id, setId] = useState(gameId || "");
   const [setupDone, setSetupDone] = useState(false);
   const [gameSaving, setGameSaving] = useState(false);
   //console.log("game builder is called, game id is", gameId, id);
@@ -92,6 +93,26 @@ export default function GameBuilder(gameId) {
         });
     }
 
+    async function updateUser(id) {
+      const url = `${BACKEND_URL}/users/${userId}/games`;
+      const game = { game_id: id };
+      let user_id = await fetch(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + ACCESS_TOKEN,
+        },
+        method: "PUT",
+        body: JSON.stringify(game),
+      }).then((res) => {
+        if (res.status < 300) {
+          return res.json();
+        } else {
+          console.log(`error in adding user game`, res.status, res.json());
+          return {};
+        }
+      });
+    }
+
     if (gameSaving) {
       let new_rules = {};
       for (let i = 0; i < rules.length; i++) {
@@ -119,6 +140,11 @@ export default function GameBuilder(gameId) {
       updateGame(game).catch(console.error);
       setGameRules(new_rules);
       setGameSaving(false);
+    }
+
+    // if game id is fetched, save the game id to the user's list of games
+    if (id) {
+      updateUser(id).catch(console.error);
     }
   }, [
     gameSaving,
@@ -290,6 +316,8 @@ export default function GameBuilder(gameId) {
             setGameDesc={handleGameDescChange}
             gameImage={gameImage}
             setGameImage={handleGameImageChange}
+            imageFile={imageFile}
+            setImageFile={setImageFile}
             key={gameName}
           ></GameNameSetter>
           <CharacterCustomizer

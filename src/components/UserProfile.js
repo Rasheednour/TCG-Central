@@ -6,7 +6,7 @@ import profile_photo from "../assets/images/profile.jpg";
 import axios from "axios";
 import UserGame from "./UserGame";
 
-const api = "https://tcgbackend-s2kqyb5vna-wl.a.run.app/";
+const API_ENDPOINT = "https://tcgbackend-s2kqyb5vna-wl.a.run.app";
 
 function UserProfile({ user_id, user_name }) {
   let navigate = useNavigate();
@@ -18,18 +18,38 @@ function UserProfile({ user_id, user_name }) {
   const [fetched, setFetched] = useState(false);
   const [games, setGames] = useState([]);
 
+  const fetchAllGames = async (pathVariables) => {
+    const requests = pathVariables.map((pathVariable) => {
+      const url = `${API_ENDPOINT}/games/${pathVariable}`;
+      return axios.get(url);
+    });
+
+    try {
+      const responses = await Promise.all(requests);
+      const responseData = responses.map((response) => response.data);
+      setGames(responseData);
+      setFetched(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    const url = api + "games";
+    // first get the list of user games
     axios
-      .get(url)
+      .get(`${API_ENDPOINT}/users/${user_id}/games`)
       .then((res) => {
-        setGames(res.data);
-        setFetched(true);
+        // res.data has the user's list of games in it (stored as gameIDs)
+
+        // get list of user's game IDs
+        const games = res.data;
+        // call a promise.all function that takes a list of game IDs and makes concurrent requests to the API to get all game objects
+        fetchAllGames(games);
       })
       .catch((error) => {
         console.log("fetch error" + error);
       });
-  }, {});
+  }, []);
 
   return (
     <div className="UserProfile">
@@ -69,6 +89,7 @@ function UserProfile({ user_id, user_name }) {
                   description={game.description}
                   imageURL={game.image}
                   game_id={game.game_id}
+                  user_id={user_id}
                 />
               </div>
             ))}

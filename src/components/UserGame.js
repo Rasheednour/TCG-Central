@@ -4,7 +4,7 @@ import cover from "../assets/temp_db/cover1.png";
 import "./styles/UserGame.css";
 import { useNavigate } from "react-router-dom";
 
-function UserGame({ title, description, imageURL, game_id }) {
+function UserGame({ title, description, imageURL, game_id, user_id }) {
   let navigate = useNavigate();
   const routeChange = () => {
     let path = `/play`;
@@ -12,7 +12,7 @@ function UserGame({ title, description, imageURL, game_id }) {
   };
   const gameEditRout = () => {
     let path = `/create/${game_id}`;
-    navigate(path, { state: { game_id: game_id } });
+    navigate(path, { state: { game_id: game_id, user_id: user_id } });
   };
 
   return (

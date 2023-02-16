@@ -32,7 +32,7 @@ function CreatePage() {
           </p>
         </div>
         <div className="create-body">
-          <GameBuilder gameId={params.game_id} />
+          <GameBuilder gameId={params.game_id} userId={location.state.user_id}/>
         </div>
       </div>
     </div>
