@@ -7,7 +7,7 @@ import axios from "axios";
 import UserGame from "./UserGame";
 
 const API_ENDPOINT = "https://tcgbackend-s2kqyb5vna-wl.a.run.app";
-// const API_ENDPOINT = "http://localhost:8080";
+
 
 function UserProfile({ user_id, user_name }) {
   let navigate = useNavigate();

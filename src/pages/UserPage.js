@@ -10,7 +10,6 @@ function UserPage() {
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user_name");
-    console.log(localStorage.getItem("user_name"));
     if (!loggedInUser) {
       localStorage.setItem("user_name", searchParams.get("name"));
       localStorage.setItem("access_token", searchParams.get("access_token"));
