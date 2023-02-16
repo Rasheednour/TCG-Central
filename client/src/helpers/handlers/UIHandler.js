@@ -19,7 +19,7 @@ export default class UIHandler {
         }
         
         this.buildEnemyArea= () => {
-            scene.enemyArea = scene.add.rectangle(470, 135, 1155, 230);
+            scene.enemyArea = scene.add.rectangle(570, 135, 1050, 230);
             scene.enemyArea.setStrokeStyle(4, 0x880808);
         }
 
@@ -28,13 +28,22 @@ export default class UIHandler {
             scene.endTurn = scene.add.text(960, 365, "End Turn").setFontSize(14).setFontFamily("Treubuchet MS");
         }
 
+        this.setPlayerResources = (Resources) => {
+            let resourceString = `Resources: ${Resources}`;
+            scene.playerResources = scene.add.text(960, 515, resourceString).setFontSize(14).setFontFamily("Treubuchet MS");
+        }
+        
+        this.updatePlayerResources = (Resources) => {
+            scene.playerResources.setText('Resources: ' + Resources);
+        }
+
         this.setPlayerHealth = (Health) => {
-            healthString = `Player Health: ${Health}`;
+            let healthString = `Player Health: ${Health}`;
             scene.playerHealth = scene.add.text(960, 415, healthString).setFontSize(14).setFontFamily("Treubuchet MS");
         }
 
         this.updatePlayerHealth = (Health) => {
-            playerHealth.setText('Player Health' + Health);
+            scene.playerHealth.setText('Player Health: ' + Health);
         }
 
         this.buildUI = () => {
@@ -43,6 +52,7 @@ export default class UIHandler {
             this.buildEnemyArea();
             this.buildGameText();
             this.setPlayerHealth(20);
+            this.setPlayerResources(1);
         }
 
     }

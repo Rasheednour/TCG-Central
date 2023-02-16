@@ -1,0 +1,51 @@
+{
+    "1028766": {
+      "rules": {
+        "battle_mechanic": "PROTECTED",
+        "cards_per_deck_max": 60,
+        "cards_per_deck_min": 24,
+        "decking_mechanic": null,
+        "encounter_type": "SPAWN",
+        "resource_end": 8,
+        "resource_inc": 1,
+        "resource_name": "mana",
+        "resource_persist": "RENEW",
+        "resource_start": 2,
+        "starting_hand": 5,
+        "starting_health": 30,
+        "turn_draw": 1
+      },
+      "characters": {
+        "1": {
+          "name": "Morgaine",
+          "attack": 200,
+          "defense": 140,
+          "health_mod": 1.2,
+          "ability": "REDUCE_SPELL_COST_1"
+        }
+      },
+      "cards": {
+        "1251": {
+          "name": "Night Hunter",
+          "type": "Creature",
+          "description": "A glorious beast.",
+          "health": 600,
+          "attack": 400,
+          "defense": 350,
+          "availability": "DEFAULT",
+          "effect": { "BUFFATK": 50 }
+        }
+      },
+      "enemies": {
+        "124367": {
+          "name": "Orc",
+          "level": 200,
+          "health": 140,
+          "attack": 90,
+          "defense": 100,
+          "effect": null
+        }
+      }
+    }
+  }
+  

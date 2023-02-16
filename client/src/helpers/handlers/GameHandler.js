@@ -3,16 +3,27 @@
 export default class GameHandler{
     constructor(scene) {
         this.gameState = "Initializing";
-        this.isMyTurn = false;
+        this.isMyTurn = true;
         this.playerDeck = [];
-        this.enemyDeck= [];
         this.playerHand = [];
-        this.enemies = [];
-        this.allies = [];
+        
 
         this.changeTurn = () => {
             this.isMyTurn = !this.isMyTurn;
             console.log("isMyTurn: " + this.isMyTurn);
+            //Enemies take turn here
+            scene.EnemyHandler.enemiesAttack();
+            //Allies take turn here WILL CHANGE SOON:
+            scene.AllyHandler.alliesAttack();
+            //reset resources, etc. and return to player turn.
+            scene.UIHandler.updatePlayerHealth(scene.PlayerHandler.health);
+            this.isMyTurn = !this.isMyTurn;
+        }
+
+        this.spawnEnemies = () => {
+            for(let i in scene.EnemyHandler.enemyNames) {
+                scene.EnemyHandler.spawnEnemy(155 + (i * 155), 135, scene.EnemyHandler.enemyNames[i])
+            }
         }
 
         this.changeGameState = (gameState) => {
@@ -22,6 +33,11 @@ export default class GameHandler{
 
         this.gameOver = () => {
             alert('GAME OVER');
+            location.reload();
+        }
+
+        this.gameWon = () => {
+            alert('GAME WON!')
             location.reload();
         }
     }
