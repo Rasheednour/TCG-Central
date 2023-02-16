@@ -55,7 +55,7 @@ app.use(express.json());
 // enable cross origin requests
 app.use(
   cors({
-    origin: ["https://tcg-maker-frontend-123.uc.r.appspot.com"],
+    origin: "*",
     methods: "GET,POST,PUT,DELETE,OPTIONS",
     credentials: true,
   })
