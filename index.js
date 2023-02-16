@@ -55,7 +55,7 @@ app.use(express.json());
 // enable cross origin requests
 app.use(
   cors({
-    origin: ["https://tcg-maker-frontend-123.uc.r.appspot.com"],
+    origin: "*",
     methods: "GET,POST,PUT,DELETE,OPTIONS",
     credentials: true,
   })
@@ -766,6 +766,50 @@ app.get("/users", async (req, res) => {
     allUsers.sort(field_based_sorter("name"));
     res.json(allUsers);
   }
+});
+
+// get the user list of games (list of IDs)
+app.get("/users/:user_id/games", async (req, res) => {
+  const user_id = req.params.user_id;
+  let query = db.collection("users").doc(user_id);
+  let doc = await query.get();
+
+  if (doc.exists){
+    const userData = doc.data();
+    const games = userData.games;
+    res.status(200).json(games);
+  } else {
+    res.status(404).send('User not found');
+  }
+});
+
+// add a game ID to the user's list of games
+app.put("/users/:user_id/games", async (req, res) => {
+  // get userId and gameId from the request
+  const userId = req.params.user_id;
+  const gameId = req.body.game_id;
+  // construct the query
+  const query = db.collection("users").doc(userId);
+  // get the user document
+  const userDoc = await query.get();
+
+  // check if the user exists
+  if (!userDoc.exists) {
+    return res.status(404).json({error: 'User not found'});
+  }
+
+  // add the new game ID to the user's list of games
+  const userGames = userDoc.data().games;
+
+  if (! userGames.includes(gameId)) {
+    userGames.push(gameId);
+    // update the user document
+    await query.update({games: userGames});
+    return res.status(200).json({server: 'Game added successfully'});
+  } else {
+    return res.status(200).json({server: 'Game already exists'});
+  }
+  
 });
 
 app.get('/register', function(req, res){
