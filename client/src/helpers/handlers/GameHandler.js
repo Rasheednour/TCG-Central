@@ -14,11 +14,14 @@ export default class GameHandler{
             //Enemies take turn here
             scene.EnemyHandler.enemiesAttack();
             //reset resources, etc. and return to player turn.
+            scene.UIHandler.updatePlayerHealth(scene.playerHandler.health);
             this.isMyTurn = !this.isMyTurn;
         }
 
         this.spawnEnemies = () => {
-            
+            for(let i in scene.EnemyHandler.enemies) {
+                scene.EnemyHandler.spawnEnemy(155 + (i * 155), 135, scene.EnemyHandler.enemies[i])
+            }
         }
 
         this.changeGameState = (gameState) => {
