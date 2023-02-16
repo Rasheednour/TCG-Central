@@ -4,6 +4,7 @@ export default async function getAllFetch(
   accessToken = null,
   subPath = ""
 ) {
+  console.log("running get to ", url + subPath);
   return await fetch(url + subPath, {
     headers: {
       "Content-Type": "application/json",
