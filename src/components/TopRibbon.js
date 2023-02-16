@@ -30,7 +30,7 @@ function TopRibbon() {
     } else {
       setLoggedIn(false);
     }
-  }, {});
+  }, []);
 
   const logout = () => {
     localStorage.clear();
