@@ -43,7 +43,7 @@ function TCGPortal() {
       .catch((error) => {
         console.log("fetch error" + error);
       });
-  }, {});
+  }, []);
 
   return (
     <div className="TCGPortal">
