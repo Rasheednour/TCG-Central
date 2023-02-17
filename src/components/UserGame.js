@@ -4,6 +4,9 @@ import cover from "../assets/temp_db/cover1.png";
 import "./styles/UserGame.css";
 import { useNavigate } from "react-router-dom";
 
+const PLAYGROUND_URL = "https://tcg-maker-phaser.herokuapp.com";
+
+
 function UserGame({ title, description, imageURL, game_id, user_id }) {
   let navigate = useNavigate();
   const routeChange = () => {
@@ -30,7 +33,7 @@ function UserGame({ title, description, imageURL, game_id, user_id }) {
         <h1>{title}</h1>
         <p>{description}</p>
         <div className="card-samples">
-          <Button variant="contained" onClick={routeChange}>
+          <Button variant="contained" href={PLAYGROUND_URL}>
             PLAY GAME
           </Button>
           <Button variant="contained" onClick={gameEditRout}>
