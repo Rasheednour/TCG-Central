@@ -8,7 +8,7 @@ export default class AllyHandler {
         //play an ally from hand:
         this.playAlly = (name) => {
             let allies = {
-                //This is where we will load the Enemy types
+                //This is where we will load the ally types
                 Sample_Ally: new SampleAlly(scene)
             }
             let newAlly = allies[name];
@@ -20,6 +20,15 @@ export default class AllyHandler {
         this.alliesAttack = () => {
             for(let i in this.allies) {
                 this.allies[i].strike();
+            }
+        }
+
+        this.destroyAlly = (index) => {
+            this.allies.splice(index, 1);
+            for(let i in this.allies) {
+                if(this.allies[i].index > index) {
+                    this.allies[i].index --;
+                }
             }
         }
     }

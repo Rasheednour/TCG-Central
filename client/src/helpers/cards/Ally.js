@@ -1,7 +1,7 @@
 import Card from "./Card"
 
 export default class Ally extends Card {
-    constructor(scene, name, cost, attack, defense, health, ability) {
+    constructor(scene, name, cost, attack, defense, health, ability, index) {
         super(scene);
         this.name = name;
         this.cost = cost;
@@ -9,11 +9,13 @@ export default class Ally extends Card {
         this.defense = defense;
         this.health = health;
         this.ability = ability;
+        this.index = index;
 
         this.takeDamage = (damage) => {
             this.health = this.health - damage;
             if(this.health <= 0) {
                 console.log("ally destroyed");
+                
             }
         }
         
