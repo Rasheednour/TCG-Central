@@ -49,27 +49,10 @@ function CardsAndEnemiesPage() {
   }, [info, notLoaded, pageType, setPageType, setNotLoaded, setInfo]);
 
   function newCard() {
-    console.log("new card");
+    let path = `${location.pathname}/new`;
+    navigate(path);
+    //console.log("new card");
   }
-
-  //   document.addEventListener("click", (ev) => {
-  //     // let e = ev.target;
-  //     // let counter = 0;
-  //     // while (counter < 3 && e.parentNode) {
-  //     //   if (e.id.startsWith("id-card-")) {
-  //     //     console.log(e.id);
-  //     //     let path = `/${location.pathname}/${e.id.slice(8)}`;
-  //     //     navigate(path);
-  //     //   }
-  //     //   e = e.parentNode;
-  //     //   counter++;
-  //     // }
-  //     // if (isOnId(e.path, "two")) {
-  //     //   //you clicked on or in element with an id two
-  //     // } else {
-  //     //   //you clicked on something else
-  //     // }
-  //   });
 
   return (
     <div className="CreatePage">
@@ -103,7 +86,7 @@ function CardsAndEnemiesPage() {
                     title={enemy.name}
                     level={enemy.level}
                     image={enemy.image}
-                    backgroundColor={enemy.bg_color || "purple"}
+                    backgroundColor={enemy.color || "purple"}
                     description={enemy.description}
                     effect={enemy.effect || "None"}
                     stats={[enemy.attack, enemy.defense, enemy.health]}
@@ -132,7 +115,7 @@ function CardsAndEnemiesPage() {
                       cost={card.cost}
                       type={card.type}
                       image={card.image_url || card.image}
-                      backgroundColor={card.bg_color || "blue"}
+                      backgroundColor={card.color || "blue"}
                       description={card.description}
                       effect={
                         card.effect && card.effect.length > 0
@@ -154,7 +137,7 @@ function CardsAndEnemiesPage() {
                       cost={card.cost}
                       type={card.type}
                       image={card.image_url || card.image}
-                      backgroundColor={card.bg_color || "blue"}
+                      backgroundColor={card.color || "blue"}
                       description={card.description}
                       effect={
                         card.effect && card.effect.length > 0

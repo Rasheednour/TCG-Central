@@ -14,6 +14,8 @@ export default function CardEditorPage() {
   const BACKEND_CODE = CONFIG.BACKEND_CODE;
   const BACKEND_URL = CONFIG.BACKEND_URL;
   const ACCESS_TOKEN = CONFIG.ACCESS_TOKEN;
+  const DEFAULT_CARD = CONFIG.DEFAULT_CARD;
+  const DEFAULT_ENEMY = CONFIG.DEFAULT_ENEMY;
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -25,15 +27,19 @@ export default function CardEditorPage() {
   useEffect(() => {
     async function getCardInfo() {
       let path_params = location.pathname.split("/");
-      let loadInfo = await getAllFetch(
-        BACKEND_URL,
-        BACKEND_CODE,
-        ACCESS_TOKEN,
-        `/${path_params[1]}/${path_params[3]}`
-      ).catch((err) => {
-        console.log(`error fetching cards/enemies for game: ${err}`);
-      });
-      setInfo(loadInfo);
+      if (path_params[3] != "new") {
+        let loadInfo = await getAllFetch(
+          BACKEND_URL,
+          BACKEND_CODE,
+          ACCESS_TOKEN,
+          `/${path_params[1]}/${path_params[3]}`
+        ).catch((err) => {
+          console.log(`error fetching cards/enemies for game: ${err}`);
+        });
+        setInfo(loadInfo);
+      } else {
+        setInfo(pageType == "enemies" ? DEFAULT_ENEMY : DEFAULT_CARD);
+      }
     }
     if (notLoaded) {
       getCardInfo().then(console.log);
@@ -44,7 +50,10 @@ export default function CardEditorPage() {
   return (
     <div className="CardEditorPage">
       <TopRibbon />
-      <h1>Editting Card</h1>
+      <h1>
+        Editting {pageType == "cards" && "Card"}
+        {pageType == "enemies" && "Enemy"}
+      </h1>
 
       <div className="cards-body" style={{ display: "flex", flexFlow: "wrap" }}>
         {pageType == "enemies" && (
@@ -54,7 +63,7 @@ export default function CardEditorPage() {
             title={info.name}
             level={info.level}
             image={info.image}
-            backgroundColor={info.bg_color || "purple"}
+            backgroundColor={info.color || "purple"}
             description={info.description}
             effect={info.effect || "None"}
             stats={[info.attack, info.defense, info.health]}
@@ -68,7 +77,7 @@ export default function CardEditorPage() {
             cost={info.cost}
             type={info.type}
             image={info.image_url || info.image}
-            backgroundColor={info.bg_color || "blue"}
+            backgroundColor={info.color || "blue"}
             description={info.description}
             effect={
               info.effect && info.effect.length > 0 ? info.effect : ["None"]
@@ -84,7 +93,7 @@ export default function CardEditorPage() {
             cost={info.cost}
             type={info.type}
             image={info.image_url || info.image}
-            backgroundColor={info.bg_color || "blue"}
+            backgroundColor={info.color || "blue"}
             description={info.description}
             effect={
               info.effect && info.effect.length > 0 ? info.effect : ["None"]
