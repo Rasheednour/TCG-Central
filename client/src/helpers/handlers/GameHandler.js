@@ -5,6 +5,7 @@ export default class GameHandler{
         this.gameState = "Initializing";
         this.isMyTurn = true;
         this.playerDeck = [];
+        //this is where the rendered player cards end up. V
         this.playerHand = [];
         
 
