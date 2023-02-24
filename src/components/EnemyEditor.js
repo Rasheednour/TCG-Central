@@ -8,7 +8,7 @@ import CharacterCustomizer from "./CharacterCustomizer";
 import { CONFIG } from "../config";
 import { useNavigate } from "react-router-dom";
 
-export default function EnemyEditor({ enemyInfo, saveEnemy }) {
+export default function EnemyEditor({ enemyInfo, saveEnemy, updateEnemy }) {
   return (
     <div>
       <h1>
