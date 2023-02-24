@@ -68,7 +68,10 @@ export default class InteractiveHandler {
         })
 
         scene.input.on('drop', (pointer, gameObject, dropZone) => {
-            if (scene.GameHandler.isMyTurn && scene.GameHandler.gameState === 'Ready' && scene.AllyHandler.allies.length < 5) {
+            if (scene.GameHandler.isMyTurn && 
+                scene.GameHandler.gameState === 'Ready' && 
+                scene.AllyHandler.allies.length < 5 &&
+                scene.PlayerHandler.resources >= gameObject.data.values.cost) {
                 gameObject.x = (dropZone.x - 350) + (dropZone.data.values.cards * 150);
                 gameObject.y = dropZone.y;
                 //currently once a card is dropped into a dropzone, it can't be dragged again.

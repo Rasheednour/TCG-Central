@@ -17,6 +17,7 @@ export default class GameHandler{
             scene.AllyHandler.alliesAttack();
             //reset resources, etc. and return to player turn.
             scene.UIHandler.updatePlayerHealth(scene.PlayerHandler.health);
+            scene.PlayerHandler.resetResources();
             this.isMyTurn = !this.isMyTurn;
         }
 

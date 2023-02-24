@@ -13,6 +13,7 @@ export default class AllyHandler {
             }
             let newAlly = allies[name];
             this.allies[this.allyIndex] = newAlly;
+            this.scene.PlayerHandler.spendResources(newAlly.cost);
             this.allyIndex = this.allyIndex + 1;
         }
 
