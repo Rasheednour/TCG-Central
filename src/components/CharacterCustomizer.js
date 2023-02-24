@@ -52,6 +52,9 @@ export default function CharacterCustomizer({
                 characters[i].name.split(" ").join("")
             ).value
           ),
+          id:
+            characters[i]["id"] ||
+            "char" + Date.now() + "" + Math.floor(Math.random() * 1000),
         });
       }
     }

@@ -14,6 +14,7 @@ function CardsAndEnemiesPage() {
   const [pageType, setPageType] = useState("cards");
   const [notLoaded, setNotLoaded] = useState(true);
   const [info, setInfo] = useState([]);
+  const [game, setGame] = useState([]);
   const BACKEND_CODE = CONFIG.BACKEND_CODE;
   const BACKEND_URL = CONFIG.BACKEND_URL;
   const ACCESS_TOKEN = CONFIG.ACCESS_TOKEN;
@@ -26,6 +27,19 @@ function CardsAndEnemiesPage() {
     : location.pathname;
 
   useEffect(() => {
+    async function getGameInfo() {
+      let path_params = location.pathname.split("/");
+
+      let loadInfo = await getAllFetch(
+        BACKEND_URL,
+        BACKEND_CODE,
+        ACCESS_TOKEN,
+        `/games/${path_params[2]}`
+      ).catch((err) => {
+        console.log(`error fetching game: ${err}`);
+      });
+      setGame(loadInfo);
+    }
     async function getCardInfo() {
       let path_params = location.pathname.split("/");
       let loadInfo = await getAllFetch(
@@ -36,17 +50,18 @@ function CardsAndEnemiesPage() {
       ).catch((err) => {
         console.log(`error fetching cards/enemies for game: ${err}`);
       });
-      console.log("setting game info to", loadInfo);
+      //console.log("setting game info to", loadInfo);
       setInfo(loadInfo);
     }
 
     if (location.pathname) {
-      console.log("location.pathname", location.pathname);
+      //console.log("location.pathname", location.pathname);
       setPageType(location.pathname.split("/")[1]);
     }
     if (notLoaded) {
-      console.log("calling load function");
+      //console.log("calling load function");
       getCardInfo().then(console.log);
+      getGameInfo().catch(console.log);
       setNotLoaded(false);
     }
   }, [info, notLoaded, pageType, setPageType, setNotLoaded, setInfo]);
@@ -55,6 +70,18 @@ function CardsAndEnemiesPage() {
     let path = `${noLastSlashPath}/new`;
     navigate(path);
     //console.log("new card");
+  }
+
+  function charName(charId) {
+    if (game["characters"]) {
+      for (let i = 0; i < game["characters"].length; i++) {
+        if (game.characters[i]["id"] == charId) {
+          return game.characters[i]["name"];
+        }
+      }
+      return "CARD ASSIGNED TO NULL CHAR";
+    }
+    return "";
   }
 
   return (
@@ -105,7 +132,7 @@ function CardsAndEnemiesPage() {
               ) {
                 let av_str = card.availability.split("_");
                 if (av_str.length > 3) {
-                  card.type = card.type + " - " + av_str[3];
+                  card.type = card.type + " - " + charName(av_str[3]);
                 }
               }
               if (card.type.startsWith("CREATURE")) {
@@ -117,7 +144,7 @@ function CardsAndEnemiesPage() {
                       title={card.name}
                       cost={card.cost}
                       type={card.type}
-                      image={card.image_url || card.image}
+                      image={card.image || card.image_url}
                       backgroundColor={card.color || "blue"}
                       description={card.description}
                       effect={
@@ -139,7 +166,7 @@ function CardsAndEnemiesPage() {
                       title={card.name}
                       cost={card.cost}
                       type={card.type}
-                      image={card.image_url || card.image}
+                      image={card.image || card.image_url}
                       backgroundColor={card.color || "blue"}
                       description={card.description}
                       effect={

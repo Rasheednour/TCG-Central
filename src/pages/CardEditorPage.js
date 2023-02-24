@@ -34,7 +34,7 @@ export default function CardEditorPage() {
   const DEFAULT_ENEMY = CONFIG.DEFAULT_ENEMY;
   const availTypeDesk = {
     DEFAULT:
-      "All default cards that are eligible for a player deck will populate their min number in generated decks, then function like commons",
+      "All default cards that are eligible for a player deck will populate at least their min number in generated decks",
     COMMON: "Common cards appear more frequently in decks",
     RARE: "Rare cards appear less frequently in decks",
   };
@@ -47,6 +47,30 @@ export default function CardEditorPage() {
   const [notLoaded, setNotLoaded] = useState(true);
   const [triggerSave, setTriggerSave] = useState(false);
   const [imageFile, setImageFile] = useState(null);
+  const [game, setGame] = useState({});
+
+  function genTypeText(card) {
+    let type = card.type;
+    if (card.availability) {
+      let av_ar = card.availability.split("_");
+      if (av_ar.length > 3) {
+        type = type + " - " + charName(av_ar[3]);
+      }
+    }
+    return type;
+  }
+
+  function charName(charId) {
+    if (game["characters"]) {
+      for (let i = 0; i < game["characters"].length; i++) {
+        if (game.characters[i]["id"] == charId) {
+          return game.characters[i]["name"];
+        }
+      }
+      return "CARD ASSIGNED TO NULL CHAR";
+    }
+    return "";
+  }
 
   useEffect(() => {
     async function getCardInfo() {
@@ -65,11 +89,25 @@ export default function CardEditorPage() {
         setInfo(pageType == "enemies" ? DEFAULT_ENEMY : DEFAULT_CARD);
       }
     }
+    async function getGameInfo() {
+      let path_params = location.pathname.split("/");
+
+      let loadInfo = await getAllFetch(
+        BACKEND_URL,
+        BACKEND_CODE,
+        ACCESS_TOKEN,
+        `/games/${path_params[2]}`
+      ).catch((err) => {
+        console.log(`error fetching game: ${err}`);
+      });
+      setGame(loadInfo);
+    }
     if (notLoaded) {
       getCardInfo().catch(console.log);
+      getGameInfo().catch(console.log);
       setNotLoaded(false);
     }
-  }, [notLoaded, info, pageType]);
+  }, [notLoaded, info, pageType, game]);
 
   useEffect(() => {
     let saveInfo = async () => {
@@ -218,6 +256,10 @@ export default function CardEditorPage() {
     }
   }
 
+  function renderEffects() {
+    return <Box padding={1}></Box>;
+  }
+
   return (
     <div className="CardEditorPage">
       <TopRibbon />
@@ -326,8 +368,8 @@ export default function CardEditorPage() {
                 key={`card-${info.card_id}`}
                 title={info.name}
                 cost={info.cost}
-                type={info.type}
-                image={info.image_url || info.image}
+                type={genTypeText(info)}
+                image={info.image || info.image_url}
                 backgroundColor={info.color || "blue"}
                 description={info.description}
                 effect={
@@ -342,8 +384,8 @@ export default function CardEditorPage() {
                 key={`card-spell-${info.card_id}`}
                 title={info.name}
                 cost={info.cost}
-                type={info.type}
-                image={info.image_url || info.image}
+                type={genTypeText(info)}
+                image={info.image || info.image_url}
                 backgroundColor={info.color || "blue"}
                 description={info.description}
                 effect={
@@ -461,7 +503,7 @@ export default function CardEditorPage() {
                         let avail_set = info["availability"].split("_");
                         let val =
                           e.target.value + "_" + avail_set.slice(1).join("_");
-                        console.log("new val of avail", val);
+
                         let cop = JSON.parse(JSON.stringify(info));
                         cop["availability"] = val;
                         setInfo(cop);
@@ -470,6 +512,116 @@ export default function CardEditorPage() {
                       <MenuItem value={"DEFAULT"}>Default</MenuItem>
                       <MenuItem value={"COMMON"}>Common</MenuItem>
                       <MenuItem value={"RARE"}>Rare</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Tooltip>
+
+                <Box padding={0.7}>
+                  <Tooltip title="Minimum number of occurences of this card that get added to the deck when it is selected">
+                    <FormControl>
+                      <InputLabel id="card-avail-min-select-label" shrink>
+                        Min
+                      </InputLabel>
+                      <TextField
+                        name={"min-avail-value"}
+                        variant="outlined"
+                        id={"min-avail-value"}
+                        type={"number"}
+                        onChange={(e) => {
+                          let avail_set = info["availability"].split("_");
+                          let val =
+                            avail_set[0] +
+                            "_" +
+                            e.target.value +
+                            "_" +
+                            avail_set.slice(2).join("_");
+                          let cop = JSON.parse(JSON.stringify(info));
+                          cop["availability"] = val;
+                          setInfo(cop);
+                        }}
+                        value={(info["availability"] || "1_1").split("_")[1]}
+                      />
+                    </FormControl>
+                  </Tooltip>
+                </Box>
+                <Box padding={0.7}>
+                  <Tooltip title="Maximum number of occurences of this card that can be in a deck">
+                    <FormControl>
+                      <InputLabel id="card-avail-max-select-label" shrink>
+                        Max
+                      </InputLabel>
+                      <TextField
+                        name={"max-avail-value"}
+                        variant="outlined"
+                        id={"max-avail-value"}
+                        type={"number"}
+                        onChange={(e) => {
+                          let avail_set = info["availability"].split("_");
+                          let val =
+                            avail_set[0] +
+                            "_" +
+                            avail_set[1] +
+                            "_" +
+                            e.target.value;
+                          if (avail_set.length > 3) {
+                            val = val + "_" + avail_set.slice(3).join("_");
+                          }
+                          let cop = JSON.parse(JSON.stringify(info));
+                          cop["availability"] = val;
+                          setInfo(cop);
+                        }}
+                        value={(info["availability"] || "1_1_3").split("_")[2]}
+                      />
+                    </FormControl>
+                  </Tooltip>
+                </Box>
+                <Tooltip
+                  placement="left"
+                  title={
+                    "Choose which character in your game has access to this card (or ANY to make it available to all characters)"
+                  }
+                >
+                  <FormControl fullWidth>
+                    <InputLabel id="character-avail-simple-select-label">
+                      Character
+                    </InputLabel>
+                    <Select
+                      //labelId="card-availability-simple-select-label"
+                      id="card-character-simple-select"
+                      value={
+                        (info["availability"] || "DEFAULT_1_1").split("_")
+                          .length > 3
+                          ? (info["availability"] || "DEFAULT_1_1").split(
+                              "_"
+                            )[3]
+                          : "ANY"
+                      }
+                      label="Character"
+                      onChange={(e) => {
+                        let avail_set = info["availability"].split("_");
+                        let val =
+                          avail_set[0] +
+                          "_" +
+                          avail_set[1] +
+                          "_" +
+                          avail_set[2];
+                        if (e.target.value != "ANY") {
+                          val = val + "_" + e.target.value;
+                        }
+                        let cop = JSON.parse(JSON.stringify(info));
+                        cop["availability"] = val;
+                        setInfo(cop);
+                      }}
+                    >
+                      <MenuItem value={"ANY"}>Any</MenuItem>
+                      {game["characters"] &&
+                        game["characters"].map((char) => {
+                          return (
+                            <MenuItem value={char["id"]}>
+                              {char["name"]}
+                            </MenuItem>
+                          );
+                        })}
                     </Select>
                   </FormControl>
                 </Tooltip>

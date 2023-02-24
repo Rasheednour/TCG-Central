@@ -299,6 +299,9 @@ export default function GameBuilder({ gameId, userId }) {
               gameCharacters[i].name.split(" ").join("")
           ).value
         ),
+        id:
+          gameCharacters[i]["id"] ||
+          "char" + Date.now() + "" + Math.floor(Math.random() * 1000),
       });
     }
     setGameCharacters(char_copy);
