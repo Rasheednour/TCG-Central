@@ -21,6 +21,9 @@ function CardsAndEnemiesPage() {
   let navigate = useNavigate();
   const location = useLocation();
   const params = useParams(); //params.game_id is the game's id
+  const noLastSlashPath = location.pathname.endsWith("/")
+    ? location.pathname.substring(0, location.pathname.length - 1)
+    : location.pathname;
 
   useEffect(() => {
     async function getCardInfo() {
@@ -36,7 +39,7 @@ function CardsAndEnemiesPage() {
       console.log("setting game info to", loadInfo);
       setInfo(loadInfo);
     }
-    console.log("checking if", location.pathname, "and", notLoaded);
+
     if (location.pathname) {
       console.log("location.pathname", location.pathname);
       setPageType(location.pathname.split("/")[1]);
@@ -49,7 +52,7 @@ function CardsAndEnemiesPage() {
   }, [info, notLoaded, pageType, setPageType, setNotLoaded, setInfo]);
 
   function newCard() {
-    let path = `${location.pathname}/new`;
+    let path = `${noLastSlashPath}/new`;
     navigate(path);
     //console.log("new card");
   }
@@ -79,7 +82,7 @@ function CardsAndEnemiesPage() {
           {pageType == "enemies" &&
             info.map((enemy) => {
               return (
-                <Link to={`${location.pathname}/${enemy.enemy_id}`}>
+                <Link to={`${noLastSlashPath}/${enemy.enemy_id}`}>
                   <EnemyCard
                     domId={`id-card-${enemy.enemy_id}`}
                     key={`enemy-${enemy.enemy_id}`}
@@ -107,7 +110,7 @@ function CardsAndEnemiesPage() {
               }
               if (card.type.startsWith("CREATURE")) {
                 return (
-                  <Link to={`${location.pathname}/${card.card_id}`}>
+                  <Link to={`${noLastSlashPath}/${card.card_id}`}>
                     <CreatureCard
                       domId={`id-card-${card.card_id}`}
                       key={`card-${card.card_id}`}
@@ -129,7 +132,7 @@ function CardsAndEnemiesPage() {
               }
               if (card.type.startsWith("SPELL")) {
                 return (
-                  <Link to={`${location.pathname}/${card.card_id}`}>
+                  <Link to={`${noLastSlashPath}/${card.card_id}`}>
                     <SpellCard
                       domId={`id-card-${card.card_id}`}
                       key={`card-${card.card_id}`}

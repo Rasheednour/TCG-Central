@@ -9,6 +9,8 @@ import getAllFetch from "../utils/getAllFetch";
 import { Button, Container, Stack } from "@mui/material";
 import CreatureCard from "../components/CreatureCard";
 import SpellCard from "../components/SpellCard";
+import CardEditor from "../components/CardEditor";
+import EnemyEditor from "../components/EnemyEditor";
 
 export default function CardEditorPage() {
   const BACKEND_CODE = CONFIG.BACKEND_CODE;
@@ -23,6 +25,7 @@ export default function CardEditorPage() {
   const [pageType, setPageType] = useState(location.pathname.split("/")[1]);
   const [info, setInfo] = useState({});
   const [notLoaded, setNotLoaded] = useState(true);
+  const [triggerSave, setTriggerSave] = useState(false);
 
   useEffect(() => {
     async function getCardInfo() {
@@ -46,6 +49,53 @@ export default function CardEditorPage() {
       setNotLoaded(false);
     }
   }, [notLoaded, info, pageType]);
+
+  useEffect(() => {
+    let saveInfo = async () => {
+      let groomed_info = info;
+      console.log("groomed card before grooming", groomed_info);
+      if (!groomed_info["game_ids"].includes(location.pathname.split("/")[2])) {
+        groomed_info["game_ids"].push(location.pathname.split("/")[2]);
+      }
+      await fetch(
+        BACKEND_URL + `/games/${location.pathname.split("/")[2]}/${pageType}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + ACCESS_TOKEN,
+          },
+          method: "POST",
+          body: JSON.stringify(groomed_info),
+        }
+      )
+        .then((res) => {
+          if (res.status < 300) {
+            return res.json();
+          } else {
+            console.log(`error in posting update`, res.status, res.json());
+            return {};
+          }
+        })
+        .then((data) => {
+          if (
+            !((pageType == "cards" ? "card_id" : "enemy_id") in groomed_info)
+          ) {
+            groomed_info[pageType == "cards" ? "card_id" : "enemy_id"] =
+              data[pageType == "cards" ? "card_id" : "enemy_id"];
+          }
+          setInfo(groomed_info);
+        });
+    };
+    if (triggerSave) {
+      setTriggerSave(false);
+      saveInfo();
+    }
+  }, [info, triggerSave]);
+
+  const updateInfo = (infoObj) => {
+    setInfo(infoObj);
+    setTriggerSave(true);
+  };
 
   return (
     <div className="CardEditorPage">
@@ -99,6 +149,12 @@ export default function CardEditorPage() {
               info.effect && info.effect.length > 0 ? info.effect : ["None"]
             }
           />
+        )}
+        {pageType == "cards" && (
+          <CardEditor cardInfo={info} saveCard={updateInfo} />
+        )}
+        {pageType == "enemies" && (
+          <EnemyEditor enemyInfo={info} saveEnemy={updateInfo} />
         )}
       </div>
     </div>

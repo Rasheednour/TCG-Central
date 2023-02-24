@@ -80,7 +80,7 @@ export default function GameBuilder({ gameId, userId }) {
   useEffect(() => {
     // console.log("game save effect triggered");
     async function updateGame(aGame) {
-      let the_game_id = await fetch(BACKEND_URL + "/games", {
+      let the_game_id = await fetch(BACKEND_URL + `/games`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + ACCESS_TOKEN,
