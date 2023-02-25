@@ -214,7 +214,6 @@ export default function CardEditorPage() {
   };
 
   const saveInfo = (infoObj) => {
-    console.log("setting info to", infoObj);
     setInfo(infoObj);
     setTriggerSave(true);
   };

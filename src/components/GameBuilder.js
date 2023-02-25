@@ -321,7 +321,7 @@ export default function GameBuilder({ gameId, userId }) {
 
   return (
     <div>
-      <h1>
+      <h1 spacing={0}>
         <Container sx={{ width: 4 / 7 }}>
           <Button
             variant="contained"

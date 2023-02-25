@@ -73,6 +73,11 @@ function CardsAndEnemiesPage() {
     //console.log("new card");
   }
 
+  function returnToGame() {
+    let path = `/create/${location.pathname.split("/")[2]}`;
+    navigate(path);
+  }
+
   function charName(charId) {
     if (game["characters"]) {
       for (let i = 0; i < game["characters"].length; i++) {
@@ -100,6 +105,16 @@ function CardsAndEnemiesPage() {
               fullWidth
             >
               Create New {pageType == "enemies" ? "Enemy" : "Card"}
+            </Button>
+          </Container>
+          <Container sx={{ width: 4 / 7 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={returnToGame}
+              fullWidth
+            >
+              Return to Game Customizer
             </Button>
           </Container>
         </div>
