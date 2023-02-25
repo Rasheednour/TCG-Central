@@ -569,7 +569,7 @@ export default function CardEditorPage() {
     <div className="CardEditorPage">
       <TopRibbon />
       <h1>
-        Editting {pageType == "cards" && "Card"}
+        Editing {pageType == "cards" && "Card"}
         {pageType == "enemies" && "Enemy"}
         <Container sx={{ width: 4 / 7 }}>
           <Button

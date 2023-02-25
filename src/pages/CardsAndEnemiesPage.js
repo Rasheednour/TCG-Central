@@ -95,7 +95,7 @@ function CardsAndEnemiesPage() {
       <TopRibbon />
       <div className="cards-upper-half">
         <div className="cards-intro" bg-color="black">
-          <h1>Customize Cards and Enemies</h1>
+          <h1>Customize {pageType == "cards" ? "Cards" : "Enemies"}</h1>
           <h3> Click on a card to edit it</h3>
           <Container sx={{ width: 4 / 7 }}>
             <Button
