@@ -50,17 +50,10 @@ function CreatureCard({
         className="card-description"
         key={"descr-" + Math.floor(Math.random() * 10000)}
       >
-        <p>{description}</p>
-
-        {effect &&
-          effect.length > 0 &&
-          effect.map((eff) => {
-            return (
-              <p key={"effect-" + Math.floor(Math.random() * 10000)}>
-                Effect: {effect}
-              </p>
-            );
-          })}
+        <p>{effect}</p>
+        <p>
+          <i>{description}</i>
+        </p>
         <div className="card-stats">
           <h5 key={"attack-" + Math.floor(Math.random() * 10000)}>
             ATK/ {stats[0]}

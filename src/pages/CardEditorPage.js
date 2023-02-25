@@ -25,6 +25,7 @@ import {
 } from "@mui/material";
 import CreatureCard from "../components/CreatureCard";
 import SpellCard from "../components/SpellCard";
+import effectDescGen from "../utils/effectDescGen";
 
 export default function CardEditorPage() {
   const BACKEND_CODE = CONFIG.BACKEND_CODE;
@@ -38,6 +39,29 @@ export default function CardEditorPage() {
     COMMON: "Common cards appear more frequently in decks",
     RARE: "Rare cards appear less frequently in decks",
   };
+  const triggerDisc = {
+    SUMMON: "Effect activates when card is played",
+    ACTIVATE:
+      "Effect can be triggered once per turn (spell's with activate effects remain in play until destroyed)",
+    DEATH: "Effect triggers when this card leaves play",
+    LINGER:
+      "Effect is active as long as card remains in play (spells with linger remain in play until destroyed)",
+    TRIGGER: "Effect is activated but certain action or event taking place",
+  };
+  const targetDesc = {
+    SELF: "targets the player if a SPELL, targets the creature whose effect it is if a CREATURE",
+    TARGET: "user picks target of any enemy, creature or player",
+    ENEMIES: "effect happens to all enemies",
+    CREATURES: "effect happens to all creatures the player controls",
+    BOARD: "effect happens to all creatures and enemies",
+    ALL: "effect happens to all creatures and enemies and to the player",
+    PLAYER: "targets the player, only used for creatures",
+    CREATURE: "single creature target",
+    SPELL:
+      "single spell target (only effects ACTIVATE type spells which remain on the board)",
+    ENEMY: "single enemy",
+    CARD: "means spell or creature (but not player or enemy)",
+  };
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -48,6 +72,7 @@ export default function CardEditorPage() {
   const [triggerSave, setTriggerSave] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [game, setGame] = useState({});
+  const [effects, setEffects] = useState([]);
 
   function genTypeText(card) {
     let type = card.type;
@@ -89,6 +114,17 @@ export default function CardEditorPage() {
         setInfo(pageType == "enemies" ? DEFAULT_ENEMY : DEFAULT_CARD);
       }
     }
+    async function getEffects() {
+      let loadEffs = await getAllFetch(
+        BACKEND_URL,
+        BACKEND_CODE,
+        ACCESS_TOKEN,
+        "/effects"
+      ).catch((err) => {
+        console.log(`error fetching effects: ${err}`);
+      });
+      setEffects(loadEffs);
+    }
     async function getGameInfo() {
       let path_params = location.pathname.split("/");
 
@@ -104,7 +140,9 @@ export default function CardEditorPage() {
     }
     if (notLoaded) {
       getCardInfo().catch(console.log);
+      getEffects().catch(console.log);
       getGameInfo().catch(console.log);
+
       setNotLoaded(false);
     }
   }, [notLoaded, info, pageType, game]);
@@ -112,10 +150,13 @@ export default function CardEditorPage() {
   useEffect(() => {
     let saveInfo = async () => {
       let groomed_info = info;
-      console.log("groomed card before grooming", groomed_info);
+      //console.log("groomed card before grooming", groomed_info);
       if (!groomed_info["game_ids"].includes(location.pathname.split("/")[2])) {
         groomed_info["game_ids"].push(location.pathname.split("/")[2]);
       }
+      groomed_info["effect_description"] = generateEffectText(
+        groomed_info.effect || []
+      );
       await fetch(
         BACKEND_URL + `/games/${location.pathname.split("/")[2]}/${pageType}`,
         {
@@ -142,6 +183,7 @@ export default function CardEditorPage() {
             groomed_info[pageType == "cards" ? "card_id" : "enemy_id"] =
               data[pageType == "cards" ? "card_id" : "enemy_id"];
           }
+
           setInfo(groomed_info);
         });
     };
@@ -256,8 +298,272 @@ export default function CardEditorPage() {
     }
   }
 
+  function allValidEffects() {
+    return effects.map((eff) => {
+      if (
+        eff["card_types"].includes(pageType == "cards" ? info["type"] : "ENEMY")
+      ) {
+        return <MenuItem value={eff["name"]}>{eff["name"]}</MenuItem>;
+      }
+    });
+  }
+
+  function allValidTriggers(cur_effect) {
+    // for (let i = 0; i < info.effect.length; i++) {
+    //   if (info.effect[i] == cur_effect) {
+    if (effects.length > 0) {
+      let an_effect =
+        effects[
+          effects.findIndex((ef) => ef["name"] == cur_effect.split("_")[1])
+        ];
+      //console.log("generating types for", an_effect, info, cur_effect, effects);
+      return an_effect["effect_types"].map((typ) => {
+        return <MenuItem value={typ}>{typ}</MenuItem>;
+      });
+    }
+    //   }
+    // }
+  }
+
+  function generateEffectText(effect_arr) {
+    let effect_text = [];
+    for (let i = 0; i < effect_arr.length; i++) {
+      let eff_tex = effect_arr[i];
+      let splitted = eff_tex.split("_");
+      if (effects.length > 0) {
+        let full_desc =
+          effects[effects.findIndex((ef) => ef["name"] == splitted[1])][
+            "effect_description"
+          ];
+        eff_tex = effectDescGen(info, full_desc, eff_tex);
+      }
+      if (!eff_tex.endsWith(".")) {
+        eff_tex = eff_tex + ".";
+      }
+      effect_text.push(eff_tex);
+    }
+    return "" + effect_text.join("\n");
+  }
+
+  function deleteEffect(eff_text) {
+    let cop = JSON.parse(JSON.stringify(info));
+    let new_effects = [];
+    let deleted = false;
+    for (let i = 0; i < cop["effect"].length; i++) {
+      if (cop["effect"][i] != eff_text || deleted == true) {
+        new_effects.push(cop["effect"][i]);
+      }
+      if (cop["effect"][i] == eff_text) {
+        deleted = true;
+      }
+    }
+    cop["effect"] = new_effects;
+    setInfo(cop);
+  }
+
+  function fillCurrentEffects() {
+    if (info["effect"]) {
+      return info["effect"].map((eff) => {
+        let effid = eff + "]" + Math.floor(Math.random() * 1000);
+        let effect_info =
+          effects.length > 0
+            ? effects[
+                effects.findIndex((ef) => ef["name"] == eff.split("_")[1])
+              ]
+            : false;
+        let splitted_eff = eff.split("_");
+        return (
+          <Stack
+            direction="column"
+            key={"effect-" + eff + Math.floor(Math.random() * 300)}
+          >
+            <Box>
+              <Tooltip
+                title={
+                  effects.length > 0
+                    ? effects[
+                        effects.findIndex(
+                          (ef) => ef["name"] == eff.split("_")[1]
+                        )
+                      ]["builder_description"]
+                    : "Loading..."
+                }
+                placement="right"
+              >
+                <FormControl fullWidth>
+                  <InputLabel id={`type-select-${effid}`}>
+                    Effect Type
+                  </InputLabel>
+                  <Select
+                    id={`${effid}-type`}
+                    defaultValue={eff.split("_")[1]}
+                    label="Effect Type"
+                    onChange={(e) => {
+                      let val = e.target.value;
+                      let cop = JSON.parse(JSON.stringify(info));
+                      for (let i = 0; i < cop["effect"].length; i++) {
+                        if (eff == cop["effect"][i]) {
+                          let splitted = cop["effect"][i].split("_");
+                          cop["effect"][i] =
+                            splitted[0] +
+                            "_" +
+                            val +
+                            "_" +
+                            splitted.slice(2).join("_");
+                        }
+                      }
+                      setInfo(cop);
+                    }}
+                  >
+                    {allValidEffects()}
+                  </Select>
+                </FormControl>
+              </Tooltip>
+            </Box>
+            <Box>
+              <Tooltip placement="right" title={triggerDisc[eff.split("_")[0]]}>
+                <FormControl fullWidth>
+                  <InputLabel id={`trigger-select-${effid}`}>
+                    Trigger
+                  </InputLabel>
+                  <Select
+                    id={`${effid}-trigger`}
+                    label="Trigger"
+                    defaultValue={eff.split("_")[0]}
+                    onChange={(e) => {
+                      let val = e.target.value;
+                      let cop = JSON.parse(JSON.stringify(info));
+                      for (let i = 0; i < cop["effect"].length; i++) {
+                        if (eff == cop["effect"][i]) {
+                          let splitted = cop["effect"][i].split("_");
+                          cop["effect"][i] =
+                            val + "_" + splitted.slice(1).join("_");
+                        }
+                      }
+                      setInfo(cop);
+                    }}
+                  >
+                    {allValidTriggers(eff)}
+                  </Select>
+                </FormControl>
+              </Tooltip>
+            </Box>
+            {effect_info && effect_info["value_type"] != "NONE" && (
+              <Box>
+                <Tooltip
+                  title={effect_info["value_description"]}
+                  placement="right"
+                >
+                  <FormControl fullWidth>
+                    <InputLabel id={`${effid}-value`} shrink>
+                      Value
+                    </InputLabel>
+                    <TextField
+                      name={"effect-value"}
+                      //labelId="card-cost-simple-select-label"
+                      variant="outlined"
+                      id={`${effid}-effect-value`}
+                      type={"number"}
+                      onChange={(event) => {
+                        let newVal =
+                          event.target.value < 0 ? 0 : event.target.value;
+                        let cop = JSON.parse(JSON.stringify(info));
+                        for (let i = 0; i < cop["effect"].length; i++) {
+                          if (eff == cop["effect"][i]) {
+                            let splitted = cop["effect"][i].split("_");
+                            let val =
+                              splitted.slice(0, 2).join("_") + "_" + newVal;
+                            if (splitted.length > 3) {
+                              val = val + "_" + splitted.slice(3).join("_");
+                            }
+                            cop["effect"][i] = val;
+                          }
+                        }
+                        setInfo(cop);
+                      }}
+                      value={splitted_eff[2]}
+                    />
+                  </FormControl>
+                </Tooltip>
+              </Box>
+            )}
+            <Box>
+              <Tooltip title={targetDesc[splitted_eff[3]]} placement="right">
+                <FormControl fullWidth>
+                  <InputLabel id={`trigger-select-${effid}`}>
+                    Effect Target
+                  </InputLabel>
+                  <Select
+                    id={`${effid}-target`}
+                    label="Effect Target"
+                    defaultValue={splitted_eff[3]}
+                    onChange={(e) => {
+                      let val = e.target.value;
+                      let cop = JSON.parse(JSON.stringify(info));
+                      let new_eff =
+                        splitted_eff.slice(0, 3).join("_") + "_" + val;
+
+                      if (splitted_eff.length > 4) {
+                        new_eff =
+                          new_eff + "_" + splitted_eff.slice(4).join("_");
+                      }
+                      //   }
+                      // }
+                      for (let i = 0; i < cop["effect"].length; i++) {
+                        if (eff == cop["effect"][i]) {
+                          cop["effect"][i] = new_eff;
+                        }
+                      }
+                      setInfo(cop);
+                    }}
+                  >
+                    {effect_info &&
+                      effect_info["valid_target"].map((v) => {
+                        return <MenuItem value={v}>{v}</MenuItem>;
+                      })}
+                  </Select>
+                </FormControl>
+              </Tooltip>
+            </Box>
+            <Box>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => {
+                  deleteEffect(eff);
+                }}
+              >
+                Delete Effect
+              </Button>
+            </Box>
+          </Stack>
+        );
+      });
+    }
+  }
+
+  function addNewEffect() {
+    console.log("add an effect");
+    let cop = JSON.parse(JSON.stringify(info));
+    if (!cop["effect"]) {
+      cop["effect"] = [];
+    }
+    cop["effect"].push(`SUMMON_HEAL_${Math.floor(Math.random() * 100)}_TARGET`);
+    setInfo(cop);
+  }
+
   function renderEffects() {
-    return <Box padding={1}></Box>;
+    return (
+      <Box padding={1}>
+        <h3>{pageType == "cards" ? "Card" : "Enemy"} Effects</h3>
+        <Stack direction="row">
+          {fillCurrentEffects()}
+          <Button variant="contained" color="success" onClick={addNewEffect}>
+            Add New Effect
+          </Button>
+        </Stack>
+      </Box>
+    );
   }
 
   return (
@@ -358,7 +664,7 @@ export default function CardEditorPage() {
                 image={info.image}
                 backgroundColor={info.color || "purple"}
                 description={info.description}
-                effect={info.effect || "None"}
+                effect={generateEffectText(info.effect || [])}
                 stats={[info.attack, info.defense, info.health]}
               />
             )}
@@ -372,9 +678,7 @@ export default function CardEditorPage() {
                 image={info.image || info.image_url}
                 backgroundColor={info.color || "blue"}
                 description={info.description}
-                effect={
-                  info.effect && info.effect.length > 0 ? info.effect : ["None"]
-                }
+                effect={generateEffectText(info.effect || [])}
                 stats={[info["attack"], info["defense"], info["health"]]}
               />
             )}
@@ -388,9 +692,7 @@ export default function CardEditorPage() {
                 image={info.image || info.image_url}
                 backgroundColor={info.color || "blue"}
                 description={info.description}
-                effect={
-                  info.effect && info.effect.length > 0 ? info.effect : ["None"]
-                }
+                effect={generateEffectText(info.effect || [])}
               />
             )}
           </Grid>
@@ -627,6 +929,9 @@ export default function CardEditorPage() {
                 </Tooltip>
               </Box>
             )}
+          </Grid>
+          <Grid item xs={9}>
+            {renderEffects()}
           </Grid>
         </Grid>
       </div>

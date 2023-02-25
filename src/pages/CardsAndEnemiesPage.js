@@ -9,6 +9,7 @@ import getAllFetch from "../utils/getAllFetch";
 import { Button, Container, Stack } from "@mui/material";
 import CreatureCard from "../components/CreatureCard";
 import SpellCard from "../components/SpellCard";
+import effectDescGen from "../utils/effectDescGen";
 
 function CardsAndEnemiesPage() {
   const [pageType, setPageType] = useState("cards");
@@ -118,7 +119,7 @@ function CardsAndEnemiesPage() {
                     image={enemy.image}
                     backgroundColor={enemy.color || "purple"}
                     description={enemy.description}
-                    effect={enemy.effect || "None"}
+                    effect={enemy.effect_description || enemy.effect || ""}
                     stats={[enemy.attack, enemy.defense, enemy.health]}
                   />
                 </Link>
@@ -147,11 +148,7 @@ function CardsAndEnemiesPage() {
                       image={card.image || card.image_url}
                       backgroundColor={card.color || "blue"}
                       description={card.description}
-                      effect={
-                        card.effect && card.effect.length > 0
-                          ? card.effect
-                          : ["None"]
-                      }
+                      effect={card.effect_description || card.effect || ""}
                       stats={[card.attack, card.defense, card.health]}
                     />
                   </Link>
@@ -169,11 +166,7 @@ function CardsAndEnemiesPage() {
                       image={card.image || card.image_url}
                       backgroundColor={card.color || "blue"}
                       description={card.description}
-                      effect={
-                        card.effect && card.effect.length > 0
-                          ? card.effect
-                          : ["None"]
-                      }
+                      effect={card.effect_description || card.effect || ""}
                     />
                   </Link>
                 );
