@@ -15,7 +15,7 @@ export default class Ally extends Card {
             this.health = this.health - damage;
             if(this.health <= 0) {
                 console.log("ally destroyed");
-                
+                scene.AllyHandler.deleteAlly(this.index);
             }
         }
         

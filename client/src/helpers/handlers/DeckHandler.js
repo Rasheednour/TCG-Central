@@ -9,6 +9,8 @@ import SampleAlly from '../cards/SampleAlly';
 //Shuffle
 export default class DeckHandler {
     constructor(scene) {
+        this.cardsDealt = 0;
+
         this.dealCard = (x, y, name, type) => {
             let cards = {
                 //This is where we will load the player deck's cards
@@ -18,7 +20,9 @@ export default class DeckHandler {
                 Sample_Ally: new SampleAlly(scene)
             }
             let newCard = cards[name];
-            return(newCard.render(x, y, type));
+            let id = this.cardsDealt;
+            this.cardsDealt ++;
+            return(newCard.render(x, y, type, id));
         }
     }
 }

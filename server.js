@@ -48,10 +48,8 @@ io.on('connection', function(socket) {
         io.emit('changeGameState', 'Ready'); 
     })
 
-    //right now, when a card is played, the turn changes. This will be changed.
     socket.on('cardPlayed', function (cardName) {
         io.emit('cardPlayed', cardName);
-        //io.emit('changeTurn');
     })
 })
 

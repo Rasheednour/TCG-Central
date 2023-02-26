@@ -71,14 +71,11 @@ export default class InteractiveHandler {
             if (scene.GameHandler.isMyTurn && 
                 scene.GameHandler.gameState === 'Ready' && 
                 scene.AllyHandler.allies.length < 5 &&
-                scene.PlayerHandler.resources >= gameObject.data.values.cost) {
-                gameObject.x = (dropZone.x - 350) + (dropZone.data.values.cards * 150);
-                gameObject.y = dropZone.y;
-                //currently once a card is dropped into a dropzone, it can't be dragged again.
-                //scene.input.setDraggable(gameObject, false);
-                //scene.socket.emit('cardPlayed', gameObject.data.values.name, scene.socket.id);
-                scene.AllyHandler.playAlly(gameObject.data.values.name);
-                scene.dropZone.data.values.cards++;
+                scene.AllyHandler.playAlly(gameObject)) {
+                    gameObject.x = (dropZone.x - 350) + (dropZone.data.values.cards * 150);
+                    gameObject.y = dropZone.y;
+                    scene.dropZone.data.values.cards++;
+                    //scene.socket.emit('cardPlayed', gameObject.data.values.name, scene.socket.id);
             }
             else {
                 gameObject.x = gameObject.input.dragStartX;

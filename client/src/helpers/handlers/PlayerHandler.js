@@ -7,6 +7,8 @@ export default class PlayerHandler {
         this.resources = 1;
         this.maxResources = 1;
         this.resourceGrowth = 1;
+        //this is where the rendered player cards end up.
+        this.playerHand = [];
 
         this.takeDamage = (damageNumber) => {
             this.health = this.health - damageNumber;
