@@ -26,8 +26,10 @@ function EnemyCard({
       </div>
 
       <div className="card-description">
-        <p>{description}</p>
-        <p>Effect: {effect}</p>
+        <p>{effect}</p>
+        <p>
+          <i>{description}</i>
+        </p>
         <div className="card-stats">
           <h5>ATK/ {stats[0]}</h5>
           <h5>DEF/ {stats[1]}</h5>

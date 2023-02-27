@@ -9,12 +9,14 @@ import RuleSetter from "./RuleSetter";
 import GameNameSetter from "./GameNameSetter";
 import CharacterCustomizer from "./CharacterCustomizer";
 import { CONFIG } from "../config";
+import { useNavigate } from "react-router-dom";
 
 export default function GameBuilder({ gameId, userId }) {
   // TODO: make this value come from a config, rather than hardcoded
   const BACKEND_URL = CONFIG.BACKEND_URL;
   const BACKEND_CODE = CONFIG.BACKEND_CODE;
   const ACCESS_TOKEN = CONFIG.ACCESS_TOKEN;
+  const navigate = useNavigate();
 
   const [rules, setRules] = useState([
     {
@@ -57,6 +59,15 @@ export default function GameBuilder({ gameId, userId }) {
     return 0;
   }
 
+  const visitCards = () => {
+    let path = `/cards/${id}`;
+    navigate(path);
+  };
+  const visitEnemies = () => {
+    let path = `/enemies/${id}`;
+    navigate(path);
+  };
+
   function saveGame(event) {
     //This save the game, makes a post request
     updateCharState();
@@ -69,7 +80,7 @@ export default function GameBuilder({ gameId, userId }) {
   useEffect(() => {
     // console.log("game save effect triggered");
     async function updateGame(aGame) {
-      let the_game_id = await fetch(BACKEND_URL + "/games", {
+      let the_game_id = await fetch(BACKEND_URL + `/games`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + ACCESS_TOKEN,
@@ -155,6 +166,9 @@ export default function GameBuilder({ gameId, userId }) {
     gameRules,
     id,
     rules,
+    ACCESS_TOKEN,
+    BACKEND_URL,
+    userId,
   ]);
 
   useEffect(() => {
@@ -242,7 +256,16 @@ export default function GameBuilder({ gameId, userId }) {
     if (!setupDone) {
       fetchData().catch(console.error);
     }
-  }, [rules, abilities, setupDone, gameRules, id]);
+  }, [
+    rules,
+    abilities,
+    setupDone,
+    gameRules,
+    id,
+    ACCESS_TOKEN,
+    BACKEND_CODE,
+    BACKEND_URL,
+  ]);
 
   function updateCharState() {
     let char_copy = [];
@@ -276,6 +299,9 @@ export default function GameBuilder({ gameId, userId }) {
               gameCharacters[i].name.split(" ").join("")
           ).value
         ),
+        id:
+          gameCharacters[i]["id"] ||
+          "char" + Date.now() + "" + Math.floor(Math.random() * 1000),
       });
     }
     setGameCharacters(char_copy);
@@ -295,7 +321,7 @@ export default function GameBuilder({ gameId, userId }) {
 
   return (
     <div>
-      <h1>
+      <h1 spacing={0}>
         <Container sx={{ width: 4 / 7 }}>
           <Button
             variant="contained"
@@ -305,6 +331,30 @@ export default function GameBuilder({ gameId, userId }) {
           >
             SAVE GAME
           </Button>
+        </Container>
+        <Container sx={{ width: 4 / 7 }}>
+          {id && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={visitCards}
+              fullWidth
+            >
+              Edit Game's Cards
+            </Button>
+          )}
+        </Container>
+        <Container sx={{ width: 4 / 7 }}>
+          {id && (
+            <Button
+              variant="contained"
+              color="error"
+              onClick={visitEnemies}
+              fullWidth
+            >
+              Edit Game's Enemies
+            </Button>
+          )}
         </Container>
       </h1>
       <Container>
