@@ -44,7 +44,7 @@ function TopRibbon() {
 
       <div className="redirect-links">
         <Link to="/">Home</Link>
-        <Link to="/tcgportal">TCG Portal</Link>
+        <Link to="/games">TCG Portal</Link>
         {loggedIn ? (
           <Link to="/create">Create TCGs</Link>
         ) : (
