@@ -8,6 +8,9 @@ export default class AllyHandler {
 
         //play an ally from hand:
         this.playAlly = (gameObject) => {
+            if(gameObject.data.values.played = true) {
+                return false;
+            }
             let allies = {
                 //This is where we will load the ally types
                 Sample_Ally: new SampleAlly(scene, this.allyIndex)
@@ -32,6 +35,8 @@ export default class AllyHandler {
             }
         }
 
+        //to kill an ally: remove the JavaScript object that represents the ally from the array.
+        //set the correct sprite to non-visible, and stop tracking that sprite.
         this.deleteAlly = (index) => {
             for(let i in scene.PlayerHandler.playerHand) {
                 if(scene.PlayerHandler.playerHand[i].data.values.id === this.allySprites[index]) {

@@ -74,8 +74,9 @@ export default class InteractiveHandler {
                 scene.AllyHandler.playAlly(gameObject)) {
                     gameObject.x = (dropZone.x - 350) + (dropZone.data.values.cards * 150);
                     gameObject.y = dropZone.y;
+                    //set the played status of the card to true, so it can't be played again by accident.
+                    gameObject.data.values.played = true;
                     scene.dropZone.data.values.cards++;
-                    //scene.socket.emit('cardPlayed', gameObject.data.values.name, scene.socket.id);
             }
             else {
                 gameObject.x = gameObject.input.dragStartX;
