@@ -46,6 +46,22 @@ export default class UIHandler {
             scene.playerHealth.setText('Player Health: ' + Health);
         }
 
+        this.resetAllyPositions = () => {
+            scene.dropZone.data.values.cards = 0;
+            for(let ally in scene.AllyHandler.allySprites) {
+                console.log("checking for ally " + scene.AllyHandler.allySprites[ally]);
+                for(let i in scene.PlayerHandler.playerHand) {
+                    console.log("checking card " + scene.PlayerHandler.playerHand[i].data.values.id)
+                    if(scene.AllyHandler.allySprites[ally] === scene.PlayerHandler.playerHand[i].data.values.id) {
+                        scene.PlayerHandler.playerHand[i].x = (scene.dropZone.x - 350) + (scene.dropZone.data.values.cards * 150);
+                        scene.PlayerHandler.playerHand[i].y = scene.dropZone.y;
+                        scene.dropZone.data.values.cards++;
+                    }
+                }
+            }
+            console.log(scene.dropZone.data.values.cards);
+        }
+
         this.buildUI = () => {
             this.buildZones();
             this.buildPlayerArea();

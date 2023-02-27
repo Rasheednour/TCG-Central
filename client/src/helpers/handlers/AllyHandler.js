@@ -8,7 +8,7 @@ export default class AllyHandler {
 
         //play an ally from hand:
         this.playAlly = (gameObject) => {
-            if(gameObject.data.values.played = true) {
+            if(gameObject.data.values.played === true) {
                 return false;
             }
             let allies = {
@@ -17,9 +17,9 @@ export default class AllyHandler {
             }
             let newAlly = allies[gameObject.data.values.name];
             if(scene.PlayerHandler.resources >= newAlly.cost){
-                this.allies[this.allyIndex] = newAlly;
+                this.allies.push(newAlly);
                 scene.PlayerHandler.spendResources(newAlly.cost);
-                this.allySprites[this.allyIndex] = gameObject.data.values.id;
+                this.allySprites.push(gameObject.data.values.id);
                 this.allyIndex = this.allyIndex + 1;
                 return true;
             } else {
@@ -43,14 +43,15 @@ export default class AllyHandler {
                     scene.PlayerHandler.playerHand[i].visible = false;
                 }
             }
-            this.allies = this.allies.splice(index, 1);
-            this.allSprites = this.allySprites.splice(index, 1);
+            this.allies.splice(index, 1);
+            this.allySprites.splice(index, 1);
+            this.allyIndex --;
             scene.dropZone.data.values.cards --;
-            for(let i in this.allies) {
-                if(this.allies[i].index > index) {
-                    this.allies[i].index --;
-                }
-            }
+            //for(let i in this.allies) {
+                //if(this.allies[i].index > index) {
+                    //this.allies[i].index --;
+                //}
+            //}
         }
     }
 }

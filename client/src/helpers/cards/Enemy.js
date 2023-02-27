@@ -12,9 +12,7 @@ export default class Enemy {
             this.health = this.health - damage;
             if(this.health <= 0) {
                 console.log("enemy destroyed");
-                scene.EnemyHandler.enemyIndex --;
                 scene.EnemyHandler.deleteEnemy(this.index);
-                console.log(scene.GameHandler.enemies);
                 if(scene.EnemyHandler.enemyIndex < 1) {
                     scene.GameHandler.gameWon();
                 }

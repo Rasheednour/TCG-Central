@@ -9,14 +9,18 @@ export default class GameHandler{
 
         this.changeTurn = () => {
             this.isMyTurn = !this.isMyTurn;
-            console.log("isMyTurn: " + this.isMyTurn);
+            console.log("start enemies " + scene.EnemyHandler.enemies);
+            console.log("start allies " + scene.AllyHandler.allies);
             //Enemies take turn here
             scene.EnemyHandler.enemiesAttack();
             //Allies take turn here WILL CHANGE SOON:
             scene.AllyHandler.alliesAttack();
             //reset resources, etc. and return to player turn.
             scene.UIHandler.updatePlayerHealth(scene.PlayerHandler.health);
+            scene.UIHandler.resetAllyPositions();
             scene.PlayerHandler.resetResources();
+            console.log("end enemies " + scene.EnemyHandler.enemies);
+            console.log("end allies " + scene.AllyHandler.allies);
             this.isMyTurn = !this.isMyTurn;
         }
 

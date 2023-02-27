@@ -29,6 +29,7 @@ export default class EnemyHandler {
             this.enemySprites[index].visible = false;
             this.enemies.splice(index, 1);
             this.enemySprites.splice(index, 1);
+            scene.EnemyHandler.enemyIndex --;
             for(let i in this.enemies) {
                 if(this.enemies[i].index > index) {
                     this.enemies[i].index --;
