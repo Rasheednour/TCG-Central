@@ -37,12 +37,10 @@ function SpellCard({
       </div>
 
       <div className="card-description">
-        <p>{description}</p>
-        {effect &&
-          effect.length > 0 &&
-          effect.map((eff) => {
-            return <p>Effect: {effect}</p>;
-          })}
+        <p>{effect}</p>
+        <p>
+          <i>{description}</i>
+        </p>
       </div>
     </div>
   );
