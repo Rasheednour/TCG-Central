@@ -71,7 +71,6 @@ export default class UIHandler {
                     }
                 }
             }
-            console.log(scene.dropZone.data.values.cards);
         }
 
         this.buildUI = () => {
