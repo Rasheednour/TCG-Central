@@ -61,6 +61,7 @@ background-color:rgb(189, 4, 4);
 color: rgb(255, 255, 255);
 }
 .TopRibbon .button2 {
+    margin-right: 20px;
 margin-left: 20px;
 width: 8em;
 border: 2px solid white;
@@ -98,17 +99,14 @@ color: white;
 
 
 .TopRibbon .login-buttons {
-position: absolute;
-margin-left: 80%;
 display: flex;
-
+margin-left: auto;
 }
 
 .TopRibbon .redirect-links {
-position: absolute;
-margin-left: 50%;
 justify-content: center;
 display: flex;
+margin-left: 35%;
 }
 
 .TopRibbon a:hover{

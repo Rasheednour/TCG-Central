@@ -21,7 +21,7 @@ function SetupPage() {
   const [characters, setCharacters] = useState([]);
   const [cards, setCards] = useState([]);
   const [enemies, setEnemies] = useState([]);
-  const [difficulty, setDifficulty] = useState(1);
+  const [difficulty, setDifficulty] = useState("1");
   const [deckSize, setDeckSize] = useState("");
   const game_id = useParams().game_id;
 
@@ -81,16 +81,14 @@ function SetupPage() {
       .catch((error) => {
         console.log("fetch error" + error);
       });
-    const enemiesUrl = BACKEND_API + "games/" + game_id + "/enemies";
-    axios
-      .get(enemiesUrl)
-      .then((res) => {
-        setEnemies(res.data);
-      })
-      .catch((error) => {
-        console.log("fetch error" + error);
-      });
   }, []);
+
+  useEffect(() => {
+    const enemyUrl = BACKEND_API + "games/" + game_id + "/enemies" + "?difficulty=" + difficulty;
+    axios.get(enemyUrl).then((res) => {
+      setEnemies(res.data);
+    })
+  }, [difficulty]);
 
   return (
     <div className="SetupPage">
@@ -144,50 +142,18 @@ function SetupPage() {
             </Select>
           </FormControl>
           <h3>Select Difficulty Level</h3>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">
-              Difficulty Level
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              label="Difficulty"
-              value={difficulty}
-              onChange={handleDifficultyChange}
-              sx={{ bgcolor: "white" }}
-            >
-              <MenuItem key={1} value={1}>
-                1
-              </MenuItem>
-              <MenuItem key={2} value={2}>
-                2
-              </MenuItem>
-              <MenuItem key={3} value={3}>
-                3
-              </MenuItem>
-              <MenuItem key={4} value={4}>
-                4
-              </MenuItem>
-              <MenuItem key={5} value={5}>
-                5
-              </MenuItem>
-              <MenuItem key={6} value={6}>
-                6
-              </MenuItem>
-              <MenuItem key={7} value={7}>
-                7
-              </MenuItem>
-              <MenuItem key={8} value={8}>
-                8
-              </MenuItem>
-              <MenuItem key={9} value={9}>
-                9
-              </MenuItem>
-              <MenuItem key={10} value={10}>
-                10
-              </MenuItem>
-            </Select>
-          </FormControl>
+          <Box
+            component="form"
+            sx={{
+              '& > :not(style)': { m: 1, width: '25ch' },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField id="outlined-basic" label="Difficulty" variant="outlined" value={difficulty} sx={{bgcolor:"white"}} onChange={(event) => {
+              setDifficulty(event.target.value);
+            }}/>
+          </Box>
           <Button variant="contained" onClick={handleSubmit}>
             Start Game
           </Button>
