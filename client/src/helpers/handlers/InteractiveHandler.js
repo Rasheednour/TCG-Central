@@ -7,15 +7,15 @@ export default class InteractiveHandler {
         //Interactions with deal cards button
         scene.startGame.on('pointerdown', () => {
             scene.socket.emit("startGame", scene.socket.id);
-            scene.dealCards.disableInteractive();
+            scene.startGame.disableInteractive();
         })
 
-        scene.dealCards.on('pointerover', () => {
-            scene.dealCards.setColor('#ff69b4');
+        scene.startGame.on('pointerover', () => {
+            scene.startGame.setColor('#ff69b4');
         })
 
-        scene.dealCards.on('pointerout', () => {
-            scene.dealCards.setColor('#00ffff');
+        scene.startGame.on('pointerout', () => {
+            scene.startGame.setColor('#00ffff');
         })
 
         //use the end turn button to end the turn

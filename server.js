@@ -33,7 +33,7 @@ io.on('connection', function(socket) {
         io.emit('changeGameState', "Initializing");
     })
 
-    socket.on('dealCards', function (socketId) {
+    socket.on('startGame', function (socketId) {
         for (let i = 0; i < 5; i++) {
             //if deck is empty, reshuffle in cards. Change later, possibly to shuffle discard?
             if (players[socketId].inDeck.length === 0) {
@@ -43,7 +43,7 @@ io.on('connection', function(socket) {
             players[socketId].inHand.push(players[socketId].inDeck.shift())
         }
         console.log(players);
-        io.emit('dealCards', socketId, players[socketId].inHand);
+        io.emit('startGame', socketId, players[socketId].inHand);
         gameState = 'Ready';
         io.emit('changeGameState', 'Ready'); 
     })
