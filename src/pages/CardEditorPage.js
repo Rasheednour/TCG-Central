@@ -9,6 +9,8 @@ import { v4 } from "uuid";
 import { useLocation, useParams } from "react-router-dom";
 import { CONFIG } from "../config";
 import getAllFetch from "../utils/getAllFetch";
+import { ChromePicker } from "react-color";
+
 import {
   Button,
   Container,
@@ -26,6 +28,7 @@ import {
 import CreatureCard from "../components/CreatureCard";
 import SpellCard from "../components/SpellCard";
 import effectDescGen from "../utils/effectDescGen";
+import { bgcolor } from "@mui/system";
 
 export default function CardEditorPage() {
   const BACKEND_CODE = CONFIG.BACKEND_CODE;
@@ -73,6 +76,19 @@ export default function CardEditorPage() {
   const [imageFile, setImageFile] = useState(null);
   const [game, setGame] = useState({});
   const [effects, setEffects] = useState([]);
+  const [color, setColor] = useState("#000000");
+  const [showColorPicker, setShowColorPicker] = useState(false);
+
+  const handleColorChange = (color) => {
+    setColor(color.hex);
+  };
+
+  const handleSaveColor = () => {
+    setShowColorPicker(!showColorPicker);
+    let cop = JSON.parse(JSON.stringify(info));
+    cop["color"] = color;
+    setInfo(cop);
+  };
 
   function genTypeText(card) {
     let type = card.type;
@@ -777,6 +793,27 @@ export default function CardEditorPage() {
                   Upload Image
                 </Button>
               </form>
+            </Box>
+            <Box padding={1}>
+              <Button
+                sx={{ bgcolor: "orange", color: "black" }}
+                variant="contained"
+                onClick={() => setShowColorPicker(!showColorPicker)}
+              >
+                Change Card Color
+              </Button>
+              {showColorPicker && (
+                <div>
+                  <ChromePicker color={color} onChange={handleColorChange} />
+                  <Button
+                    sx={{ bgcolor: "green" }}
+                    variant="contained"
+                    onClick={handleSaveColor}
+                  >
+                    Save Color
+                  </Button>
+                </div>
+              )}
             </Box>
             {pageType == "cards" && (
               <Box padding={1}>
