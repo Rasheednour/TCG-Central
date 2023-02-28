@@ -9,6 +9,7 @@ import PlayPage from "./pages/PlayPage";
 import CreatePage from "./pages/CreatePage";
 import CardsAndEnemiesPage from "./pages/CardsAndEnemiesPage";
 import CardEditorPage from "./pages/CardEditorPage";
+import SetupPage from "./pages/SetupPage";
 
 function App() {
   return (
@@ -18,10 +19,11 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/tcgportal" element={<TCGPortal />} />
+            <Route path="/games" element={<TCGPortal />} />
             <Route path="/user" element={<UserPage />} />
             <Route path="/play" element={<PlayPage />} />
             <Route path="/create" element={<CreatePage />} />
+            <Route path="/games/:game_id" element={<SetupPage />} />
             <Route path="/create/:game_id" element={<CreatePage />} />
             <Route path="/cards/:game_id" element={<CardsAndEnemiesPage />} />
             <Route path="/enemies/:game_id" element={<CardsAndEnemiesPage />} />

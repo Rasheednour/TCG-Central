@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 //import SearchIcon from "@mui/icons-material/SearchIcon";
 import GameSummary from "../components/GameSummary";
+
 import tcg_portal_cover from "../assets/images/tcg_portal_cover.png";
 import axios from "axios";
 
@@ -61,12 +62,24 @@ function TCGPortal() {
           <div className="tcgames">
             {games.map((game) => (
               <div key={game.name} className="tcg-card">
-                <GameSummary
-                  title={game.name}
-                  description={game.description}
-                  game_id={game.game_id}
-                  imageURL={game.image}
-                />
+                {game.rules.public === "PUBLIC" ? (
+                  <GameSummary
+                    title={game.name}
+                    description={game.description}
+                    game_id={game.game_id}
+                    imageURL={game.image}
+                  />
+                ) : game.rules.public === "OPEN_SOURCE" ? (
+                  <GameSummary
+                    title={game.name}
+                    description={game.description}
+                    game_id={game.game_id}
+                    imageURL={game.image}
+                    publicStatus={game.rules.public}
+                  />
+                ) : (
+                  <></>
+                )}
               </div>
             ))}
           </div>
