@@ -47,11 +47,11 @@ export default class AllyHandler {
             this.allySprites.splice(index, 1);
             this.allyIndex --;
             scene.dropZone.data.values.cards --;
-            //for(let i in this.allies) {
-                //if(this.allies[i].index > index) {
-                    //this.allies[i].index --;
-                //}
-            //}
+            for(let i in this.allies) {
+                if(this.allies[i].index > index) {
+                    this.allies[i].index --;
+                }
+            }
         }
     }
 }

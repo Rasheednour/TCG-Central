@@ -5,8 +5,8 @@ export default class InteractiveHandler {
         scene.cardPreview = null;
 
         //Interactions with deal cards button
-        scene.dealCards.on('pointerdown', () => {
-            scene.socket.emit("dealCards", scene.socket.id);
+        scene.startGame.on('pointerdown', () => {
+            scene.socket.emit("startGame", scene.socket.id);
             scene.dealCards.disableInteractive();
         })
 

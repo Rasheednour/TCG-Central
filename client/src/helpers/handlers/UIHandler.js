@@ -23,8 +23,10 @@ export default class UIHandler {
             scene.enemyArea.setStrokeStyle(4, 0x880808);
         }
 
+
+        //builds the Start Game and End Turn buttons
         this.buildGameText = () => {
-            scene.dealCards = scene.add.text(960, 465, "Deal Cards").setFontSize(14).setFontFamily("Treubuchet MS");
+            scene.startGame = scene.add.text(960, 465, "Start Game").setFontSize(14).setFontFamily("Treubuchet MS");
             scene.endTurn = scene.add.text(960, 365, "End Turn").setFontSize(14).setFontFamily("Treubuchet MS");
         }
 
@@ -46,6 +48,16 @@ export default class UIHandler {
             scene.playerHealth.setText('Player Health: ' + Health);
         }
 
+
+        /*
+        Resets the dropZone's cards to 0
+        
+        Goes through every ally id recorded in AllyHandler's allySprites,
+        and checks them aginst PlayerHandler's playerHand list, which remembers every card GameObject
+        that the player has seen throughout the game. If one matches, it places it in the first available
+        spot in the dropZone. This makes sure that the dropZone doesn't have gaps, and new cards are ready to be played.
+
+        */
         this.resetAllyPositions = () => {
             scene.dropZone.data.values.cards = 0;
             for(let ally in scene.AllyHandler.allySprites) {
