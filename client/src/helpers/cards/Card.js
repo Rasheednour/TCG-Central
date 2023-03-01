@@ -2,7 +2,7 @@ import CardHandler from "../handlers/CardHandler";
 
 export default class Card {
     constructor(scene) {
-        this.render = (x, y, type) => {
+        this.render = (x, y, type, identifier) => {
             let sprite;
             if (type === 'playerCard') {
                 sprite = this.playerCardSprite;
@@ -13,7 +13,9 @@ export default class Card {
             let card = scene.add.image(x, y, sprite).setScale(.25, .25).setInteractive().setData({
                 "name": this.name,
                 "type": type,
-                "sprite": sprite
+                "sprite": sprite,
+                "id": identifier,
+                "played": false
             });
             if (type === 'playerCard') {
                 scene.input.setDraggable(card);

@@ -3,7 +3,8 @@ import io from 'socket.io-client';
 export default class SocketHandler {
     constructor(scene) {
 
-        scene.socket = io('https://tcg-maker-phaser.herokuapp.com/');
+        //scene.socket = io('https://tcg-maker-phaser.herokuapp.com/');
+        scene.socket = io('http://localhost:3000');
         //server connects, and tells the server to deal a deck.
         scene.socket.on('connect', () => {
             console.log("connected!");
@@ -20,9 +21,9 @@ export default class SocketHandler {
             if (gameState === 'Initializing') {
                 scene.DeckHandler.dealCard(1000, 860, "cardBack", 'playerCard');
                 //set the interactive buttons to be interactable
-                scene.dealCards.setInteractive();
+                scene.startGame.setInteractive();
                 scene.endTurn.setInteractive();
-                scene.dealCards.setColor('#00ffff');
+                scene.startGame.setColor('#00ffff');
             }
         })
 
@@ -32,10 +33,10 @@ export default class SocketHandler {
         })
 
         //tells the server to deal cards
-        scene.socket.on('dealCards', (socketId, cards) => {
+        scene.socket.on('startGame', (socketId, cards) => {
             if (socketId === scene.socket.id) {
                 for (let i in cards) {
-                    let card = scene.GameHandler.playerHand.push(scene.DeckHandler.dealCard(155 + (i* 155), 860, cards[i], "playerCard"));
+                    let card = scene.PlayerHandler.playerHand.push(scene.DeckHandler.dealCard(155 + (i* 155), 860, cards[i], "playerCard"));
                 }
             }
         })

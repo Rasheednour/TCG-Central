@@ -1,7 +1,7 @@
 import Enemy from "./Enemy";
 
 export default class SampleEnemy extends Enemy {
-    constructor(scene) {
+    constructor(scene, index) {
         super(scene);
         this.name = "Sample_Enemy";
         this.enemyCardSprite = "blazingGlory";
@@ -9,5 +9,6 @@ export default class SampleEnemy extends Enemy {
         this.defense = 0;
         this.health = 2;
         this.ability = "";
+        this.index = index;
     }
 }

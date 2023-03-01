@@ -5,17 +5,17 @@ export default class InteractiveHandler {
         scene.cardPreview = null;
 
         //Interactions with deal cards button
-        scene.dealCards.on('pointerdown', () => {
-            scene.socket.emit("dealCards", scene.socket.id);
-            scene.dealCards.disableInteractive();
+        scene.startGame.on('pointerdown', () => {
+            scene.socket.emit("startGame", scene.socket.id);
+            scene.startGame.disableInteractive();
         })
 
-        scene.dealCards.on('pointerover', () => {
-            scene.dealCards.setColor('#ff69b4');
+        scene.startGame.on('pointerover', () => {
+            scene.startGame.setColor('#ff69b4');
         })
 
-        scene.dealCards.on('pointerout', () => {
-            scene.dealCards.setColor('#00ffff');
+        scene.startGame.on('pointerout', () => {
+            scene.startGame.setColor('#00ffff');
         })
 
         //use the end turn button to end the turn
@@ -68,14 +68,15 @@ export default class InteractiveHandler {
         })
 
         scene.input.on('drop', (pointer, gameObject, dropZone) => {
-            if (scene.GameHandler.isMyTurn && scene.GameHandler.gameState === 'Ready' && scene.AllyHandler.allies.length < 5) {
-                gameObject.x = (dropZone.x - 350) + (dropZone.data.values.cards * 150);
-                gameObject.y = dropZone.y;
-                //currently once a card is dropped into a dropzone, it can't be dragged again.
-                //scene.input.setDraggable(gameObject, false);
-                //scene.socket.emit('cardPlayed', gameObject.data.values.name, scene.socket.id);
-                scene.AllyHandler.playAlly(gameObject.data.values.name);
-                scene.dropZone.data.values.cards++;
+            if (scene.GameHandler.isMyTurn && 
+                scene.GameHandler.gameState === 'Ready' && 
+                scene.AllyHandler.allies.length < 5 &&
+                scene.AllyHandler.playAlly(gameObject)) {
+                    gameObject.x = (dropZone.x - 350) + (dropZone.data.values.cards * 150);
+                    gameObject.y = dropZone.y;
+                    //set the played status of the card to true, so it can't be played again by accident.
+                    gameObject.data.values.played = true;
+                    scene.dropZone.data.values.cards++;
             }
             else {
                 gameObject.x = gameObject.input.dragStartX;
