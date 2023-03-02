@@ -1,14 +1,23 @@
 import "./styles/SignUpPage.css";
+import "./styles/CardEditorPage.css";
 import TopRibbon from "../components/TopRibbon.js";
 import EnemyCard from "../components/EnemyCard";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { storage } from "../config/firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  uploadString,
+} from "firebase/storage";
 import { v4 } from "uuid";
 import { useLocation, useParams } from "react-router-dom";
 import { CONFIG } from "../config";
 import getAllFetch from "../utils/getAllFetch";
+import { ChromePicker } from "react-color";
+import html2canvas from "html2canvas";
+
 import {
   Button,
   Container,
@@ -26,6 +35,7 @@ import {
 import CreatureCard from "../components/CreatureCard";
 import SpellCard from "../components/SpellCard";
 import effectDescGen from "../utils/effectDescGen";
+import { bgcolor } from "@mui/system";
 
 export default function CardEditorPage() {
   const BACKEND_CODE = CONFIG.BACKEND_CODE;
@@ -73,6 +83,49 @@ export default function CardEditorPage() {
   const [imageFile, setImageFile] = useState(null);
   const [game, setGame] = useState({});
   const [effects, setEffects] = useState([]);
+  const [color, setColor] = useState("#000000");
+  const [showColorPicker, setShowColorPicker] = useState(false);
+
+  const handleColorChange = (color) => {
+    setColor(color.hex);
+  };
+
+  const handleSaveColor = () => {
+    setShowColorPicker(!showColorPicker);
+    let cop = JSON.parse(JSON.stringify(info));
+    cop["color"] = color;
+    setInfo(cop);
+  };
+
+  const creaturePrintRef = React.useRef();
+  const spellPrintRef = React.useRef();
+  const enemyPrintRef = React.useRef();
+  const handleDownloadImage = async () => {
+    let element;
+    let saveFolder = "cards";
+    let cardId = info.card_id;
+    if (pageType === "cards" && info.type === "CREATURE") {
+      element = creaturePrintRef.current;
+    } else if (pageType === "cards" && info.type === "SPELL") {
+      element = spellPrintRef.current;
+    } else {
+      element = enemyPrintRef.current;
+      saveFolder = "enemies";
+      cardId = info.enemy_id;
+    }
+    const canvas = await html2canvas(element, { useCORS: true });
+
+    const data = canvas.toDataURL("image/jpg");
+    let newData = data.split(",")[1];
+    const imageRef = ref(storage, `${saveFolder}/${cardId + ".jpg"}`);
+    // start image upload
+    uploadString(imageRef, newData, "base64").then((snapshot) => {
+      // get the image's public URL
+      getDownloadURL(imageRef).then((downloadURL) => {
+        console.log(downloadURL);
+      });
+    });
+  };
 
   function genTypeText(card) {
     let type = card.type;
@@ -189,7 +242,9 @@ export default function CardEditorPage() {
     };
     if (triggerSave) {
       setTriggerSave(false);
-      saveInfo();
+      saveInfo().then((data) => {
+        handleDownloadImage();
+      });
     }
   }, [info, triggerSave]);
 
@@ -655,44 +710,50 @@ export default function CardEditorPage() {
           </Grid>
           <Grid item xs>
             {pageType == "enemies" && (
-              <EnemyCard
-                domId={`id-enemy-card-${info.enemy_id}`}
-                key={`enemy-${info.enemy_id}`}
-                title={info.name}
-                level={info.level}
-                image={info.image}
-                backgroundColor={info.color || "purple"}
-                description={info.description}
-                effect={generateEffectText(info.effect || [])}
-                stats={[info.attack, info.defense, info.health]}
-              />
+              <div ref={enemyPrintRef} className="card-to-image-container">
+                <EnemyCard
+                  domId={`id-enemy-card-${info.enemy_id}`}
+                  key={`enemy-${info.enemy_id}`}
+                  title={info.name}
+                  level={info.level}
+                  image={info.image}
+                  backgroundColor={info.color || "purple"}
+                  description={info.description}
+                  effect={generateEffectText(info.effect || [])}
+                  stats={[info.attack, info.defense, info.health]}
+                />
+              </div>
             )}
             {pageType == "cards" && info.type == "CREATURE" && (
-              <CreatureCard
-                domId={`id-card-${info.card_id}`}
-                key={`card-${info.card_id}`}
-                title={info.name}
-                cost={info.cost}
-                type={genTypeText(info)}
-                image={info.image || info.image_url}
-                backgroundColor={info.color || "blue"}
-                description={info.description}
-                effect={generateEffectText(info.effect || [])}
-                stats={[info["attack"], info["defense"], info["health"]]}
-              />
+              <div ref={creaturePrintRef} className="card-to-image-container">
+                <CreatureCard
+                  domId={`id-card-${info.card_id}`}
+                  key={`card-${info.card_id}`}
+                  title={info.name}
+                  cost={info.cost}
+                  type={genTypeText(info)}
+                  image={info.image || info.image_url}
+                  backgroundColor={info.color || "blue"}
+                  description={info.description}
+                  effect={generateEffectText(info.effect || [])}
+                  stats={[info["attack"], info["defense"], info["health"]]}
+                />
+              </div>
             )}
             {pageType == "cards" && info.type == "SPELL" && (
-              <SpellCard
-                domId={`id-spell-card-${info.card_id}`}
-                key={`card-spell-${info.card_id}`}
-                title={info.name}
-                cost={info.cost}
-                type={genTypeText(info)}
-                image={info.image || info.image_url}
-                backgroundColor={info.color || "blue"}
-                description={info.description}
-                effect={generateEffectText(info.effect || [])}
-              />
+              <div ref={spellPrintRef} className="card-to-image-container">
+                <SpellCard
+                  domId={`id-spell-card-${info.card_id}`}
+                  key={`card-spell-${info.card_id}`}
+                  title={info.name}
+                  cost={info.cost}
+                  type={genTypeText(info)}
+                  image={info.image || info.image_url}
+                  backgroundColor={info.color || "blue"}
+                  description={info.description}
+                  effect={generateEffectText(info.effect || [])}
+                />
+              </div>
             )}
           </Grid>
           <Grid item xs>
@@ -777,6 +838,27 @@ export default function CardEditorPage() {
                   Upload Image
                 </Button>
               </form>
+            </Box>
+            <Box padding={1}>
+              <Button
+                sx={{ bgcolor: "orange", color: "black" }}
+                variant="contained"
+                onClick={() => setShowColorPicker(!showColorPicker)}
+              >
+                Change Card Color
+              </Button>
+              {showColorPicker && (
+                <div>
+                  <ChromePicker color={color} onChange={handleColorChange} />
+                  <Button
+                    sx={{ bgcolor: "green" }}
+                    variant="contained"
+                    onClick={handleSaveColor}
+                  >
+                    Save Color
+                  </Button>
+                </div>
+              )}
             </Box>
             {pageType == "cards" && (
               <Box padding={1}>
