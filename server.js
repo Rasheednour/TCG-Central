@@ -24,6 +24,7 @@ io.on('connection', function(socket) {
     players[socket.id] = {
         inDeck: [],
         inHand: [],
+        inPlay: [],
     }
 
     socket.on('dealDeck', function(socketId) {

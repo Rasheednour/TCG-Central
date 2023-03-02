@@ -2,13 +2,20 @@
 
 export default class PlayerHandler {
     constructor(scene) {
-        //default starting health is currently 20, but we will want to get this number from the database.
+        //Stats affected by rules
         this.health = 20;
+        this.resourceGrowth = 1;
+
+
+        //things that we keep track of during the game
         this.resources = 1;
         this.maxResources = 1;
-        this.resourceGrowth = 1;
+        
         //this is where the rendered player cards end up.
         this.playerHand = [];
+        
+        //this keeps track of cards that have been played.
+        this.playedCards = []
 
         this.takeDamage = (damageNumber) => {
             this.health = this.health - damageNumber;
