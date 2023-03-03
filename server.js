@@ -34,8 +34,9 @@ io.on('connection', function(socket) {
         io.emit('changeGameState', "Initializing");
     })
 
-    socket.on('startGame', function (socketId) {
-        for (let i = 0; i < 5; i++) {
+    //starts the game by dealing the player numCards cards.
+    socket.on('startGame', function (socketId, numCards) {
+        for (let i = 0; i < numCards; i++) {
             //if deck is empty, reshuffle in cards. Change later, possibly to shuffle discard?
             if (players[socketId].inDeck.length === 0) {
                 players[socketId]. inDeck = shuffle(["Sample_Ally"]);

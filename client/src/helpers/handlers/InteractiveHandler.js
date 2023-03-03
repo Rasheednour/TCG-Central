@@ -1,4 +1,8 @@
 //InteractiveHandler handles player interactions with game elements. Right now we can deal cards and drag them into dropZones.
+
+//This is where the starting hand size is kept. It's used on the pointerdown function for startGame.
+const STARTGAMECARDS = 5;
+
 export default class InteractiveHandler {
     constructor(scene) {
 
@@ -6,7 +10,7 @@ export default class InteractiveHandler {
 
         //Interactions with deal cards button
         scene.startGame.on('pointerdown', () => {
-            scene.socket.emit("startGame", scene.socket.id);
+            scene.socket.emit("startGame", scene.socket.id, STARTGAMECARDS);
             scene.startGame.disableInteractive();
         })
 

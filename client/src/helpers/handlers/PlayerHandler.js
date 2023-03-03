@@ -24,6 +24,17 @@ export default class PlayerHandler {
             }
         }
 
+        //this moves a card from the playerHand array to the playedCards array,
+        //so that we can track which cards remain in hand.
+        this.playCard = (playCard) => {
+            for(i in this.playerHand.length) {
+                if(playCard.data.values.name == this.playerHand[i].data.values.name) {
+                    this.playerHand.splice(i,1);
+                    this.playCards.push(playCard);
+                }
+            }
+        }
+
         this.spendResources = (cost) => {
             this.resources = this.resources - cost;
             scene.UIHandler.updatePlayerResources(this.resources);
