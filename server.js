@@ -22,6 +22,8 @@ io.on('connection', function(socket) {
     console.log('A player connected ' + socket.id);
 
     players[socket.id] = {
+        //Deck is where the cards should be loaded in.
+        deck: ["Sample_Ally"],
         inDeck: [],
         inHand: [],
         inPlay: [],
@@ -29,7 +31,11 @@ io.on('connection', function(socket) {
 
     socket.on('dealDeck', function(socketId) {
         //where cards are currently loaded in.
-        players[socketId].inDeck = shuffle(["Sample_Ally"]);
+        let deck = [];
+        for(let i = 0; i< players[socketId].deck.length; i++) {
+            deck[i] = players[socketId].deck[i];
+        }
+        players[socketId].inDeck = shuffle(deck);
         console.log(players);
         io.emit('changeGameState', "Initializing");
     })
@@ -39,7 +45,11 @@ io.on('connection', function(socket) {
         for (let i = 0; i < numCards; i++) {
             //if deck is empty, reshuffle in cards. Change later, possibly to shuffle discard?
             if (players[socketId].inDeck.length === 0) {
-                players[socketId]. inDeck = shuffle(["Sample_Ally"]);
+                let deck = [];
+                for(let j = 0; j< players[socketId].deck.length; j++) {
+                    deck[j] = players[socketId].deck[j];
+                }
+                players[socketId].inDeck = shuffle(deck);
             }
             //deal top card from deck to hand
             players[socketId].inHand.push(players[socketId].inDeck.shift())
@@ -53,7 +63,17 @@ io.on('connection', function(socket) {
     socket.on('cardPlayed', function (cardName) {
         io.emit('cardPlayed', cardName);
     })
+
+    /*socket.on('drawCard', function(socketId, numCards) {
+        for(let i = 0; i < numCards; i++) {
+            if(players[socketId].inDeck.length === 0) {
+                players.inDeck = shuffle[shuffleDeck];
+            }
+        }
+    })*/
 })
+
+
 
 const port = process.env.PORT || 3000;
 
