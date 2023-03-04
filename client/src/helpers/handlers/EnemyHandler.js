@@ -22,7 +22,12 @@ export default class EnemyHandler {
             this.enemies[this.enemyIndex] = newEnemy;
             this.enemySprites[this.enemyIndex] = (newEnemy.render(x, y));
             this.enemyIndex = this.enemyIndex + 1;
+            console.log(this.enemySprites);
             return;
+        }
+
+        this.updateHealth = (health, index) => {
+            this.enemySprites[index].list[3].setText(`<3 ${health}`);
         }
 
         this.deleteEnemy = (index) => {

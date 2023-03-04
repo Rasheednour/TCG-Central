@@ -16,6 +16,8 @@ export default class Enemy {
                 if(scene.EnemyHandler.enemyIndex < 1) {
                     scene.GameHandler.gameWon();
                 }
+            } else {
+                scene.EnemyHandler.updateHealth(this.health, this.index);
             }
         }
 
@@ -64,7 +66,6 @@ export default class Enemy {
                 "healthText": healthText,
                 "index": this.index
             });
-
             return enemy;
         }
     }
