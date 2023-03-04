@@ -28,7 +28,7 @@ export default class Enemy {
             }
         }
 
-        this.render = (x, y) => {
+        /*this.render = (x, y) => {
             let sprite;
             sprite = this.enemyCardSprite;
             let enemy = scene.add.image(x, y, sprite).setScale(.25, .25).setInteractive().setData({
@@ -40,6 +40,35 @@ export default class Enemy {
                 "index": this.index
             });  
             return enemy;
+        }*/
+
+        this.render = (x, y) => {
+            let sprite;
+            sprite = scene.add.image(0, 0, this.enemyCardSprite);
+            let attackText = scene.add.text(-100, 240, `${this.attack}`).setFontSize(40).setFontFamily("Treubuchet MS")
+            let defenseText = scene.add.text(0, 240, `${this.defense}`).setFontSize(40).setFontFamily("Treubuchet MS")
+            let healthText = scene.add.text(100, 240, ` <3 ${this.health}`).setFontSize(40).setFontFamily("Treubuchet MS")
+            let enemy = scene.add.container(x, y, [ sprite, attackText, defenseText, healthText ])
+            .setDataEnabled()
+            .setSize(sprite.width, sprite.height)
+            .setScale(.25,.25)
+            .setInteractive()
+            .setData({
+                "name": this.name,
+                "attack": this.attack,
+                "defense": this.defense,
+                "health": this.health,
+                "sprite": sprite,
+                "attackText": attackText,
+                "defenseText": defenseText,
+                "healthText": healthText,
+                "index": this.index
+            });
+
+            return enemy;
         }
     }
 }
+
+
+//.setInteractive(new Phaser.Geom.Rectangle(0,0, 85, 115), Phaser.Geom.Rectangle.Contains)

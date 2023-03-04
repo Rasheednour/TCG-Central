@@ -44,15 +44,22 @@ export default class InteractiveHandler {
         //when we hover over the front of a card, we get a larger, easier to read highlight. 
         scene.input.on('pointerover', (event, gameObjects) => {
             let pointer = scene.input.activePointer;
-            if (gameObjects[0].type === 'Image' && gameObjects[0].data.list.name !== 'cardBack') {
+            if (gameObjects[0].type === 'Image'  && gameObjects[0].data.list.name !== 'cardBack') {
                 scene.cardPreview = scene.add.image(pointer.worldX, pointer.worldY, gameObjects[0].data.values.sprite).setScale(.5, .5);
-            };
+            } else if(gameObjects[0].type === 'Container') {
+                console.log("found a container!")
+                scene.children.bringToTop(gameObjects[0]);
+                gameObjects[0].setScale(.5, .5);
+                
+            }
         });
 
         scene.input.on('pointerout', (event, gameObjects) => {
             if (gameObjects[0].type === 'Image' && gameObjects[0].data.list.name !== 'cardBack') {
                 scene.cardPreview.setVisible(false);
-            };
+            } else if(gameObjects[0].type === 'Container') {
+                gameObjects[0].setScale(.25, .25)
+            }
         });
 
         //Interactions for draggable elements (right now only cards)
