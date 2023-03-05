@@ -1,7 +1,5 @@
 import io from 'socket.io-client';
 
-const STARTHANDNUM = 4;
-
 export default class SocketHandler {
     constructor(scene) {
 
