@@ -24,8 +24,15 @@ export default class AllyHandler {
                 return true;
             } else {
                 return false;
+            }   
+        }
+
+        this.updateHealth = (health, index) => {
+            for(let i in scene.PlayerHandler.playerHand) {
+                if(scene.PlayerHandler.playerHand[i].data.values.id === this.allySprites[index]) {
+                    scene.PlayerHandler.playerHand[i].list[3].setText(`<3 ${health}`);
+                }
             }
-            
         }
 
         //temporary ally auto-attack:

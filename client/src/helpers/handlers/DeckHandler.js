@@ -9,7 +9,7 @@ export default class DeckHandler {
     constructor(scene) {
         this.cardsDealt = 0;
 
-        this.dealCard = (x, y, name, type) => {
+        this.dealCard = (x, y, name) => {
             let cards = {
                 //This is where we will load the player deck's cards
                 cardBack: new CardBack(scene),
@@ -18,7 +18,7 @@ export default class DeckHandler {
             let newCard = cards[name];
             let id = this.cardsDealt;
             this.cardsDealt ++;
-            return(newCard.render(x, y, type, id));
+            return(newCard.render(x, y, id));
         }
     }
 }

@@ -21,7 +21,7 @@ export default class SocketHandler {
         scene.socket.on('changeGameState', (gameState) =>{
             scene.GameHandler.changeGameState(gameState);
             if (gameState === 'Initializing') {
-                scene.DeckHandler.dealCard(1000, 860, "cardBack", 'playerCard');
+                scene.DeckHandler.dealCard(1000, 860, "cardBack");
                 //set the interactive buttons to be interactable
                 scene.startGame.setInteractive();
                 scene.endTurn.setInteractive();

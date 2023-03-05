@@ -55,23 +55,17 @@ export default class InteractiveHandler {
         });
 
         scene.input.on('pointerout', (event, gameObjects) => {
-            if (gameObjects[0].type === 'Image' && gameObjects[0].data.list.name !== 'cardBack') {
-                scene.cardPreview.setVisible(false);
-            } else if(gameObjects[0].type === 'Container') {
+        if(gameObjects[0].type === 'Container') {
                 gameObjects[0].setScale(.25, .25)
             }
         });
 
         //Interactions for draggable elements (right now only cards)
         scene.input.on('dragstart', (pointer, gameObject) => {
-            gameObject.setTint(0xff69b4);
             scene.children.bringToTop(gameObject);
-            //turn off preview to prevent visual overlay
-            scene.cardPreview.setVisible(false);
         })
 
         scene.input.on('dragend', (pointer, gameObject, dropped) => {
-           gameObject.setTint();
            if(!dropped) {
             gameObject.x = gameObject.input.dragStartX;
             gameObject.y = gameObject.input.dragStartY;
