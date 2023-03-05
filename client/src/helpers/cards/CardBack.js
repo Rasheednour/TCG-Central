@@ -6,5 +6,10 @@ export default class CardBack extends Card {
         this.name = 'cardBack';
         this.playerCardSprite = 'cardBack';
         this.enemyCardSprite = 'cardBack';
+        this.cost = 0;
+        this.health = 0
+        this.attack = 0;
+        this.defense = 0;
+
     }
 }
