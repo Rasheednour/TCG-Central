@@ -1,18 +1,20 @@
 export default class Card {
     constructor(scene) {
         this.render = (x, y, identifier) => {
+            let nameText;
             let sprite;
             let attackText = "none";
             let defenseText = "none";
             let healthText = "none";
             let costText = "none";
             sprite = scene.add.image(0, 0, this.playerCardSprite);
+            nameText = scene.add.text(-150, -300, `${this.name}`).setFontSize(40).setFontFamily("Treubuchet MS");
             costText = scene.add.text(100, -300, `cost: ${this.cost}`).setFontSize(40).setFontFamily("Treubuchet MS");
             attackText = scene.add.text(-100, 240, `${this.attack}`).setFontSize(40).setFontFamily("Treubuchet MS");
             defenseText = scene.add.text(0, 240, `${this.defense}`).setFontSize(40).setFontFamily("Treubuchet MS");
             healthText = scene.add.text(100, 240, ` <3 ${this.health}`).setFontSize(40).setFontFamily("Treubuchet MS")
             
-            let card = scene.add.container(x, y, [ sprite, attackText, defenseText, healthText, costText ])
+            let card = scene.add.container(x, y, [ sprite, attackText, defenseText, healthText, costText, nameText ])
             .setDataEnabled()
             .setSize(sprite.width, sprite.height)
             .setScale(.25,.25)
