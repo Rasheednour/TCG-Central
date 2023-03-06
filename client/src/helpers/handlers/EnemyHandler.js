@@ -4,6 +4,7 @@ export default class EnemyHandler {
     constructor(scene) {
         //this is where the enemy information needs to end up to get enemies to spawn.
         this.enemyNames = [['blazingGlory',"Sample_Enemy", 1, 0, 2, ""], ["blazingGlory","Sample_Enemy", 1, 0, 2, ""]];
+        //this index number is how we tie the JavaScipt Enemy objects to their Container representations.
         this.enemyIndex = 0;
         //this is where the spawned enemy JS objects end up
         this.enemies = [];
