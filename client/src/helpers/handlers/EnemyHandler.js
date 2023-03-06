@@ -1,10 +1,13 @@
-import SampleEnemy from "../cards/SampleEnemy";
+import Enemy from "../cards/Enemy";
 
 export default class EnemyHandler {
     constructor(scene) {
-        this.enemyNames = ["Sample_Enemy", "Sample_Enemy"];
+        //this is where the enemy information needs to end up to get enemies to spawn.
+        this.enemyNames = [['blazingGlory',"Sample_Enemy", 1, 0, 2, ""], ["blazingGlory","Sample_Enemy", 1, 0, 2, ""]];
         this.enemyIndex = 0;
+        //this is where the spawned enemy JS objects end up
         this.enemies = [];
+        //this is where the Phaser Containers representing the enemies end up
         this.enemySprites = [];
 
         this.enemiesAttack = () => {
@@ -13,12 +16,8 @@ export default class EnemyHandler {
             }
         }
 
-        this.spawnEnemy = (x, y, name) => {
-            let enemies = {
-                //This is where we will load the Enemy types
-                Sample_Enemy: new SampleEnemy(scene, this.enemyIndex)
-            }
-            let newEnemy = enemies[name];
+        this.spawnEnemy = (x, y, sprite, name, attack, defense, health, ability) => {
+            let newEnemy = new Enemy(scene, sprite, name, attack, defense, health, ability, this.enemyIndex);
             this.enemies[this.enemyIndex] = newEnemy;
             this.enemySprites[this.enemyIndex] = (newEnemy.render(x, y));
             this.enemyIndex = this.enemyIndex + 1;

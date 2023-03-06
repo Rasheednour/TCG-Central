@@ -26,7 +26,14 @@ export default class GameHandler{
 
         this.spawnEnemies = () => {
             for(let i in scene.EnemyHandler.enemyNames) {
-                scene.EnemyHandler.spawnEnemy(155 + (i * 155), 135, scene.EnemyHandler.enemyNames[i])
+                scene.EnemyHandler.spawnEnemy(155 + (i * 155), 135, 
+                scene.EnemyHandler.enemyNames[i][0], 
+                scene.EnemyHandler.enemyNames[i][1],
+                scene.EnemyHandler.enemyNames[i][2],
+                scene.EnemyHandler.enemyNames[i][3],
+                scene.EnemyHandler.enemyNames[i][4],
+                scene.EnemyHandler.enemyNames[i][5],  
+                )
             }
         }
 

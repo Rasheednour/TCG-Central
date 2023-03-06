@@ -1,7 +1,7 @@
 export default class Enemy {
-    constructor(scene, name, level, attack, defense, health, ability, index) {
+    constructor(scene, sprite, name, attack, defense, health, ability, index) {
         this.name = name;
-        this.level = level;
+        this.sprite = sprite;
         this.attack = attack;
         this.defense = defense;
         this.health = health;
@@ -31,8 +31,7 @@ export default class Enemy {
         }
 
         this.render = (x, y) => {
-            let sprite;
-            sprite = scene.add.image(0, 0, this.enemyCardSprite);
+            let sprite = scene.add.image(0, 0, this.sprite);
             let nameText = scene.add.text(-150, -300, `${this.name}`).setFontSize(40).setFontFamily("Treubuchet MS")
             let attackText = scene.add.text(-100, 240, `${this.attack}`).setFontSize(40).setFontFamily("Treubuchet MS")
             let defenseText = scene.add.text(0, 240, `${this.defense}`).setFontSize(40).setFontFamily("Treubuchet MS")
