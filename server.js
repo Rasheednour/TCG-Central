@@ -23,7 +23,7 @@ io.on('connection', function(socket) {
 
     players[socket.id] = {
         //Deck is where the cards should be loaded in.
-        deck: ["Sample_Ally"],
+        deck: [["ally", "Sample_Ally", "stonePath", 1, 1, 0, 2, ""]],
         inDeck: [],
         inHand: [],
         inPlay: [],

@@ -1,4 +1,4 @@
-import SampleAlly from "../cards/SampleAlly";
+import Ally from "../cards/Ally";
 
 export default class AllyHandler {
     constructor(scene) {
@@ -11,11 +11,14 @@ export default class AllyHandler {
             if(gameObject.data.values.played === true) {
                 return false;
             }
-            let allies = {
-                //This is where we will load the ally types
-                Sample_Ally: new SampleAlly(scene, this.allyIndex)
-            }
-            let newAlly = allies[gameObject.data.values.name];
+            let newAlly = new Ally(scene,
+                gameObject.data.values.name, 
+                gameObject.data.values.cost, 
+                gameObject.data.values.attack, 
+                gameObject.data.values.defense, 
+                gameObject.data.values.health, 
+                gameObject.data.values.ability,
+                this.allyIndex);
             if(scene.PlayerHandler.resources >= newAlly.cost){
                 this.allies.push(newAlly);
                 scene.PlayerHandler.spendResources(newAlly.cost);
