@@ -2,6 +2,7 @@ const server = require('express')();
 const http = require('http').createServer(server);
 const cors = require('cors');
 const path = require('path');
+const bodyParser = require('body-parser');
 const serveStatic = require('serve-static')
 const shuffle = require('shuffle-array');
 let players = {};
@@ -17,6 +18,20 @@ const io = require('socket.io')(http, {
 
 server.use(cors());
 server.use(serveStatic(__dirname + "/client/dist"));
+server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.json());
+
+// Endpoint to receive data via POST request
+server.post('/data', function (req, res) {
+    const data = req.body;
+    console.log('Received data:', data);
+    io.emit('dataReceived', data);
+    res.sendStatus(200);
+});
+
+server.get('/', function (req, res) {
+    res.send("Server Listening...");
+});
 
 io.on('connection', function(socket) {
     console.log('A player connected ' + socket.id);
