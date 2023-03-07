@@ -1,8 +1,6 @@
-import Card from "./Card"
-
-export default class Ally extends Card {
+export default class Ally {
     constructor(scene, name, cost, attack, defense, health, ability, index) {
-        super(scene);
+        this.scene = scene;
         this.name = name;
         this.cost = cost;
         this.attack = attack;
