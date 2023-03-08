@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Button, Container, Stack } from "@mui/material";
-import "./styles/SignUpForm.css";
+import "./styles/GameBuilder.css";
 import getAllFetch from "../utils/getAllFetch";
 import RuleSetter from "./RuleSetter";
 import GameNameSetter from "./GameNameSetter";
@@ -320,45 +320,46 @@ export default function GameBuilder({ gameId, userId }) {
   }
 
   return (
-    <div>
+    <div className="GameBuilder">
       <h1 spacing={0}>
-        <Container sx={{ width: 4 / 7 }}>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={saveGame}
-            fullWidth
-          >
-            SAVE GAME
-          </Button>
-        </Container>
-        <Container sx={{ width: 4 / 7 }}>
-          {id && (
+        <div className="main-buttons">
+          <Container>
             <Button
               variant="contained"
-              color="primary"
-              onClick={visitCards}
+              color="secondary"
+              onClick={saveGame}
               fullWidth
             >
-              Edit Game's Cards
+              SAVE GAME
             </Button>
-          )}
+          </Container>
+          <Container>
+            {id && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={visitCards}
+                fullWidth
+              >
+                Edit Game's Cards
+              </Button>
+            )}
+          </Container>
+          <Container>
+            {id && (
+              <Button
+                variant="contained"
+                color="error"
+                onClick={visitEnemies}
+                fullWidth
+              >
+                Edit Game's Enemies
+              </Button>
+            )}
         </Container>
-        <Container sx={{ width: 4 / 7 }}>
-          {id && (
-            <Button
-              variant="contained"
-              color="error"
-              onClick={visitEnemies}
-              fullWidth
-            >
-              Edit Game's Enemies
-            </Button>
-          )}
-        </Container>
+        </div>
       </h1>
-      <Container>
-        <Stack direction="column" spacing={2}>
+      <Container className="game-info">
           <GameNameSetter
             gameNameProp={gameName}
             setGameName={handleGameNameChange}
@@ -380,7 +381,6 @@ export default function GameBuilder({ gameId, userId }) {
             gameRules={gameRules}
             key={rules[0].name}
           ></RuleSetter>
-        </Stack>
       </Container>
     </div>
   );

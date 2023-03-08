@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./styles/RuleSetter.css";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -149,11 +150,18 @@ export default function RuleSetter({ theRules, setGameRules, gameRules }) {
   }
 
   return (
-    <Grid container spacing={1}>
-      {allRules.map((currentRule) => {
-        return generateRuleZone(currentRule);
-      })}
-    </Grid>
+    <div className="RuleSetter">
+      <div className="title">
+        <h1>Game Rules</h1>
+      </div>
+      <div className="rules">
+      <Grid container spacing={1}>
+        {allRules.map((currentRule) => {
+          return generateRuleZone(currentRule);
+        })}
+      </Grid>
+      </div>
+    </div>
     // <List>
     //   {allRules.length != 0 ? (
     //     allRules.map((cur) => {

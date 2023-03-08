@@ -1,0 +1,23 @@
+.RuleSetter .title {
+    background-color: black;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.RuleSetter .title h1 {
+    color: rgb(255, 255, 255);
+    font-size: 35px;
+    text-align: center;
+    padding-bottom: 75px;
+    margin-right: 80%;
+}
+
+.RuleSetter .rules {
+    margin-top: 20px;
+}
+
+.RuleSetter {
+    font-size: 30px;
+}

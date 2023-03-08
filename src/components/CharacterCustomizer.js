@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Box, Stack, TextField, Tooltip } from "@mui/material";
+import "./styles/CharacterCustomizer.css";
 
 export default function CharacterCustomizer({
   characters,
@@ -176,7 +177,7 @@ export default function CharacterCustomizer({
                   deleteChar(target);
                 }}
               >
-                Delete {characters[i].name}
+                Delete Character
               </Button>
             </Box>
           </Stack>
@@ -187,11 +188,20 @@ export default function CharacterCustomizer({
   }
 
   return (
-    <Stack direction="row">
-      {fillCharacters()}
-      <Button variant="contained" color="success" onClick={addNewChar}>
-        Add New Character
-      </Button>
-    </Stack>
+    <div className="CharacterCustomizer">
+      <div className="title">
+        <h1>Game Characters</h1>
+      </div>
+      <div className="character-row">
+        <Stack direction="row">
+          {fillCharacters()}
+          <Button variant="contained" color="success" onClick={addNewChar} className='add-button'>
+            Add New Character
+        </Button>
+        </Stack>
+        
+      </div>
+      <hr></hr>
+    </div>
   );
 }
