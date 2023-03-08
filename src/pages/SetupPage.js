@@ -72,16 +72,21 @@ function SetupPage() {
       .catch((error) => {
         console.log("fetch error" + error);
       });
-    const cardsUrl = BACKEND_API + "games/" + game_id + "/cards";
-    axios
-      .get(cardsUrl)
-      .then((res) => {
-        setCards(res.data);
-      })
-      .catch((error) => {
-        console.log("fetch error" + error);
-      });
   }, []);
+
+  useEffect(() => {
+    if (deckSize){
+      const cardsUrl = BACKEND_API + "games/" + game_id + "/cards" + "?deck=" + deckSize;
+      axios
+        .get(cardsUrl)
+        .then((res) => {
+          setCards(res.data);
+        })
+        .catch((error) => {
+          console.log("fetch error" + error);
+        });
+    } 
+  }, [deckSize]);
 
   useEffect(() => {
     const enemyUrl = BACKEND_API + "games/" + game_id + "/enemies" + "?difficulty=" + difficulty;
