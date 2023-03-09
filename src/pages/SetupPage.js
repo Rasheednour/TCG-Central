@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 
 const BACKEND_API = "https://tcgbackend-s2kqyb5vna-wl.a.run.app/";
+const PHASER_BACKEND = "http://localhost:3000/";
+const PHASER_CLIENT = "http://localhost:8080/";
 
 function SetupPage() {
   const [game, setGame] = useState("");
@@ -42,6 +44,16 @@ function SetupPage() {
     game_info["character"] = character;
     delete game_info.description;
     delete game_info.characters;
+    const phaserUrl = PHASER_BACKEND + "data";
+    axios
+      .post(phaserUrl, game_info)
+      .then((res) => {
+        console.log(res);
+        window.location.href = PHASER_CLIENT;
+      })
+      .catch((error) => {
+        console.log("fetch error" + error);
+      });
     console.log(game_info);
   };
 
