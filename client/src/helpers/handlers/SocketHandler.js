@@ -8,6 +8,7 @@ export default class SocketHandler {
         //server connects, and tells the server to deal a deck.
         scene.socket.on('connect', () => {
             console.log("connected!");
+            
             scene.socket.emit('dealDeck', scene.socket.id);
         })
         //Starts the first turn
@@ -23,6 +24,7 @@ export default class SocketHandler {
                 scene.startGame.setInteractive();
                 scene.endTurn.setInteractive();
                 scene.startGame.setColor('#00ffff');
+                
             }
         })
 

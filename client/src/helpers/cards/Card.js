@@ -20,6 +20,7 @@ export default class Card {
                 let healthText = "none";
                 let costText = "none";
                 sprite = scene.add.image(0, 0, this.sprite);
+                sprite.setScale(1.7);
                 nameText = scene.add.text(-150, -300, `${this.name}`).setFontSize(40).setFontFamily("Treubuchet MS");
                 costText = scene.add.text(100, -300, `cost: ${this.cost}`).setFontSize(40).setFontFamily("Treubuchet MS");
                 attackText = scene.add.text(-100, 240, `${this.attack}`).setFontSize(40).setFontFamily("Treubuchet MS");
