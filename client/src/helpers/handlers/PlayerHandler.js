@@ -26,11 +26,14 @@ export default class PlayerHandler {
 
         //this moves a card from the playerHand array to the playedCards array,
         //so that we can track which cards remain in hand.
-        this.playCard = (playCard) => {
-            for(i in this.playerHand.length) {
-                if(playCard.data.values.name == this.playerHand[i].data.values.name) {
+        this.playCard = (playedCard) => {
+            console.log("We made it to the function!");
+            console.log(playedCard.data.values.name);
+            for(let i= 0; i< this.playerHand.length; i++) {
+                if(playedCard.data.values.id == this.playerHand[i].data.values.id) {   
+                    this.playedCards.push(playedCard);
                     this.playerHand.splice(i,1);
-                    this.playCards.push(playCard);
+                    console.log(this.playedCards);
                 }
             }
         }
@@ -44,6 +47,14 @@ export default class PlayerHandler {
             this.maxResources = this.maxResources + this.resourceGrowth;
             this.resources = this.maxResources;
             scene.UIHandler.updatePlayerResources(this.resources);
+        }
+
+        this.resetHand = () => {
+            for(let i in this.playerHand) {
+                this.playerHand[i].setVisible(false);
+                this.playerHand[i].setInteractive(false);
+            }
+            this.playerHand = [];
         }
     }
 }

@@ -1,4 +1,3 @@
-//import CardHandler from '../helpers/handlers/CardHandler';
 import DeckHandler from '../helpers/handlers/DeckHandler';
 import InteractiveHandler from '../helpers/handlers/InteractiveHandler';
 import GameHandler from '../helpers/handlers/GameHandler';
@@ -7,6 +6,7 @@ import UIHandler from "../helpers/handlers/UIHandler";
 import PlayerHandler from '../helpers/handlers/playerHandler';
 import AllyHandler from '../helpers/handlers/allyHandler';
 import EnemyHandler from '../helpers/handlers/EnemyHandler';
+import RulesHandler from '../helpers/handlers/RulesHandler';
 
 
 //So far, everything in the game happens in one Phaser Scene, which we call a Game
@@ -29,7 +29,7 @@ export default class Game extends Phaser.Scene {
         this.EnemyHandler = new EnemyHandler(this);
         this.PlayerHandler = new PlayerHandler(this);
         this.AllyHandler = new AllyHandler(this);
-        //this.CardHandler = new CardHandler();
+        this.RulesHandler = new RulesHandler(this);
         this.DeckHandler = new DeckHandler(this);
         this.GameHandler = new GameHandler(this);
         this.SocketHandler = new SocketHandler(this);

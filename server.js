@@ -61,17 +61,31 @@ io.on('connection', function(socket) {
         io.emit('changeGameState', 'Ready'); 
     })
 
-    socket.on('cardPlayed', function (cardName) {
-        io.emit('cardPlayed', cardName);
-    })
-
-    /*socket.on('drawCard', function(socketId, numCards) {
-        for(let i = 0; i < numCards; i++) {
-            if(players[socketId].inDeck.length === 0) {
-                players.inDeck = shuffle[shuffleDeck];
+    socket.on('cardPlayed', function (socketId, cardName) {
+        for(let i = 0; i< players[socketId].inHand.length; i++) {
+            console.log(`checking for ${players[socketId].inHand[i][2]}`);
+            if(players[socketId].inHand[i][1] == cardName) {
+                players[socketId].inPlay.push(players[socketId].inHand[i]);
+                players[socketId].inHand.splice(i,1);
+                break;
             }
         }
-    })*/
+        console.log(players);
+    })
+
+    socket.on('drawCards', function(socketId, numCards) {
+        for(let i = 0; i < numCards; i++) {
+            if(players[socketId].inDeck.length === 0) {
+                let deck = [];
+                for(let j = 0; j< players[socketId].deck.length; j++) {
+                    deck[j] = players[socketId].deck[j];
+                }
+                players[socketId].inDeck = shuffle(deck);
+            }
+            players[socketId].inHand.push(players[socketId].inDeck.shift())
+        }
+        io.emit('resetHand', socketId, players[socketId].inHand);
+    })
 })
 
 

@@ -3,7 +3,6 @@ import Ally from "../cards/Ally";
 export default class AllyHandler {
     constructor(scene) {
         this.allies = [];
-        this.allyIndex = 0;
         this.allySprites = [];
 
         //play an ally from hand:
@@ -18,22 +17,27 @@ export default class AllyHandler {
                 gameObject.data.values.defense, 
                 gameObject.data.values.health, 
                 gameObject.data.values.ability,
-                this.allyIndex);
+                gameObject.data.values.id);
             if(scene.PlayerHandler.resources >= newAlly.cost){
+                //put the new Ally JS object into the allies array
                 this.allies.push(newAlly);
+                //spend the resources to play the card and move it from the Player's Hand to their list of Played Cards.
                 scene.PlayerHandler.spendResources(newAlly.cost);
+                scene.PlayerHandler.playCard(gameObject);
+                //Keep track of the GameObject's id for display purposes.
                 this.allySprites.push(gameObject.data.values.id);
-                this.allyIndex = this.allyIndex + 1;
+                //tell the server that the card has been played so it can track remaining cards in hand.
+                scene.socket.emit('cardPlayed', scene.socket.id, gameObject.data.values.name);
                 return true;
             } else {
                 return false;
             }   
         }
 
-        this.updateHealth = (health, index) => {
-            for(let i in scene.PlayerHandler.playerHand) {
-                if(scene.PlayerHandler.playerHand[i].data.values.id === this.allySprites[index]) {
-                    scene.PlayerHandler.playerHand[i].list[3].setText(`<3 ${health}`);
+        this.updateHealth = (health, id) => {
+            for(let i in scene.PlayerHandler.playedCards) {
+                if(scene.PlayerHandler.playedCards[i].data.values.id === id) {
+                    scene.PlayerHandler.playedCards[i].list[3].setText(`<3 ${health}`);
                 }
             }
         }
@@ -47,21 +51,19 @@ export default class AllyHandler {
 
         //to kill an ally: remove the JavaScript object that represents the ally from the array.
         //set the correct sprite to non-visible, and stop tracking that sprite.
-        this.deleteAlly = (index) => {
-            for(let i in scene.PlayerHandler.playerHand) {
-                if(scene.PlayerHandler.playerHand[i].data.values.id === this.allySprites[index]) {
-                    scene.PlayerHandler.playerHand[i].visible = false;
+        this.deleteAlly = (id) => {
+            for(let i in scene.PlayerHandler.playedCards) {
+                if(scene.PlayerHandler.playedCards[i].data.values.id === id) {
+                    scene.PlayerHandler.playedCards[i].visible = false;
                 }
             }
-            this.allies.splice(index, 1);
-            this.allySprites.splice(index, 1);
-            this.allyIndex --;
+            for(let i = 0; i< this.allies.length; i++){
+                if(this.allies[i].id === id) {
+                    this.allies.splice(i, 1);
+                    this.allySprites.splice(i, 1);
+                }
+            }
             scene.dropZone.data.values.cards --;
-            for(let i in this.allies) {
-                if(this.allies[i].index > index) {
-                    this.allies[i].index --;
-                }
-            }
         }
     }
 }

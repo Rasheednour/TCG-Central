@@ -21,6 +21,7 @@ export default class GameHandler{
             scene.PlayerHandler.resetResources();
             console.log("end enemies " + scene.EnemyHandler.enemies);
             console.log("end allies " + scene.AllyHandler.allies);
+            scene.socket.emit('drawCards', scene.socket.id, scene.RulesHandler.turnDraw)
             this.isMyTurn = !this.isMyTurn;
         }
 

@@ -25,7 +25,7 @@ export default class Enemy {
             if(scene.AllyHandler.allies.length === 0) {
                 scene.PlayerHandler.takeDamage(this.attack);
             } else {
-                const target = 0;
+                const target = Math.floor(Math.random() * scene.AllyHandler.allies.length);
                 scene.AllyHandler.allies[target].takeDamage(this.attack);
             }
         }

@@ -1,5 +1,5 @@
 export default class Ally {
-    constructor(scene, name, cost, attack, defense, health, ability, index) {
+    constructor(scene, name, cost, attack, defense, health, ability, id) {
         this.scene = scene;
         this.name = name;
         this.cost = cost;
@@ -7,15 +7,15 @@ export default class Ally {
         this.defense = defense;
         this.health = health;
         this.ability = ability;
-        this.index = index;
+        this.id = id;
 
         this.takeDamage = (damage) => {
             this.health = this.health - damage;
             if(this.health <= 0) {
                 console.log("ally destroyed");
-                scene.AllyHandler.deleteAlly(this.index);
+                scene.AllyHandler.deleteAlly(this.id);
             } else {
-                scene.AllyHandler.updateHealth(this.health, this.index);
+                scene.AllyHandler.updateHealth(this.health, this.id);
             }
         }
         

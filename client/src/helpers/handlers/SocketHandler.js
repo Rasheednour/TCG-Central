@@ -35,7 +35,17 @@ export default class SocketHandler {
         scene.socket.on('startGame', (socketId, cards) => {
             if (socketId === scene.socket.id) {
                 for (let i in cards) {
-                    scene.PlayerHandler.playerHand.push(scene.DeckHandler.dealCard(155 + (i* 155), 860, cards[i]));
+                    scene.PlayerHandler.playerHand.push(scene.DeckHandler.dealCard(133 + (i* (850/cards.length)), 860, cards[i]));
+                }
+            }
+        })
+
+        //to Draw Cards, and reset hand positions accordingly.
+        scene.socket.on('resetHand', (socketId, cards) => {
+            if(socketId === scene.socket.id) {
+                scene.PlayerHandler.resetHand();
+                for(let i = 0; i< cards.length; i++) {
+                    scene.PlayerHandler.playerHand.push(scene.DeckHandler.dealCard(155 + (i * (850/cards.length)), 860, cards[i]));
                 }
             }
         })
