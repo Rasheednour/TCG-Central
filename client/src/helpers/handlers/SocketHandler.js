@@ -32,11 +32,12 @@ export default class SocketHandler {
         })
 
         //tells the server to deal cards
-        scene.socket.on('startGame', (socketId, cards) => {
+        scene.socket.on('startGame', (socketId, cards, hero) => {
             if (socketId === scene.socket.id) {
                 for (let i in cards) {
                     scene.PlayerHandler.playerHand.push(scene.DeckHandler.dealCard(133 + (i* (850/cards.length)), 860, cards[i]));
                 }
+                scene.HeroHandler.hero = scene.DeckHandler.dealCard(1000, 860, hero[0])
             }
         })
 

@@ -18,35 +18,74 @@ export default class Card {
                 let attackText = "none";
                 let defenseText = "none";
                 let healthText = "none";
+                let abilityText = "none";
                 let costText = "none";
                 sprite = scene.add.image(0, 0, this.sprite);
                 nameText = scene.add.text(-150, -300, `${this.name}`).setFontSize(40).setFontFamily("Treubuchet MS");
                 costText = scene.add.text(100, -300, `cost: ${this.cost}`).setFontSize(40).setFontFamily("Treubuchet MS");
                 attackText = scene.add.text(-100, 240, `${this.attack}`).setFontSize(40).setFontFamily("Treubuchet MS");
                 defenseText = scene.add.text(0, 240, `${this.defense}`).setFontSize(40).setFontFamily("Treubuchet MS");
+                abilityText = scene.add.text(0, 140, `${this.ability}`).setFontSize(40).setFontFamily("Treubuchet MS");
                 healthText = scene.add.text(100, 240, ` <3 ${this.health}`).setFontSize(40).setFontFamily("Treubuchet MS")
             
-                let card = scene.add.container(x, y, [ sprite, attackText, defenseText, healthText, costText, nameText ])
+                let card = scene.add.container(x, y, [ sprite, attackText, defenseText, healthText, costText, nameText, abilityText ])
                 .setDataEnabled()
                 .setSize(sprite.width, sprite.height)
                 .setScale(.25,.25)
                 .setInteractive()
                 .setData({
+                    "type": this.type,
                     "name": this.name,
                     "cost": this.cost,
                     "attack": this.attack,
                     "defense": this.defense,
                     "health": this.health,
+                    "ability": this.ability,
                     "sprite": sprite,
                     "attackText": attackText,
                     "defenseText": defenseText,
                     "healthText": healthText,
                     "index": this.index,
+                    "attackedThisTurn": false,
                     "id": this.id
                 });
                 scene.input.setDraggable(card);
                 return card;
-            } else {
+            } else if(this.type === "hero"){
+                let nameText;
+                let sprite;
+                let attackText = "none";
+                let defenseText = "none";
+                let abilityText = "none";
+                sprite = scene.add.image(0, 0, this.sprite);
+                nameText = scene.add.text(-150, -300, `${this.name}`).setFontSize(40).setFontFamily("Treubuchet MS");
+                attackText = scene.add.text(-100, 240, `${this.attack}`).setFontSize(40).setFontFamily("Treubuchet MS");
+                defenseText = scene.add.text(0, 240, `${this.defense}`).setFontSize(40).setFontFamily("Treubuchet MS");
+                abilityText = scene.add.text(0, 140, `${this.ability}`).setFontSize(40).setFontFamily("Treubuchet MS");
+            
+                let card = scene.add.container(x, y, [ sprite, attackText, defenseText, nameText, abilityText ])
+                .setDataEnabled()
+                .setSize(sprite.width, sprite.height)
+                .setScale(.25,.25)
+                .setInteractive()
+                .setData({
+                    "type": this.type,
+                    "name": this.name,
+                    "cost": this.cost,
+                    "attack": this.attack,
+                    "defense": this.defense,
+                    "health": this.health,
+                    "ability": this.ability,
+                    "sprite": sprite,
+                    "attackText": attackText,
+                    "defenseText": defenseText,
+                    "index": this.index,
+                    "attackedThisTurn": false,
+                    "id": this.id
+                });
+                scene.input.setDraggable(card);
+                return card;
+            }else {
                 return;
             }          
         }

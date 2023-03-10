@@ -25,6 +25,7 @@ io.on('connection', function(socket) {
         //Deck is where the cards should be loaded in.
         //Cards are as follows [card_type, card_name, card_sprite, cost, attack, defense, health, ability]
         deck: [["ally", "Sample_Ally", "stonePath", 1, 1, 0, 2, ""]],
+        hero: [["hero", "Sample_Hero", "stonePath", 0, 1, 0, 20, ""]],
         inDeck: [],
         inHand: [],
         inPlay: [],
@@ -56,7 +57,7 @@ io.on('connection', function(socket) {
             players[socketId].inHand.push(players[socketId].inDeck.shift())
         }
         console.log(players);
-        io.emit('startGame', socketId, players[socketId].inHand);
+        io.emit('startGame', socketId, players[socketId].inHand, players[socketId].hero);
         gameState = 'Ready';
         io.emit('changeGameState', 'Ready'); 
     })

@@ -42,10 +42,14 @@ export default class AllyHandler {
             }
         }
 
-        //temporary ally auto-attack:
-        this.alliesAttack = () => {
-            for(let i in this.allies) {
-                this.allies[i].strike();
+        //reset ally attack allowance
+        this.resetAllyAttacks = () => {
+            for(let i = 0; i< this.allySprites.length; i++){
+                for(let j = 0; j< scene.PlayerHandler.playedCards.length; j++) {
+                    if(this.allySprites[i] === scene.PlayerHandler.playedCards[j].data.values.id) {
+                        scene.PlayerHandler.playedCards[j].data.values.attackedThisTurn = false;
+                    }
+                }
             }
         }
 

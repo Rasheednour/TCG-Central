@@ -36,7 +36,8 @@ export default class Enemy {
             let attackText = scene.add.text(-100, 240, `${this.attack}`).setFontSize(40).setFontFamily("Treubuchet MS")
             let defenseText = scene.add.text(0, 240, `${this.defense}`).setFontSize(40).setFontFamily("Treubuchet MS")
             let healthText = scene.add.text(100, 240, ` <3 ${this.health}`).setFontSize(40).setFontFamily("Treubuchet MS")
-            let enemy = scene.add.container(x, y, [ sprite, attackText, defenseText, healthText, nameText ])
+            let hitBox = scene.add.zone(0,0, sprite.width, sprite.height).setDropZone();
+            let enemy = scene.add.container(x, y, [ sprite, attackText, defenseText, healthText, nameText, hitBox ])
             .setDataEnabled()
             .setSize(sprite.width, sprite.height)
             .setScale(.25,.25)
@@ -56,6 +57,3 @@ export default class Enemy {
         }
     }
 }
-
-
-//.setInteractive(new Phaser.Geom.Rectangle(0,0, 85, 115), Phaser.Geom.Rectangle.Contains)

@@ -7,6 +7,7 @@ import PlayerHandler from '../helpers/handlers/playerHandler';
 import AllyHandler from '../helpers/handlers/allyHandler';
 import EnemyHandler from '../helpers/handlers/EnemyHandler';
 import RulesHandler from '../helpers/handlers/RulesHandler';
+import HeroHandler from '../helpers/handlers/HeroHandler';
 
 
 //So far, everything in the game happens in one Phaser Scene, which we call a Game
@@ -28,6 +29,7 @@ export default class Game extends Phaser.Scene {
         // Everything is going to be dealt with through various handlers.
         this.EnemyHandler = new EnemyHandler(this);
         this.PlayerHandler = new PlayerHandler(this);
+        this.HeroHandler = new HeroHandler(this);
         this.AllyHandler = new AllyHandler(this);
         this.RulesHandler = new RulesHandler(this);
         this.DeckHandler = new DeckHandler(this);
