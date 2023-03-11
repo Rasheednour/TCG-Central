@@ -4,6 +4,7 @@ import activateEffect from "./activateEffect";
 export default class AllyHandler {
   constructor(scene) {
     this.allies = [];
+    this.allyIndex = 0;
     this.allySprites = [];
 
     //play an ally from hand:
@@ -19,6 +20,7 @@ export default class AllyHandler {
         gameObject.data.values.defense,
         gameObject.data.values.health,
         gameObject.data.values.ability,
+
         gameObject.data.values.id
       );
       if (scene.PlayerHandler.resources >= newAlly.cost) {
@@ -48,6 +50,7 @@ export default class AllyHandler {
             "ally"
           );
         }
+
         return true;
       } else {
         return false;
@@ -57,7 +60,8 @@ export default class AllyHandler {
     this.updateHealth = (health, id) => {
       for (let i in scene.PlayerHandler.playedCards) {
         if (scene.PlayerHandler.playedCards[i].data.values.id === id) {
-          scene.PlayerHandler.playedCards[i].list[3].setText(`<3 ${health}`);
+          scene.PlayerHandler.playerHand[i].list[4].setText(`HP/${health}`);
+
         }
       }
     };
@@ -119,6 +123,7 @@ export default class AllyHandler {
         }
       }
       scene.dropZone.data.values.cards--;
+
     };
   }
 }

@@ -1,7 +1,11 @@
 const server = require("express")();
 const http = require("http").createServer(server);
+
 const cors = require("cors");
 const path = require("path");
+
+const bodyParser = require("body-parser");
+
 const serveStatic = require("serve-static");
 const shuffle = require("shuffle-array");
 let players = {};
@@ -10,65 +14,37 @@ let gameState = "Initializing";
 const io = require("socket.io")(http, {
   cors: {
     //origin: 'https://tcg-maker-phaser.herokuapp.com/',
-    origin: "http://localhost:8080",
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
 
-server.use(cors());
 server.use(serveStatic(__dirname + "/client/dist"));
+server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.json());
+
+server.get("/", function (req, res) {
+  res.send("Server Listening...");
+});
 
 io.on("connection", function (socket) {
   console.log("A player connected " + socket.id);
 
+
   players[socket.id] = {
     //Deck is where the cards should be loaded in.
     //Cards are as follows [card_type, card_name, card_sprite, cost, attack, defense, health, ability]
-    deck: [
-      [
-        "ally",
-        "Sample_Ally",
-        "stonePath",
-        1,
-        1,
-        0,
-        2,
-        ["SUMMON_HEAL_2_TARGET"],
-      ],
-      [
-        "spell",
-        "Sample_Spell",
-        "stonePath",
-        1,
-        0,
-        0,
-        0,
-        ["SUMMON_DRAW_2_PLAYER"],
-      ],
-      [
-        "spell",
-        "Sample_Spell2",
-        "stonePath",
-        1,
-        0,
-        0,
-        0,
-        [
-          "SUMMON_DISCARD_2_PLAYER",
-          "SUMMON_DAMAGE_10_TARGET",
-          "SUMMON_HEAL_5_TARGET",
-        ],
-      ],
-    ],
-    hero: [["hero", "Sample_Hero", "stonePath", 0, 1, 0, 20, ""]],
+    deck: [],
     inDeck: [],
     inHand: [],
     inPlay: [],
   };
 
-  socket.on("dealDeck", function (socketId) {
+  socket.on("dealDeck", function (socketId, cardDeck) {
     //where cards are currently loaded in.
     let deck = [];
+    // get the deck of cards to be shuffled from the client
+    players[socketId].deck = cardDeck;
     for (let i = 0; i < players[socketId].deck.length; i++) {
       deck[i] = players[socketId].deck[i];
     }
@@ -92,6 +68,7 @@ io.on("connection", function (socket) {
       players[socketId].inHand.push(players[socketId].inDeck.shift());
     }
     console.log(players);
+
     io.emit(
       "startGame",
       socketId,
@@ -101,6 +78,7 @@ io.on("connection", function (socket) {
     gameState = "Ready";
     io.emit("changeGameState", "Ready");
   });
+
 
   socket.on("cardPlayed", function (socketId, cardName) {
     for (let i = 0; i < players[socketId].inHand.length; i++) {
@@ -127,6 +105,7 @@ io.on("connection", function (socket) {
     }
     io.emit("resetHand", socketId, players[socketId].inHand);
   });
+
 });
 
 const port = process.env.PORT || 3000;

@@ -4,17 +4,7 @@ import activateEffect from "./activateEffect";
 export default class EnemyHandler {
   constructor(scene) {
     //this is where the enemy information needs to end up to get enemies to spawn.
-    this.enemyNames = [
-      ["blazingGlory", "Sample_Enemy", 1, 0, 2, []],
-      [
-        "blazingGlory",
-        "Sample_Enemy",
-        1,
-        0,
-        2,
-        ["SUMMON_HEAL_3_TARGET", "SUMMON_BUFFDEF_1_SELF"],
-      ],
-    ];
+    this.enemyNames = scene.enemyList;
     //this index number is how we tie the JavaScipt Enemy objects to their Container representations.
     this.enemyIndex = 0;
     //this is where the spawned enemy JS objects end up
@@ -25,7 +15,6 @@ export default class EnemyHandler {
     this.enemiesAttack = () => {
       for (let i in this.enemies) {
         this.enemies[i].strike();
-        console.log("processing ability for", this.enemies[i].ability);
         for (
           let eff_index = 0;
           eff_index < this.enemies[i].ability.length;
@@ -40,6 +29,7 @@ export default class EnemyHandler {
             );
           }
         }
+
       }
     };
 
@@ -71,7 +61,7 @@ export default class EnemyHandler {
     };
 
     this.updateHealth = (health, index) => {
-      this.enemySprites[index].list[3].setText(`<3 ${health}`);
+      this.enemySprites[index].list[4].setText(`HP/${health}`);
     };
 
     this.updateAttack = (value, index) => {
@@ -83,6 +73,7 @@ export default class EnemyHandler {
       this.enemies[index].defense = Number(value);
       this.enemySprites[index].list[2].setText(value);
     };
+
 
     this.deleteEnemy = (index) => {
       this.enemySprites[index].visible = false;

@@ -28,54 +28,37 @@ export default class Card {
         let attackText = "none";
         let defenseText = "none";
         let healthText = "none";
-        let abilityText = "none";
-        let costText = "none";
         sprite = scene.add.image(0, 0, this.sprite);
-        nameText = scene.add
-          .text(-150, -300, `${this.name}`)
-          .setFontSize(40)
-          .setFontFamily("Treubuchet MS");
-        costText = scene.add
-          .text(100, -300, `cost: ${this.cost}`)
-          .setFontSize(40)
-          .setFontFamily("Treubuchet MS");
+        sprite.setScale(1.7);
+        // add a white box on top of the static stats section in the card image
+        let statBox = scene.add.rectangle(0, 390, 500, 35, "0xffffff");
+        // add dynamic stats text boxes
         attackText = scene.add
-          .text(-100, 240, `${this.attack}`)
-          .setFontSize(40)
-          .setFontFamily("Treubuchet MS");
+          .text(-220, 375, `ATK/${this.attack}`)
+          .setFontSize(30)
+          .setFontFamily("Treubuchet MS")
+          .setColor("#000")
+          .setFontStyle("bold");
         defenseText = scene.add
-          .text(0, 240, `${this.defense}`)
-          .setFontSize(40)
-          .setFontFamily("Treubuchet MS");
-        abilityText = scene.add
-          .text(0, 140, `${this.ability}`)
-          .setFontSize(40)
-          .setFontFamily("Treubuchet MS");
+          .text(-50, 375, `DEF/${this.defense}`)
+          .setFontSize(30)
+          .setFontFamily("Treubuchet MS")
+          .setColor("#000")
+          .setFontStyle("bold");
         healthText = scene.add
-          .text(100, 240, ` <3 ${this.health}`)
-          .setFontSize(40)
-          .setFontFamily("Treubuchet MS");
-        // console.log(
-        //   "ally width and height",
-        //   sprite.width,
-        //   sprite.height,
-        //   this.sprite.width,
-        //   this.sprite.height
-        // );
-        // let hitBox = scene.add
-        //   .zone(0, 0, sprite.width, sprite.height)
-        //   .setDropZone();
+          .text(120, 375, ` HP/${this.health}`)
+          .setFontSize(30)
+          .setFontFamily("Treubuchet MS")
+          .setColor("#000")
+          .setFontStyle("bold");
 
         let card = scene.add
           .container(x, y, [
             sprite,
+            statBox,
             attackText,
             defenseText,
             healthText,
-            costText,
-            nameText,
-            abilityText,
-            // hitBox,
           ])
           .setDataEnabled()
           .setSize(sprite.width, sprite.height)
@@ -203,6 +186,7 @@ export default class Card {
             healthText: "",
             index: this.index,
             attackedThisTurn: false,
+
             id: this.id,
           });
         scene.input.setDraggable(card);

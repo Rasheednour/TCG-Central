@@ -56,9 +56,6 @@ export default class InteractiveHandler {
     scene.input.on("drag", (pointer, gameObject, dragX, dragY) => {
       gameObject.x = dragX;
       gameObject.y = dragY;
-      //trying alternate approach from internet, it doesnt solve problem....
-      //   gameObject.x = pointer.x;
-      //   gameObject.y = pointer.y;
     });
 
     //when we hover over the front of a card, we get a larger, easier to read highlight.
@@ -78,24 +75,35 @@ export default class InteractiveHandler {
       } else if (gameObjects[0].type === "Container") {
         console.log("found a container!");
         scene.children.bringToTop(gameObjects[0]);
-        gameObjects[0].setScale(0.5, 0.5);
-      } else if (gameObjects[0].parentContainer) {
-        scene.children.bringToTop(gameObjects[0].parentContainer);
-        gameObjects[0].parentContainer.setScale(0.5, 0.5);
+        // if this is a card, move up by 80 pixels when hovered over
+        if (gameObjects[0].data.list.hasOwnProperty("cost")) {
+          gameObjects[0].setScale(0.5, 0.5);
+          gameObjects[0].y -= 80;
+          // if this is an enemy card move down by 80 pixels
+        } else {
+          gameObjects[0].setScale(0.5, 0.5);
+          gameObjects[0].y += 80;
+        }
       }
     });
 
     scene.input.on("pointerout", (event, gameObjects) => {
       if (gameObjects[0].type === "Container") {
-        gameObjects[0].setScale(0.25, 0.25);
-      } else if (gameObjects[0].parentContainer) {
-        gameObjects[0].parentContainer.setScale(0.25, 0.25);
+
+        if (gameObjects[0].data.list.hasOwnProperty("cost")) {
+          gameObjects[0].setScale(0.25, 0.25);
+          gameObjects[0].y += 80;
+        } else {
+          gameObjects[0].setScale(0.25, 0.25);
+          gameObjects[0].y -= 80;
+        }
+
       }
     });
 
     //Interactions for draggable elements (right now only cards)
     scene.input.on("dragstart", (pointer, gameObject) => {
-      console.log("drag start", gameObject);
+      
       scene.children.bringToTop(gameObject);
     });
 
@@ -366,6 +374,7 @@ export default class InteractiveHandler {
           gameObject.x = gameObject.input.dragStartX;
           gameObject.y = gameObject.input.dragStartY;
         }
+
       } else {
         gameObject.x = gameObject.input.dragStartX;
         gameObject.y = gameObject.input.dragStartY;
