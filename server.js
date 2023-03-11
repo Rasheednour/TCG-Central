@@ -1,12 +1,8 @@
 const server = require("express")();
 const http = require("http").createServer(server);
-const cors = require("cors");
-const path = require("path");
 const bodyParser = require("body-parser");
 const serveStatic = require("serve-static");
-const { readFileSync, writeFileSync } = require("fs");
 const shuffle = require("shuffle-array");
-const { callbackify } = require("util");
 let players = {};
 let gameState = "Initializing";
 
@@ -18,58 +14,9 @@ const io = require("socket.io")(http, {
   },
 });
 
-server.use(
-  cors({
-    origin: "*",
-    methods: "GET,POST,PUT,DELETE,OPTIONS",
-    credentials: true,
-  })
-);
 server.use(serveStatic(__dirname + "/client/dist"));
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
-
-// function that takes data and path and saves the data as JSON file in the provided path
-function writeFileNew(data, path) {
-  const jsonString = JSON.stringify(data);
-  writeFileSync(path, jsonString, function (err, result) {
-    if (err) console.log("error, err");
-  });
-}
-
-// Endpoint to receive data via POST request
-server.post("/data", function (req, res) {
-  const data = req.body;
-  // get card data from the request body
-  const cards = data.cards;
-  let deckCards = [];
-  let cardIDs = [];
-  // create card objects to be saved for Phaser
-  cards.forEach((card) => {
-    if (card.type === "CREATURE") {
-      const newCard = [
-        "ally",
-        card.name,
-        card.card_id,
-        card.cost,
-        card.attack,
-        card.defense,
-        card.health,
-        "",
-      ];
-      deckCards.push(newCard);
-      if (!cardIDs.includes(card.card_id)) {
-        cardIDs.push(card.card_id);
-      }
-    }
-    // write card IDs as well as card data in two separate JSON files to be used by the client
-    writeFileNew(cardIDs, "./client/src/assets/card_ids.json");
-    writeFileNew(deckCards, "./client/src/assets/cards.json");
-  });
-
-  // io.emit('dataReceived', data);
-  res.status(200).send(cardIDs);
-});
 
 server.get("/", function (req, res) {
   res.send("Server Listening...");
@@ -77,22 +24,21 @@ server.get("/", function (req, res) {
 
 io.on("connection", function (socket) {
   console.log("A player connected " + socket.id);
-  // read the card data from the local JSON file
-  let rawData = readFileSync("./client/src/assets/cards.json");
-  let cards = JSON.parse(rawData);
 
   players[socket.id] = {
     //Deck is where the cards should be loaded in.
     //Cards are as follows [card_type, card_name, card_sprite, cost, attack, defense, health, ability]
-    deck: cards,
+    deck: [],
     inDeck: [],
     inHand: [],
     inPlay: [],
   };
 
-  socket.on("dealDeck", function (socketId) {
+  socket.on("dealDeck", function (socketId, cardDeck) {
     //where cards are currently loaded in.
     let deck = [];
+    // get the deck of cards to be shuffled from the client
+    players[socketId].deck = cardDeck;
     for (let i = 0; i < players[socketId].deck.length; i++) {
       deck[i] = players[socketId].deck[i];
     }
