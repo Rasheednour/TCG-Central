@@ -192,21 +192,47 @@ export default class InteractiveHandler {
                         gameObject.data.values.cost
                       );
                       cost_paid = true;
+
+                      scene.PlayerHandler.playCard(gameObject);
+                      scene.socket.emit(
+                        "cardPlayed",
+                        scene.socket.id,
+                        gameObject.data.values.name
+                      );
                     }
-                    scene.PlayerHandler.playCard(gameObject);
-                    scene.socket.emit(
-                      "cardPlayed",
-                      scene.socket.id,
-                      gameObject.data.values.name
-                    );
                   }
                   break;
                 }
               }
             } else if (target == "CREATURE") {
-              console.log(
-                "tried to play a spell that targets player creatures on an enemy"
-              );
+              let num_options;
+              let pick;
+              let ally_index = -1;
+              num_options = scene.AllyHandler.allies.length;
+              pick = Math.floor(Math.random() * num_options);
+              if (pick < scene.AllyHandler.allies.length) {
+                ally_index = pick;
+              }
+              if (
+                playSpell(target, value, effect, cost, -1, ally_index, scene)
+              ) {
+                gameObject.data.values.attackedThisTurn = true;
+                gameObject.data.values.played = true;
+                gameObject.visible = false;
+                if (!cost_paid) {
+                  scene.PlayerHandler.spendResources(
+                    gameObject.data.values.cost
+                  );
+                  cost_paid = true;
+
+                  scene.PlayerHandler.playCard(gameObject);
+                  scene.socket.emit(
+                    "cardPlayed",
+                    scene.socket.id,
+                    gameObject.data.values.name
+                  );
+                }
+              }
             } else {
               //We are in an effect that does not specify a target, so will attempt to play
               if (
