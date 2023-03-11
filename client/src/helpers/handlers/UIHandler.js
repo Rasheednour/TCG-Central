@@ -1,5 +1,8 @@
 import ZoneHandler from "./ZoneHandler";
 
+const STARTING_RESOURCES = 1;
+const STARTING_PLAYER_HEALTH = 20;
+
 export default class UIHandler {
     constructor(scene) {
 
@@ -78,9 +81,8 @@ export default class UIHandler {
             this.buildPlayerArea();
             this.buildEnemyArea();
             this.buildGameText();
-            this.setPlayerHealth(20);
-            this.setPlayerResources(1);
+            this.setPlayerHealth(STARTING_PLAYER_HEALTH);
+            this.setPlayerResources(STARTING_RESOURCES);
         }
-
     }
 }

@@ -1,8 +1,6 @@
-import Card from "./Card"
-
-export default class Ally extends Card {
+export default class Ally {
     constructor(scene, name, cost, attack, defense, health, ability, index) {
-        super(scene);
+        this.scene = scene;
         this.name = name;
         this.cost = cost;
         this.attack = attack;
@@ -16,6 +14,8 @@ export default class Ally extends Card {
             if(this.health <= 0) {
                 console.log("ally destroyed");
                 scene.AllyHandler.deleteAlly(this.index);
+            } else {
+                scene.AllyHandler.updateHealth(this.health, this.index);
             }
         }
         
