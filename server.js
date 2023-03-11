@@ -25,7 +25,16 @@ io.on("connection", function (socket) {
     //Deck is where the cards should be loaded in.
     //Cards are as follows [card_type, card_name, card_sprite, cost, attack, defense, health, ability]
     deck: [
-      ["ally", "Sample_Ally", "stonePath", 1, 1, 0, 2, ""],
+      [
+        "ally",
+        "Sample_Ally",
+        "stonePath",
+        1,
+        1,
+        0,
+        2,
+        ["SUMMON_HEAL_2_TARGET"],
+      ],
       [
         "spell",
         "Sample_Spell",

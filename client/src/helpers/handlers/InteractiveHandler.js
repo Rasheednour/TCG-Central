@@ -301,55 +301,6 @@ export default class InteractiveHandler {
             let effect = split_eff[1];
             let ally_index = -1;
             let enemy_index = -1;
-            //If dropped on player and target tyope is TARGET change target type to PLAYER
-            // if (
-            //   target == "TARGET" &&
-            //   dropZone.parentContainer &&
-            //   dropZone.parentContainer.data.values.type == "hero"
-            // ) {
-            //   target = "PLAYER";
-            // }
-            //Deal with spell dropped on an ally
-            // if (target == "TARGET" || target == "CREATURE") {
-            //   if (
-            //     dropZone.parentContainer &&
-            //     dropZone.parentContainer.data.values.type == "ally"
-            //   ) {
-            //     for (let i = 0; i < scene.AllyHandler.allySprites.length; i++) {
-            //       console.log(
-            //         "comparing ally",
-            //         scene.AllyHandler.allySprites[i],
-            //         "with dropzone",
-            //         dropZone.parentContainer.data.values
-            //       );
-            //       if (
-            //         scene.AllyHandler.allySprites[i] ===
-            //         dropZone.parentContainer.data.values.id
-            //       ) {
-            //         if (
-            //           playSpell(target, value, effect, cost, -1, i, scene) &&
-            //           !cost_paid
-            //         ) {
-            //           gameObject.data.values.attackedThisTurn = true;
-            //           gameObject.data.values.played = true;
-            //           gameObject.visible = false;
-
-            //           scene.PlayerHandler.spendResources(
-            //             gameObject.data.values.cost
-            //           );
-            //           cost_paid = true;
-
-            //           scene.PlayerHandler.playCard(gameObject);
-            //           scene.socket.emit(
-            //             "cardPlayed",
-            //             scene.socket.id,
-            //             gameObject.data.values.name
-            //           );
-            //         }
-            //       }
-            //     }
-            //   }
-            // }
             if (target == "TARGET" || target == "CREATURE") {
               //Can't get drop zones to work without disabling draggability, so going for reasonable randomness for MVP
               //if it is a positive spell pick a random player or ally, if negative pick random enemy

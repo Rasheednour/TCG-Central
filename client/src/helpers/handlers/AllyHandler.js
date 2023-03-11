@@ -1,4 +1,5 @@
 import Ally from "../cards/Ally";
+import activateEffect from "./activateEffect";
 
 export default class AllyHandler {
   constructor(scene) {
@@ -26,6 +27,7 @@ export default class AllyHandler {
         //spend the resources to play the card and move it from the Player's Hand to their list of Played Cards.
         scene.PlayerHandler.spendResources(newAlly.cost);
         scene.PlayerHandler.playCard(gameObject);
+        //Iterate through its abilities and activate each
         //Keep track of the GameObject's id for display purposes.
         this.allySprites.push(gameObject.data.values.id);
         //tell the server that the card has been played so it can track remaining cards in hand.
@@ -34,6 +36,18 @@ export default class AllyHandler {
           scene.socket.id,
           gameObject.data.values.name
         );
+        for (
+          let eff_index = 0;
+          eff_index < gameObject.data.values.ability.length;
+          eff_index++
+        ) {
+          activateEffect(
+            gameObject.data.values.ability[eff_index],
+            scene,
+            this.allies.length - 1,
+            "ally"
+          );
+        }
         return true;
       } else {
         return false;

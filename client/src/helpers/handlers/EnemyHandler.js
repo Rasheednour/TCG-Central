@@ -1,11 +1,19 @@
 import Enemy from "../cards/Enemy";
+import activateEffect from "./activateEffect";
 
 export default class EnemyHandler {
   constructor(scene) {
     //this is where the enemy information needs to end up to get enemies to spawn.
     this.enemyNames = [
-      ["blazingGlory", "Sample_Enemy", 1, 0, 2, ""],
-      ["blazingGlory", "Sample_Enemy", 1, 0, 2, ""],
+      ["blazingGlory", "Sample_Enemy", 1, 0, 2, []],
+      [
+        "blazingGlory",
+        "Sample_Enemy",
+        1,
+        0,
+        2,
+        ["SUMMON_HEAL_3_TARGET", "SUMMON_BUFFDEF_1_SELF"],
+      ],
     ];
     //this index number is how we tie the JavaScipt Enemy objects to their Container representations.
     this.enemyIndex = 0;
@@ -17,6 +25,21 @@ export default class EnemyHandler {
     this.enemiesAttack = () => {
       for (let i in this.enemies) {
         this.enemies[i].strike();
+        console.log("processing ability for", this.enemies[i].ability);
+        for (
+          let eff_index = 0;
+          eff_index < this.enemies[i].ability.length;
+          eff_index++
+        ) {
+          if (Math.floor(Math.random() * 4) > 2) {
+            activateEffect(
+              this.enemies[i].ability[eff_index],
+              scene,
+              i,
+              "enemy"
+            );
+          }
+        }
       }
     };
 
