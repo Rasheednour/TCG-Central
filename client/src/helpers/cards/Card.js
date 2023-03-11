@@ -55,6 +55,13 @@ export default class Card {
           .text(100, 240, ` <3 ${this.health}`)
           .setFontSize(40)
           .setFontFamily("Treubuchet MS");
+        // console.log(
+        //   "ally width and height",
+        //   sprite.width,
+        //   sprite.height,
+        //   this.sprite.width,
+        //   this.sprite.height
+        // );
         // let hitBox = scene.add
         //   .zone(0, 0, sprite.width, sprite.height)
         //   .setDropZone();
@@ -91,8 +98,7 @@ export default class Card {
             id: this.id,
           });
         scene.input.setDraggable(card);
-        //TRYING ALTERNATE WAY OF SETTING DROP ZONE
-        //scene.input.setDropZone(card);
+
         return card;
       } else if (this.type === "hero") {
         let nameText;
@@ -117,9 +123,13 @@ export default class Card {
           .text(0, 140, `${this.ability}`)
           .setFontSize(40)
           .setFontFamily("Treubuchet MS");
-        // let hitBox = scene.add
-        //   .zone(0, 0, sprite.width, sprite.height)
-        //   .setDropZone();
+        // let hitBox = scene.add.zone(
+        //   0,
+        //   0,
+        //   this.sprite.width,
+        //   this.sprite.height
+        // );
+        // hitBox.setDropZone();
 
         let card = scene.add
           .container(x, y, [
@@ -128,7 +138,7 @@ export default class Card {
             defenseText,
             nameText,
             abilityText,
-            // hitBox
+            // hitBox,
           ])
           .setDataEnabled()
           .setSize(sprite.width, sprite.height)

@@ -44,7 +44,11 @@ io.on("connection", function (socket) {
         0,
         0,
         0,
-        ["SUMMON_DISCARD_2_PLAYER", "SUMMON_DAMAGE_10_TARGET"],
+        [
+          "SUMMON_DISCARD_2_PLAYER",
+          "SUMMON_DAMAGE_10_TARGET",
+          "SUMMON_HEAL_5_TARGET",
+        ],
       ],
     ],
     hero: [["hero", "Sample_Hero", "stonePath", 0, 1, 0, 20, ""]],

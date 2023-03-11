@@ -5,6 +5,16 @@ import playSpell from "./playSpell";
 
 //This is where the starting hand size is kept. It's used on the pointerdown function for startGame.
 
+const positivity_matrix = {
+  HEAL: true,
+  DAMAGE: false,
+  DRAIN: false,
+  BUFFATK: true,
+  BUFFDEF: true,
+  DRAINATK: false,
+  DRAINDEF: false,
+};
+
 export default class InteractiveHandler {
   constructor(scene) {
     scene.cardPreview = null;
@@ -90,6 +100,7 @@ export default class InteractiveHandler {
     });
 
     scene.input.on("dragend", (pointer, gameObject, dropped) => {
+      console.log("drag end with this info", pointer, gameObject, dropped);
       if (!dropped) {
         gameObject.x = gameObject.input.dragStartX;
         gameObject.y = gameObject.input.dragStartY;
@@ -97,7 +108,7 @@ export default class InteractiveHandler {
     });
 
     scene.input.on("drop", (pointer, gameObject, dropZone) => {
-      console.log("card dropped", gameObject);
+      console.log("card dropped", gameObject, dropZone);
       if (
         scene.GameHandler.isMyTurn &&
         dropZone.parentContainer &&
@@ -194,7 +205,7 @@ export default class InteractiveHandler {
               }
             } else if (target == "CREATURE") {
               console.log(
-                "tried to play a spell that targets your creatures on an enemy"
+                "tried to play a spell that targets player creatures on an enemy"
               );
             } else {
               //We are in an effect that does not specify a target, so will attempt to play
@@ -251,7 +262,6 @@ export default class InteractiveHandler {
           gameObject.data.values.cost <= scene.PlayerHandler.resources
         ) {
           let cost_paid = false;
-          console.log("dropping a spell card at pointer", pointer);
           for (
             let eff_index = 0;
             eff_index < gameObject.data.values.ability.length;
@@ -263,22 +273,91 @@ export default class InteractiveHandler {
             let target = split_eff[3] == "SELF" ? "PLAYER" : split_eff[3];
             let value = split_eff[2];
             let effect = split_eff[1];
-            //Check if it is targetted on something or not, might be buff/heal
-            //TODO: Make Allies targettable
-            // for (let j = 0; j < scene.AllyHandler.allies.length; j++) {
-            //   console.log("drop zone is", dropZone, "and pointer is", pointer);
+            let ally_index = -1;
+            let enemy_index = -1;
+            //If dropped on player and target tyope is TARGET change target type to PLAYER
+            // if (
+            //   target == "TARGET" &&
+            //   dropZone.parentContainer &&
+            //   dropZone.parentContainer.data.values.type == "hero"
+            // ) {
+            //   target = "PLAYER";
+            // }
+            //Deal with spell dropped on an ally
+            // if (target == "TARGET" || target == "CREATURE") {
             //   if (
-            //     dropZone.data.values.id &&
-            //     dropZone.data.values.id === scene.AllyHandler.allies[j].id
+            //     dropZone.parentContainer &&
+            //     dropZone.parentContainer.data.values.type == "ally"
             //   ) {
-            //     console.log("dropped on an ally");
+            //     for (let i = 0; i < scene.AllyHandler.allySprites.length; i++) {
+            //       console.log(
+            //         "comparing ally",
+            //         scene.AllyHandler.allySprites[i],
+            //         "with dropzone",
+            //         dropZone.parentContainer.data.values
+            //       );
+            //       if (
+            //         scene.AllyHandler.allySprites[i] ===
+            //         dropZone.parentContainer.data.values.id
+            //       ) {
+            //         if (
+            //           playSpell(target, value, effect, cost, -1, i, scene) &&
+            //           !cost_paid
+            //         ) {
+            //           gameObject.data.values.attackedThisTurn = true;
+            //           gameObject.data.values.played = true;
+            //           gameObject.visible = false;
+
+            //           scene.PlayerHandler.spendResources(
+            //             gameObject.data.values.cost
+            //           );
+            //           cost_paid = true;
+
+            //           scene.PlayerHandler.playCard(gameObject);
+            //           scene.socket.emit(
+            //             "cardPlayed",
+            //             scene.socket.id,
+            //             gameObject.data.values.name
+            //           );
+            //         }
+            //       }
+            //     }
             //   }
             // }
-            //Not targetted branch
+            if (target == "TARGET" || target == "CREATURE") {
+              //Can't get drop zones to work without disabling draggability, so going for reasonable randomness for MVP
+              //if it is a positive spell pick a random player or ally, if negative pick random enemy
+              let num_options;
+              let pick;
+              if (positivity_matrix[effect]) {
+                num_options = scene.AllyHandler.allies.length;
+                if (!dropZone) {
+                  num_options++;
+                }
+                pick = Math.floor(Math.random() * num_options);
+                if (pick < scene.AllyHandler.allies.length) {
+                  ally_index = pick;
+                } else {
+                  target = "PLAYER";
+                }
+              } else {
+                num_options = scene.EnemyHandler.enemies.length;
+                pick = Math.floor(Math.random() * num_options);
+                enemy_index = pick;
+              }
+            }
             if (
               ((effect == "DRAW" || effect == "DISCARD") &&
                 target == "PLAYER") ||
-              playSpell(target, value, effect, cost, -1, -1, scene)
+              playSpell(
+                target,
+                value,
+                effect,
+                cost,
+                enemy_index,
+                ally_index,
+                scene
+              )
             ) {
               gameObject.data.values.attackedThisTurn = true;
               gameObject.data.values.played = true;
