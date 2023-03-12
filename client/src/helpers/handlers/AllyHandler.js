@@ -60,7 +60,7 @@ export default class AllyHandler {
     this.updateHealth = (health, id) => {
       for (let i in scene.PlayerHandler.playedCards) {
         if (scene.PlayerHandler.playedCards[i].data.values.id === id) {
-          scene.PlayerHandler.playerHand[i].list[4].setText(`HP/${health}`);
+          scene.PlayerHandler.playedCards[i].list[4].setText(`HP/${health}`);
 
         }
       }
@@ -73,7 +73,7 @@ export default class AllyHandler {
           scene.PlayerHandler.playedCards[i].data.values.id ===
           this.allies[index].id
         ) {
-          scene.PlayerHandler.playedCards[i].list[1].setText(value);
+          scene.PlayerHandler.playedCards[i].list[2].setText(`ATK/${value}`);
         }
       }
       //this.allySprites[index].list[1].setText(value);
@@ -86,7 +86,7 @@ export default class AllyHandler {
           scene.PlayerHandler.playedCards[i].data.values.id ===
           this.allies[index].id
         ) {
-          scene.PlayerHandler.playedCards[i].list[2].setText(value);
+          scene.PlayerHandler.playedCards[i].list[3].setText(`DEF/${value}`);
         }
       }
       //this.allySprites[index].list[2].setText(value);

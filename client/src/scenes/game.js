@@ -1,17 +1,16 @@
-import DeckHandler from '../helpers/handlers/DeckHandler';
-import InteractiveHandler from '../helpers/handlers/InteractiveHandler';
-import GameHandler from '../helpers/handlers/GameHandler';
-import SocketHandler from '../helpers/handlers/SocketHandler';
+import DeckHandler from "../helpers/handlers/DeckHandler";
+import InteractiveHandler from "../helpers/handlers/InteractiveHandler";
+import GameHandler from "../helpers/handlers/GameHandler";
+import SocketHandler from "../helpers/handlers/SocketHandler";
 import UIHandler from "../helpers/handlers/UIHandler";
-import PlayerHandler from '../helpers/handlers/playerHandler';
-import AllyHandler from '../helpers/handlers/allyHandler';
-import EnemyHandler from '../helpers/handlers/EnemyHandler';
-import RulesHandler from '../helpers/handlers/RulesHandler';
-import HeroHandler from '../helpers/handlers/HeroHandler';
+import PlayerHandler from "../helpers/handlers/playerHandler";
+import AllyHandler from "../helpers/handlers/allyHandler";
+import EnemyHandler from "../helpers/handlers/EnemyHandler";
+import RulesHandler from "../helpers/handlers/RulesHandler";
+import HeroHandler from "../helpers/handlers/HeroHandler";
 import { storage } from "../config/firebase";
 import { ref, getDownloadURL } from "firebase/storage";
 import axios from "axios";
-
 
 const BACKEND_API = "https://tcgbackend-s2kqyb5vna-wl.a.run.app/";
 
@@ -26,7 +25,7 @@ export default class Game extends Phaser.Scene {
   // calls the backend to generate a deck of cards
   getCards() {
     // format backend URL
-    const cardsUrl = `${BACKEND_API}games/${this.gameId}/cards?deck=${this.deckSize}`;
+    const cardsUrl = `${BACKEND_API}games/${this.gameId}/cards?deck=${this.deckSize}&character=${this.characterId}`;
     // send GET request to fetch a deck of cards
     return axios
       .get(cardsUrl)
@@ -57,7 +56,7 @@ export default class Game extends Phaser.Scene {
         if (character.id === this.characterId) {
           this.character = character;
         }
-      })
+      });
       return res.data.rules;
     });
   }
@@ -70,6 +69,7 @@ export default class Game extends Phaser.Scene {
     const cardIds = [];
 
     // iterate through card object to extract data
+    let count = 0;
     this.cards.forEach((card) => {
       if (card.type === "CREATURE") {
         const newCard = [
@@ -80,8 +80,10 @@ export default class Game extends Phaser.Scene {
           card.attack,
           card.defense,
           card.health,
-          "",
+          card.effect || [],
+          count,
         ];
+        count += 1;
         parsedCards.push(newCard);
         if (!cardIds.includes(card.card_id)) {
           cardIds.push(card.card_id);
@@ -92,8 +94,13 @@ export default class Game extends Phaser.Scene {
           card.name,
           card.card_id,
           card.cost,
+          0,
+          0,
+          0,
           card.effect,
+          count,
         ];
+        count += 1;
         parsedCards.push(newCard);
         if (!cardIds.includes(card.card_id)) {
           cardIds.push(card.card_id);
@@ -195,7 +202,7 @@ export default class Game extends Phaser.Scene {
         this.cards = cards;
         this.enemies = enemies;
         this.gameRules = rules;
-        
+
         // parse card objects
         this.parseCards();
         while (!this.cardDeck) {
@@ -246,4 +253,3 @@ export default class Game extends Phaser.Scene {
 
   update() {}
 }
-

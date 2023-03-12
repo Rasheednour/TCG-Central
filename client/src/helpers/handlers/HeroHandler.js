@@ -10,12 +10,12 @@ export default class HeroHandler {
 
     this.updateAttack = (value) => {
       this.hero.data.values.attack = Number(value);
-      this.hero.list[1].setText(value);
+      this.hero.list[1].setText(`ATK/${value}`);
     };
 
     this.updateDefense = (value) => {
       this.hero.data.values.defense = Number(value);
-      this.hero.list[2].setText(value);
+      this.hero.list[2].setText(`DEF/${value}`);
     };
   }
 }

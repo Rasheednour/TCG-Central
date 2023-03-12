@@ -95,11 +95,11 @@ export default class Card {
           .setFontSize(40)
           .setFontFamily("Treubuchet MS");
         attackText = scene.add
-          .text(-100, 240, `${this.attack}`)
+          .text(-40, 240, `ATK/${this.attack}`)
           .setFontSize(40)
           .setFontFamily("Treubuchet MS");
         defenseText = scene.add
-          .text(0, 240, `${this.defense}`)
+          .text(60, 240, `DEF/${this.defense}`)
           .setFontSize(40)
           .setFontFamily("Treubuchet MS");
         abilityText = scene.add

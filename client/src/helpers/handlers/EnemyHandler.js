@@ -66,12 +66,12 @@ export default class EnemyHandler {
 
     this.updateAttack = (value, index) => {
       this.enemies[index].attack = Number(value);
-      this.enemySprites[index].list[1].setText(value);
+      this.enemySprites[index].list[2].setText(`ATK/${value}`);
     };
 
     this.updateDefense = (value, index) => {
       this.enemies[index].defense = Number(value);
-      this.enemySprites[index].list[2].setText(value);
+      this.enemySprites[index].list[3].setText(`DEF/${value}`);
     };
 
 
