@@ -84,6 +84,9 @@ export default class InteractiveHandler {
           gameObjects[0].setScale(0.5, 0.5);
           gameObjects[0].y += 80;
         }
+      } else if (gameObjects[0].parentContainer) {
+        scene.children.bringToTop(gameObjects[0].parentContainer);
+        gameObjects[0].parentContainer.setScale(0.5, 0.5);
       }
     });
 
@@ -98,6 +101,9 @@ export default class InteractiveHandler {
           gameObjects[0].y -= 80;
         }
 
+      } else if (gameObjects[0].parentContainer) {
+        scene.children.bringToTop(gameObjects[0].parentContainer);
+        gameObjects[0].parentContainer.setScale(0.25, 0.25);
       }
     });
 
