@@ -67,8 +67,9 @@ export default class Enemy {
         .setFontFamily("Treubuchet MS")
         .setColor("#000")
         .setFontStyle("bold");
+      let hitBox = scene.add.zone(0,0, sprite.width, sprite.height).setDropZone();
       let enemy = scene.add
-        .container(x, y, [sprite, statBox, attackText, defenseText, healthText])
+        .container(x, y, [sprite, statBox, attackText, defenseText, healthText, hitBox])
         .setDataEnabled()
         .setSize(sprite.width, sprite.height)
         .setScale(0.25, 0.25)
