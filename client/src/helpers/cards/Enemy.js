@@ -22,13 +22,26 @@ export default class Enemy {
     };
 
     this.strike = () => {
+      let damage = this.attack;
       if (scene.AllyHandler.allies.length === 0) {
-        scene.PlayerHandler.takeDamage(this.attack);
+        damage = damage - scene.HeroHandler.hero.data.values.defense;
+        if (damage < 0) {
+          damage = 0;
+        }
+        scene.PlayerHandler.takeDamage(damage);
       } else {
-        const target = 0;
-        scene.AllyHandler.allies[target].takeDamage(this.attack);
+        const target = Math.floor(
+          Math.random() * scene.AllyHandler.allies.length
+        );
+        damage = damage - scene.AllyHandler.allies[target].defense;
+        if (damage < 0) {
+          damage = 0;
+        }
+        scene.AllyHandler.allies[target].takeDamage(damage);
       }
     };
+
+
 
     this.render = (x, y) => {
       let sprite = scene.add.image(0, 0, this.sprite);
@@ -61,6 +74,7 @@ export default class Enemy {
         .setScale(0.25, 0.25)
         .setInteractive()
         .setData({
+          type: "enemy",
           name: this.name,
           attack: this.attack,
           defense: this.defense,
@@ -77,3 +91,4 @@ export default class Enemy {
 }
 
 //.setInteractive(new Phaser.Geom.Rectangle(0,0, 85, 115), Phaser.Geom.Rectangle.Contains)
+

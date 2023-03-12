@@ -8,7 +8,8 @@ export default class SocketHandler {
     scene.socket.on("connect", () => {
       console.log("connected!");
       // send the deck of cards to the server to be shuffled/dealt/kept track of.
-      scene.socket.emit("dealDeck", scene.socket.id, scene.cardDeck);
+      console.log("card deck is: ",scene.cardDeck);
+      scene.socket.emit("dealDeck", scene.socket.id, scene.cardDeck, scene.character, scene.gameRules.starting_health);
     });
     //Starts the first turn
     scene.socket.on("firstTurn", () => {
@@ -31,15 +32,25 @@ export default class SocketHandler {
       scene.GameHandler.changeTurn();
     });
 
-    //tells the server to deal cards
-    scene.socket.on("startGame", (socketId, cards) => {
-      if (socketId === scene.socket.id) {
-        for (let i in cards) {
-          scene.PlayerHandler.playerHand.push(
-            scene.DeckHandler.dealCard(155 + i * 155, 860, cards[i])
-          );
-        }
-      }
-    });
-  }
+        //tells the server to deal cards
+        scene.socket.on('startGame', (socketId, cards, hero) => {
+            if (socketId === scene.socket.id) {
+                for (let i in cards) {
+                    scene.PlayerHandler.playerHand.push(scene.DeckHandler.dealCard(133 + (i* (850/cards.length)), 860, cards[i]));
+                }
+                scene.HeroHandler.hero = scene.DeckHandler.dealCard(1000, 860, hero[0])
+            }
+        })
+
+        //to Draw Cards, and reset hand positions accordingly.
+        scene.socket.on('resetHand', (socketId, cards) => {
+            if(socketId === scene.socket.id) {
+                scene.PlayerHandler.resetHand();
+                for(let i = 0; i< cards.length; i++) {
+                    scene.PlayerHandler.playerHand.push(scene.DeckHandler.dealCard(155 + (i * (850/cards.length)), 860, cards[i]));
+                }
+            }
+        })
+    }
 }
+

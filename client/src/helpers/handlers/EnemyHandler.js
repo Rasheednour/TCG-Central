@@ -1,4 +1,5 @@
 import Enemy from "../cards/Enemy";
+import activateEffect from "./activateEffect";
 
 export default class EnemyHandler {
   constructor(scene) {
@@ -14,6 +15,21 @@ export default class EnemyHandler {
     this.enemiesAttack = () => {
       for (let i in this.enemies) {
         this.enemies[i].strike();
+        for (
+          let eff_index = 0;
+          eff_index < this.enemies[i].ability.length;
+          eff_index++
+        ) {
+          if (Math.floor(Math.random() * 4) > 2) {
+            activateEffect(
+              this.enemies[i].ability[eff_index],
+              scene,
+              i,
+              "enemy"
+            );
+          }
+        }
+
       }
     };
 
@@ -47,6 +63,17 @@ export default class EnemyHandler {
     this.updateHealth = (health, index) => {
       this.enemySprites[index].list[4].setText(`HP/${health}`);
     };
+
+    this.updateAttack = (value, index) => {
+      this.enemies[index].attack = Number(value);
+      this.enemySprites[index].list[2].setText(`ATK/${value}`);
+    };
+
+    this.updateDefense = (value, index) => {
+      this.enemies[index].defense = Number(value);
+      this.enemySprites[index].list[3].setText(`DEF/${value}`);
+    };
+
 
     this.deleteEnemy = (index) => {
       this.enemySprites[index].visible = false;

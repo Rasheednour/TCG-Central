@@ -13,14 +13,16 @@ export default class GameHandler{
             console.log("start allies " + scene.AllyHandler.allies);
             //Enemies take turn here
             scene.EnemyHandler.enemiesAttack();
-            //Allies take turn here WILL CHANGE SOON:
-            scene.AllyHandler.alliesAttack();
+            //Reset Ally and hero Attack allowance
+            scene.AllyHandler.resetAllyAttacks();
+            scene.HeroHandler.resetHeroAttacks();
             //reset resources, etc. and return to player turn.
             scene.UIHandler.updatePlayerHealth(scene.PlayerHandler.health);
             scene.UIHandler.resetAllyPositions();
             scene.PlayerHandler.resetResources();
             console.log("end enemies " + scene.EnemyHandler.enemies);
             console.log("end allies " + scene.AllyHandler.allies);
+            scene.socket.emit('drawCards', scene.socket.id, scene.RulesHandler.turnDraw)
             this.isMyTurn = !this.isMyTurn;
         }
 
