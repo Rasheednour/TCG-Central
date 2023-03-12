@@ -52,6 +52,12 @@ export default class Game extends Phaser.Scene {
     // format backend URL
     const gameUrl = `${BACKEND_API}games/${this.gameId}`;
     return axios.get(gameUrl).then((res) => {
+      const gameCharacters = res.data.characters;
+      gameCharacters.forEach((character) => {
+        if (character.id === this.characterId) {
+          this.character = character;
+        }
+      })
       return res.data.rules;
     });
   }
@@ -98,6 +104,7 @@ export default class Game extends Phaser.Scene {
       this.cardDeck = parsedCards;
       this.cardIds = cardIds;
     });
+    console.log("cardDeck in game.js is:", this.cardDeck);
   }
 
   // parses and extracts information from the enemy objects fetched from the backend
@@ -188,8 +195,12 @@ export default class Game extends Phaser.Scene {
         this.cards = cards;
         this.enemies = enemies;
         this.gameRules = rules;
+        
         // parse card objects
         this.parseCards();
+        while (!this.cardDeck) {
+          continue;
+        }
         // parse enemy objects
         this.parseEnemies();
         // preload card images
@@ -213,13 +224,14 @@ export default class Game extends Phaser.Scene {
     );
     // preload default card back
     this.load.image("cardBack", "src/assets/Card_Back.png");
+    this.load.image("stonePath", "src/assets/Stone_Path.png");
   }
 
   create() {
     // Everything is going to be dealt with through various handlers.
     this.EnemyHandler = new EnemyHandler(this);
-        this.PlayerHandler = new PlayerHandler(this);
-        this.HeroHandler = new HeroHandler(this);
+    this.PlayerHandler = new PlayerHandler(this);
+    this.HeroHandler = new HeroHandler(this);
     this.AllyHandler = new AllyHandler(this);
     this.RulesHandler = new RulesHandler(this);
     //this.CardHandler = new CardHandler();

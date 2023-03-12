@@ -23,7 +23,6 @@ export default class Card {
 
     this.render = (x, y) => {
       if (this.type === "ally") {
-        let nameText;
         let sprite;
         let attackText = "none";
         let defenseText = "none";
@@ -90,6 +89,7 @@ export default class Card {
         let defenseText = "none";
         let abilityText = "none";
         sprite = scene.add.image(0, 0, this.sprite);
+        sprite.setScale(1.2);
         nameText = scene.add
           .text(-150, -300, `${this.name}`)
           .setFontSize(40)
@@ -145,29 +145,11 @@ export default class Card {
         scene.input.setDraggable(card);
         return card;
       } else if (this.type === "spell") {
-        let nameText;
         let sprite;
-        let attackText = "none";
-        let defenseText = "none";
-        let healthText = "none";
-        let abilityText = "none";
-        let costText = "none";
         sprite = scene.add.image(0, 0, this.sprite);
-        nameText = scene.add
-          .text(-150, -300, `${this.name}`)
-          .setFontSize(40)
-          .setFontFamily("Treubuchet MS");
-        costText = scene.add
-          .text(100, -300, `cost: ${this.cost}`)
-          .setFontSize(40)
-          .setFontFamily("Treubuchet MS");
-        abilityText = scene.add
-          .text(0, 140, `${this.ability}`)
-          .setFontSize(40)
-          .setFontFamily("Treubuchet MS");
-
+        sprite.setScale(1.7);
         let card = scene.add
-          .container(x, y, [sprite, costText, nameText, abilityText])
+          .container(x, y, [sprite])
           .setDataEnabled()
           .setSize(sprite.width, sprite.height)
           .setScale(0.25, 0.25)
@@ -186,7 +168,6 @@ export default class Card {
             healthText: "",
             index: this.index,
             attackedThisTurn: false,
-
             id: this.id,
           });
         scene.input.setDraggable(card);

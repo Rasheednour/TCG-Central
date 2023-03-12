@@ -8,7 +8,8 @@ export default class SocketHandler {
     scene.socket.on("connect", () => {
       console.log("connected!");
       // send the deck of cards to the server to be shuffled/dealt/kept track of.
-      scene.socket.emit("dealDeck", scene.socket.id, scene.cardDeck);
+      console.log("card deck is: ",scene.cardDeck);
+      scene.socket.emit("dealDeck", scene.socket.id, scene.cardDeck, scene.character, scene.gameRules.starting_health);
     });
     //Starts the first turn
     scene.socket.on("firstTurn", () => {

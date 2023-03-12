@@ -35,16 +35,18 @@ io.on("connection", function (socket) {
     //Deck is where the cards should be loaded in.
     //Cards are as follows [card_type, card_name, card_sprite, cost, attack, defense, health, ability]
     deck: [],
+    hero: [],
     inDeck: [],
     inHand: [],
     inPlay: [],
   };
 
-  socket.on("dealDeck", function (socketId, cardDeck) {
+  socket.on("dealDeck", function (socketId, cardDeck, hero, health) {
     //where cards are currently loaded in.
     let deck = [];
     // get the deck of cards to be shuffled from the client
     players[socketId].deck = cardDeck;
+    players[socketId].hero = [["hero", hero.name, "stonePath", 0, hero.attack, hero.defense, health + hero.health_mod, ""]];
     for (let i = 0; i < players[socketId].deck.length; i++) {
       deck[i] = players[socketId].deck[i];
     }
