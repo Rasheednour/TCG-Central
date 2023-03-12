@@ -14,13 +14,12 @@ import {
 } from "@mui/material";
 
 const BACKEND_API = "https://tcgbackend-s2kqyb5vna-wl.a.run.app/";
+const PHASER_CLIENT = "http://localhost:8080/";
 
 function SetupPage() {
   const [game, setGame] = useState("");
   const [character, setCharacter] = useState("");
   const [characters, setCharacters] = useState([]);
-  const [cards, setCards] = useState([]);
-  const [enemies, setEnemies] = useState([]);
   const [difficulty, setDifficulty] = useState("1");
   const [deckSize, setDeckSize] = useState("");
   const game_id = useParams().game_id;
@@ -29,20 +28,17 @@ function SetupPage() {
     setCharacter(event.target.value);
   };
 
-  const handleDifficultyChange = (event) => {
-    setDifficulty(event.target.value);
-  };
-
   const handleSubmit = () => {
-    const game_info = game;
-    game_info["cards"] = cards;
-    game_info["enemies"] = enemies;
-    game_info["deck_size"] = deckSize;
-    game_info["difficulty"] = difficulty;
-    game_info["character"] = character;
-    delete game_info.description;
-    delete game_info.characters;
-    console.log(game_info);
+    window.location.href =
+      PHASER_CLIENT +
+      "?gameId=" +
+      game_id +
+      "&characterId=" +
+      character.id +
+      "&deckSize=" +
+      deckSize +
+      "&difficulty=" +
+      difficulty;
   };
 
   function getDeckSizes() {
@@ -72,23 +68,7 @@ function SetupPage() {
       .catch((error) => {
         console.log("fetch error" + error);
       });
-    const cardsUrl = BACKEND_API + "games/" + game_id + "/cards";
-    axios
-      .get(cardsUrl)
-      .then((res) => {
-        setCards(res.data);
-      })
-      .catch((error) => {
-        console.log("fetch error" + error);
-      });
-  }, []);
-
-  useEffect(() => {
-    const enemyUrl = BACKEND_API + "games/" + game_id + "/enemies" + "?difficulty=" + difficulty;
-    axios.get(enemyUrl).then((res) => {
-      setEnemies(res.data);
-    })
-  }, [difficulty]);
+  }, [game_id]);
 
   return (
     <div className="SetupPage">
@@ -145,14 +125,21 @@ function SetupPage() {
           <Box
             component="form"
             sx={{
-              '& > :not(style)': { m: 1, width: '25ch' },
+              "& > :not(style)": { m: 1, width: "25ch" },
             }}
             noValidate
             autoComplete="off"
           >
-            <TextField id="outlined-basic" label="Difficulty" variant="outlined" value={difficulty} sx={{bgcolor:"white"}} onChange={(event) => {
-              setDifficulty(event.target.value);
-            }}/>
+            <TextField
+              id="outlined-basic"
+              label="Difficulty"
+              variant="outlined"
+              value={difficulty}
+              sx={{ bgcolor: "white" }}
+              onChange={(event) => {
+                setDifficulty(event.target.value);
+              }}
+            />
           </Box>
           <Button variant="contained" onClick={handleSubmit}>
             Start Game
