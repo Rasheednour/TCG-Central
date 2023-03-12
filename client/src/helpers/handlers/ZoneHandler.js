@@ -10,7 +10,6 @@ export default class ZoneHandler {
         //this creates an outline for our dropzone.
         this.renderOutline = (dropZone) => {
             let dropZoneOutline = scene.add.graphics();
-            dropZoneOutline.lineStyle(4, 0x097969);
             dropZoneOutline.strokeRect(dropZone.x - dropZone.input.hitArea.width / 2, dropZone.y - dropZone.input.hitArea.height / 2, dropZone.input.hitArea.width, dropZone.input.hitArea.height)
         }
     }

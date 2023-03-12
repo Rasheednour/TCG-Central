@@ -88,20 +88,26 @@ export default class Card {
         let attackText = "none";
         let defenseText = "none";
         let abilityText = "none";
-        sprite = scene.add.image(0, 0, this.sprite);
-        sprite.setScale(1.2);
+        sprite = scene.add.image(200, -10, this.sprite);
+        sprite.setScale(1.0);
         nameText = scene.add
-          .text(-150, -300, `${this.name}`)
-          .setFontSize(40)
-          .setFontFamily("Treubuchet MS");
+          .text(0, -375, `${this.name}`)
+          .setFontSize(55)
+          .setFontFamily("Treubuchet MS")
+          .setColor("#000")
+          .setFontStyle("bold");
         attackText = scene.add
           .text(-40, 240, `ATK/${this.attack}`)
           .setFontSize(40)
-          .setFontFamily("Treubuchet MS");
+          .setFontFamily("Treubuchet MS")
+          .setColor("#000")
+          .setFontStyle("bold");
         defenseText = scene.add
-          .text(60, 240, `DEF/${this.defense}`)
+          .text(180, 240, `DEF/${this.defense}`)
           .setFontSize(40)
-          .setFontFamily("Treubuchet MS");
+          .setFontFamily("Treubuchet MS")
+          .setColor("#000")
+          .setFontStyle("bold");
         abilityText = scene.add
           .text(0, 140, `${this.ability}`)
           .setFontSize(40)

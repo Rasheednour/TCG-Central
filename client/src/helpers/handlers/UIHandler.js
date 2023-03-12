@@ -15,14 +15,11 @@ export default class UIHandler {
 
     this.buildPlayerArea = () => {
       scene.playerHandArea = scene.add.rectangle(470, 860, 850, 230);
-      scene.playerHandArea.setStrokeStyle(4, 0x0096ff);
-      scene.playerDeckArea = scene.add.rectangle(1000, 860, 155, 215);
-      scene.playerDeckArea.setStrokeStyle(3, 0x00ffff);
+      scene.playerDeckArea = scene.add.rectangle(1050, 860, 155, 215);
     };
 
     this.buildEnemyArea = () => {
       scene.enemyArea = scene.add.rectangle(570, 135, 1050, 230);
-      scene.enemyArea.setStrokeStyle(4, 0x880808);
     };
 
     //builds the Start Game and End Turn buttons

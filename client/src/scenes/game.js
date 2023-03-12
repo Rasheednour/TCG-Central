@@ -159,7 +159,7 @@ export default class Game extends Phaser.Scene {
     });
     // execute all promises
     Promise.all(promises).then(() => {
-      console.log("card images preloaded");
+      this.finishedPreload = true;
     });
   }
 
@@ -205,15 +205,15 @@ export default class Game extends Phaser.Scene {
 
         // parse card objects
         this.parseCards();
-        while (!this.cardDeck) {
-          continue;
-        }
         // parse enemy objects
         this.parseEnemies();
         // preload card images
         this.preloadCards();
         // preload enemy images
         this.preloadEnemies();
+        while (!this.cardDeck && !this.gameRules && !this.finishedPreload) {
+          continue;
+        }
       })
       .catch((error) => {
         console.log("fetch error" + error);
@@ -232,9 +232,12 @@ export default class Game extends Phaser.Scene {
     // preload default card back
     this.load.image("cardBack", "src/assets/Card_Back.png");
     this.load.image("stonePath", "src/assets/Stone_Path.png");
+    this.load.image("gameBackground", "src/assets/Game_Background.png");
   }
 
   create() {
+    // add game background
+    this.add.image(600, 500, 'gameBackground');
     // Everything is going to be dealt with through various handlers.
     this.EnemyHandler = new EnemyHandler(this);
     this.PlayerHandler = new PlayerHandler(this);
