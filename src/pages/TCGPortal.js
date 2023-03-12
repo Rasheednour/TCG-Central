@@ -1,7 +1,7 @@
 import React from "react";
 import "./styles/TCGPortal.css";
 import TopRibbon from "../components/TopRibbon.js";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 //import SearchIcon from "@mui/icons-material/SearchIcon";
@@ -12,26 +12,74 @@ import axios from "axios";
 
 const api = "https://tcgbackend-s2kqyb5vna-wl.a.run.app/";
 
-const SearchBar = () => (
-  <form>
-    <TextField
-      id="search-bar"
-      className="text"
-      label="Enter a TCG name"
-      variant="outlined"
-      placeholder="Search..."
-      size="small"
-      style={{ width: "300px" }}
-    />
-    <IconButton type="submit" aria-label="search">
-      {/* <SearchIcon style={{ fill: "blue" }} /> */}
-    </IconButton>
-  </form>
-);
-
 function TCGPortal() {
   const [games, setGames] = useState([]);
+  const [filteredGames, setFilteredGames] = useState([]);
+  const [users, setUsers] = useState([]);
   const [fetched, setFetched] = useState(false);
+  const [search, setSearch] = useState("");
+  const searchInputRef = useRef(null);
+
+  // filter games list by search input
+  const filterGames = () => {
+    let newGames = [];
+    games.forEach((game) => {
+      if (game.name.toLowerCase().includes(search.toLowerCase())) {
+        newGames.push(game);
+      }
+    });
+    setFilteredGames(newGames);
+    searchInputRef.current.focus();
+  };
+
+  useEffect(() => {
+    searchInputRef.current.focus();
+    filterGames();
+  }, [search]);
+
+  useEffect(() => {
+    searchInputRef.current.focus();
+  }, [filteredGames]);
+
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value);
+    searchInputRef.current.focus();
+  };
+
+  const SearchBar = () => (
+    <form>
+      <TextField
+        id="search-bar"
+        className="text"
+        label="Enter a TCG name"
+        variant="outlined"
+        placeholder="Search..."
+        size="small"
+        style={{ width: "300px" }}
+        value={search}
+        onChange={handleSearchChange}
+        inputRef={searchInputRef}
+      />
+    </form>
+  );
+
+  // assigns a user name to a game to be displayed in the portal
+  const assignUsers = () => {
+    let gamesCopy = [...games];
+
+    gamesCopy.forEach((game) => {
+      let foundUser = false;
+      users.forEach((user) => {
+        if (user.games.includes(game.game_id) && !foundUser) {
+          game.user = user.name;
+          foundUser = true;
+        }
+      });
+    });
+
+    setGames(gamesCopy);
+    setFilteredGames(gamesCopy);
+  };
 
   useEffect(() => {
     const url = api + "games";
@@ -40,11 +88,27 @@ function TCGPortal() {
       .then((res) => {
         setGames(res.data);
         setFetched(true);
+        setFilteredGames(res.data);
       })
       .catch((error) => {
         console.log("fetch error" + error);
       });
   }, []);
+
+  useEffect(() => {
+    const url = api + "users";
+    axios
+      .get(url)
+      .then((res) => {
+        setUsers(res.data);
+        if (fetched) {
+          assignUsers();
+        }
+      })
+      .catch((error) => {
+        console.log("fetch error" + error);
+      });
+  }, [fetched]);
 
   return (
     <div className="TCGPortal">
@@ -60,7 +124,7 @@ function TCGPortal() {
       <div>
         {fetched ? (
           <div className="tcgames">
-            {games.map((game) => (
+            {filteredGames.map((game) => (
               <div key={game.name} className="tcg-card">
                 {game.rules.public === "PUBLIC" ? (
                   <GameSummary
@@ -68,6 +132,7 @@ function TCGPortal() {
                     description={game.description}
                     game_id={game.game_id}
                     imageURL={game.image}
+                    creator={game.user}
                   />
                 ) : game.rules.public === "OPEN_SOURCE" ? (
                   <GameSummary
@@ -76,6 +141,7 @@ function TCGPortal() {
                     game_id={game.game_id}
                     imageURL={game.image}
                     publicStatus={game.rules.public}
+                    creator={game.user}
                   />
                 ) : (
                   <></>

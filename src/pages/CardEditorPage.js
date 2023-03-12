@@ -474,34 +474,6 @@ export default function CardEditorPage() {
                 </FormControl>
               </Tooltip>
             </Box>
-            <Box>
-              <Tooltip placement="right" title={triggerDisc[eff.split("_")[0]]}>
-                <FormControl fullWidth>
-                  <InputLabel id={`trigger-select-${effid}`}>
-                    Trigger
-                  </InputLabel>
-                  <Select
-                    id={`${effid}-trigger`}
-                    label="Trigger"
-                    defaultValue={eff.split("_")[0]}
-                    onChange={(e) => {
-                      let val = e.target.value;
-                      let cop = JSON.parse(JSON.stringify(info));
-                      for (let i = 0; i < cop["effect"].length; i++) {
-                        if (eff == cop["effect"][i]) {
-                          let splitted = cop["effect"][i].split("_");
-                          cop["effect"][i] =
-                            val + "_" + splitted.slice(1).join("_");
-                        }
-                      }
-                      setInfo(cop);
-                    }}
-                  >
-                    {allValidTriggers(eff)}
-                  </Select>
-                </FormControl>
-              </Tooltip>
-            </Box>
             {effect_info && effect_info["value_type"] != "NONE" && (
               <Box>
                 <Tooltip
@@ -626,42 +598,13 @@ export default function CardEditorPage() {
       <h1>
         Editing {pageType == "cards" && "Card"}
         {pageType == "enemies" && "Enemy"}
-        <Container sx={{ width: 4 / 7 }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              navigate(
-                `/${location.pathname.split("/")[1]}/${
-                  location.pathname.split("/")[2]
-                }`
-              );
-            }}
-            fullWidth
-          >
-            Return to {pageType == "cards" ? "Card" : "Enemy"} List
-          </Button>
-        </Container>
       </h1>
 
       <div className="cards-body" style={{ display: "flex", flexFlow: "wrap" }}>
         <Grid container>
           <Grid item xs>
             <div>
-              <h1>
-                <Container sx={{ width: 4 / 7 }}>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => {
-                      saveInfo(info);
-                    }}
-                    fullWidth
-                  >
-                    SAVE {pageType == "cards" ? "CARD" : "ENEMY"}
-                  </Button>
-                </Container>
-              </h1>
+              <h3>{pageType == "cards" ? "Card" : "Enemy"} Info</h3>
               <Box padding={1}>
                 <FormControl fullWidth>
                   <InputLabel id="card-name-simple-select-label" shrink>
@@ -707,6 +650,7 @@ export default function CardEditorPage() {
               )}
               {renderStats()}
             </div>
+            <div>{renderEffects()}</div>
           </Grid>
           <Grid item xs>
             {pageType == "enemies" && (
@@ -755,7 +699,38 @@ export default function CardEditorPage() {
                 />
               </div>
             )}
+            <div className="main-buttons">
+              <Container sx={{ width: "390px", marginTop: "20px" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    navigate(
+                      `/${location.pathname.split("/")[1]}/${
+                        location.pathname.split("/")[2]
+                      }`
+                    );
+                  }}
+                  fullWidth
+                >
+                  Return to {pageType == "cards" ? "Card" : "Enemy"} List
+                </Button>
+              </Container>
+              <Container sx={{ width: "390px", marginTop: "10px" }}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => {
+                    saveInfo(info);
+                  }}
+                  fullWidth
+                >
+                  SAVE {pageType == "cards" ? "CARD" : "ENEMY"}
+                </Button>
+              </Container>
+            </div>
           </Grid>
+
           <Grid item xs>
             {pageType == "cards" && (
               <Box padding={1}>
@@ -1010,9 +985,6 @@ export default function CardEditorPage() {
                 </Tooltip>
               </Box>
             )}
-          </Grid>
-          <Grid item xs={9}>
-            {renderEffects()}
           </Grid>
         </Grid>
       </div>

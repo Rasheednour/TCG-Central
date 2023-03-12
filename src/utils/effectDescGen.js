@@ -38,12 +38,14 @@ export default function effectDescGen(card_info, form_string, effect) {
   );
   filled_string = filled_string.replace(
     "[EFFECT_TYPE]",
-    type_enum[splitted[0]]
+    card_info["type"] === "ENEMY" ? "attacking" : type_enum[splitted[0]]
   );
   filled_string = filled_string.replace(
     "[CARD_TYPE]",
     card_type_enum[card_info["type"]]
   );
-
+  if (card_info["type"] == "ENEMY") {
+    filled_string = "(25% chance): " + filled_string;
+  }
   return filled_string;
 }
