@@ -120,6 +120,7 @@ export default class InteractiveHandler {
       if (
         scene.GameHandler.isMyTurn &&
         dropZone.parentContainer &&
+        scene.GameHandler.gameState === 'Ready' &&
         dropZone.parentContainer.data.values.type == "enemy" &&
         gameObject.data.values.attackedThisTurn === false
       ) {
