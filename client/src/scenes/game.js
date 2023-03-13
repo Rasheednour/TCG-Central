@@ -226,7 +226,8 @@ export default class Game extends Phaser.Scene {
       .catch((error) => {
         console.log("fetch error" + error);
       });
-      
+    
+    this.load.image("stonePath", "src/assets/Stone_Path.png");
     this.load.image("gameBackground", "src/assets/Game_Background.png");
 
   }
