@@ -161,6 +161,12 @@ export default class Game extends Phaser.Scene {
     Promise.all(promises).then(() => {
       this.finishedPreload = true;
     });
+
+    this.load.on('complete', () => {
+      this.allAssetsPreloaded = true;
+      this.create();
+      // Move to the create function here
+    });
   }
 
   // calls Firebase to fetch list of download URLs of enemy images
@@ -181,6 +187,7 @@ export default class Game extends Phaser.Scene {
     Promise.all(promises).then(() => {
       console.log("enemy images preloaded");
     });
+
   }
 
   // main preload function responsible for fetching game/cards/enemies data and preloading all card/enemy images
@@ -211,6 +218,7 @@ export default class Game extends Phaser.Scene {
         this.preloadCards();
         // preload enemy images
         this.preloadEnemies();
+
         while (!this.cardDeck && !this.gameRules && !this.finishedPreload) {
           continue;
         }
@@ -233,9 +241,13 @@ export default class Game extends Phaser.Scene {
     this.load.image("cardBack", "src/assets/Card_Back.png");
     this.load.image("stonePath", "src/assets/Stone_Path.png");
     this.load.image("gameBackground", "src/assets/Game_Background.png");
+
   }
 
   create() {
+    if (!this.allAssetsPreloaded) {
+      return
+    }
     // add game background
     this.add.image(600, 500, 'gameBackground');
     // Everything is going to be dealt with through various handlers.
