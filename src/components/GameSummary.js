@@ -6,7 +6,6 @@ import Button from "@mui/material/Button";
 import cover from "../assets/temp_db/cover1.png";
 import "./styles/GameSummary.css";
 import { useNavigate } from "react-router-dom";
-import { green } from "@mui/material/colors";
 
 const PLAYGROUND_URL = "https://tcg-maker-phaser.herokuapp.com";
 

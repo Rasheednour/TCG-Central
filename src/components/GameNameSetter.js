@@ -3,6 +3,7 @@ import { Button, Box, Grid, TextField, Input } from "@mui/material";
 import { storage } from "../config/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
+import "./styles/GameNameSetter.css";
 
 export default function GameNameSetter({
   gameNameProp,
@@ -46,70 +47,81 @@ export default function GameNameSetter({
   };
 
   return (
-    <Grid container>
-      <Grid item xs={4}>
-        <h3>
-          Game Name: <div id="current-name-display">{gameNameProp}</div>
-        </h3>
-        <div>
-          <form onSubmit={updateName}>
-            <TextField
-              id="game-name-input"
-              label={"New Name"}
-              defaultValue={gameNameProp}
-              variant="outlined"
-            />
-            <Button variant="contained" onClick={updateName}>
-              Update Name
-            </Button>
-          </form>
+    <div className="GameNameSetter">
+      <div className="title">
+        <h1>Game Info</h1>
+      </div>
+      <div className="game-info-cells">
+        <div className="left-column">
+          <div className="game-name">
+            <div id="current-name-display" className="name-display">
+              <h3>{gameNameProp}</h3>
+            </div>
+            <div className="game-name-form">
+              <form onSubmit={updateName}>
+                <TextField
+                  id="game-name-input"
+                  label={"Game Title"}
+                  defaultValue={gameNameProp}
+                  variant="outlined"
+                />
+                <Button variant="contained" onClick={updateName}>
+                  Update Title
+                </Button>
+              </form>
+            </div>
+          </div>
+          <div className="game-description">
+            <div id="current-desc" className="current-desc">
+              <p> {gameDesc}</p>
+            </div>
+            <div className="game-desc-form">
+              <TextField
+                id={"game-desc-value"}
+                label={"Game Description"}
+                multiline
+                rows={2}
+                defaultValue={gameDesc || ""}
+                variant="outlined"
+                className="desc-input"
+              ></TextField>
+              <Button variant="contained" onClick={updateDesc}>
+                Update Description
+              </Button>
+            </div>
+          </div>
         </div>
-      </Grid>
-      <Grid item xs={4}>
-        Game Description:
-        <br /> <span id="current-desc">{gameDesc}</span>
-        <br />
-        <TextField
-          id={"game-desc-value"}
-          label={"Game Description"}
-          multiline
-          rows={2}
-          defaultValue={gameDesc || ""}
-          variant="outlined"
-        ></TextField>
-        <Button variant="contained" onClick={updateDesc}>
-          Update Description
-        </Button>
-      </Grid>
-      <Grid item xs={4}>
-        Game Profile Image:
-        <br />
-        <Box
-          component="img"
-          sx={{
-            height: 233,
-            width: 350,
-            maxHeight: { xs: 233, md: 167 },
-            maxWidth: { xs: 350, md: 250 },
-          }}
-          id="displayed-game-image"
-          alt="The image for your game."
-          src={gameImage || DEFAULT_IMAGE}
-        />
-        <br />
-        <form onSubmit={uploadImage}>
-          <Input
-            type="file"
-            accept=".png, .jpg, .jpeg"
-            onChange={(event) => {
-              setImageFile(event.target.files[0]);
-            }}
-          />
-          <Button variant="contained" onClick={uploadImage}>
-            Upload Image
-          </Button>
-        </form>
-      </Grid>
-    </Grid>
+        <div className="right-column">
+          <div className="game-image">
+            <Box
+              component="img"
+              sx={{
+                height: 500,
+                width: 400,
+              }}
+              id="displayed-game-image"
+              alt="The image for your game."
+              src={gameImage || DEFAULT_IMAGE}
+            />
+            <form onSubmit={uploadImage}>
+              <TextField
+                type="file"
+                accept=".png, .jpg, .jpeg"
+                variant="outlined"
+                onChange={(event) => {
+                  setImageFile(event.target.files[0]);
+                }}
+              />
+              <Button variant="contained" onClick={uploadImage}>
+                Upload Game Cover Image
+              </Button>
+            </form>
+          </div>
+        </div>
+        
+      </div>
+      <hr></hr>
+    </div>
+    
   );
 }

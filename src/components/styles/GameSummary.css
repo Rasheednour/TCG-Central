@@ -21,13 +21,20 @@
   width: 50%;
   height: 50%;
   margin: 1% 1% 1% 1%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  
 }
 
-.GameSummary img {
-  width: 100%;
-  height: 100%;
+.GameSummary .cover-image img {
+  width: 400px;
+  height: 480px;
   border-radius: 1.3em;
   object-fit: cover;
+  flex-shrink: 0;
+  
 }
 
 .GameSummary .right-panel {

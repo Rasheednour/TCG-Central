@@ -1,0 +1,52 @@
+.CharacterCustomizer {
+}
+
+.CharacterCustomizer .title {
+    background-color: black;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.CharacterCustomizer .title h1 {
+    color: rgb(255, 255, 255);
+    font-size: 35px;
+    text-align: center;
+    padding-bottom: 75px;
+    margin-right: 70%;
+}
+
+.CharacterCustomizer .character-row {
+    margin-top: 20px;
+
+}
+
+.CharacterCustomizer button {
+    width: 200px;
+    height: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.CharacterCustomizer .character-row .add-button {
+    width: 200px;
+    height: 300px;
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 2px solid grey;
+    border-style: dashed;
+    color: black;
+    margin-left: 10px;
+}
+
+.CharacterCustomizer .character-row .add-button:hover{
+    background-color: rgba(93, 226, 76, 0.5);
+}
+
+.CharacterCustomizer hr {
+    color: rgba(255, 255, 255, 0.5);
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

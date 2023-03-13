@@ -1,4 +1,4 @@
-import "./styles/SignUpPage.css";
+import "./styles/CreatePage.css";
 import TopRibbon from "../components/TopRibbon.js";
 import GameBuilder from "../components/GameBuilder";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ function CreatePage() {
   return (
     <div className="CreatePage">
       <TopRibbon />
-      <div className="create-upper-half">
+      <div className="create-container">
         <div className="create-intro" bg-color="black">
           <h1>Custom Trading Card Game Builder</h1>
           <p>
