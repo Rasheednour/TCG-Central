@@ -86,8 +86,8 @@ export default class EnemyHandler {
         }
       }
       for (let i in this.enemySprites) {
-        if (this.enemySprites[i].data.index > index) {
-          this.enemySprites[i].data.index--;
+        if (this.enemySprites[i].data.values.index > index) {
+          this.enemySprites[i].data.values.index--;
         }
       }
     };
