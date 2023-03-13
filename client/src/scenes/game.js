@@ -226,20 +226,7 @@ export default class Game extends Phaser.Scene {
       .catch((error) => {
         console.log("fetch error" + error);
       });
-
-    // preload sample one card image and sample one enemy image from Firebase
-    this.load.image(
-      "0vPKtqOPZNCBiDb1cTMA",
-      "https://firebasestorage.googleapis.com/v0/b/tcg-maker-backend.appspot.com/o/cards%2F0vPKtqOPZNCBiDb1cTMA.jpg?alt=media&token=71bb171d-764b-4173-ab2f-f04faf17ac54"
-    );
-
-    this.load.image(
-      "vjfLKqdZN9wWMqs9ZfNL",
-      "https://firebasestorage.googleapis.com/v0/b/tcg-maker-backend.appspot.com/o/enemies%2FvjfLKqdZN9wWMqs9ZfNL.jpg?alt=media&token=aa55ec33-262b-4ff3-83e8-fd5e101d32bf"
-    );
-    // preload default card back
-    this.load.image("cardBack", "src/assets/Card_Back.png");
-    this.load.image("stonePath", "src/assets/Stone_Path.png");
+      
     this.load.image("gameBackground", "src/assets/Game_Background.png");
 
   }
