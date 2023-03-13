@@ -22,6 +22,7 @@ function SetupPage() {
   const [characters, setCharacters] = useState([]);
   const [difficulty, setDifficulty] = useState("1");
   const [deckSize, setDeckSize] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const game_id = useParams().game_id;
 
   const handleCharChange = (event) => {
@@ -29,6 +30,7 @@ function SetupPage() {
   };
 
   const handleSubmit = () => {
+    setIsLoading(true);
     window.location.href =
       PHASER_CLIENT +
       "?gameId=" +
@@ -144,6 +146,7 @@ function SetupPage() {
           <Button variant="contained" onClick={handleSubmit}>
             Start Game
           </Button>
+          {isLoading && <h3>Game Is Loading...</h3>}
         </div>
       ) : (
         <h2>Game does not exist</h2>
