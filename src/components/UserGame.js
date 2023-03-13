@@ -30,7 +30,7 @@ function UserGame({ title, description, imageURL, game_id, user_id }) {
         <h1>{title}</h1>
         <p>{description}</p>
         <div className="card-samples">
-          <Button variant="contained" href={routeChange}>
+          <Button variant="contained" onClick={routeChange}>
             PLAY GAME
           </Button>
           <Button variant="contained" onClick={gameEditRout}>
