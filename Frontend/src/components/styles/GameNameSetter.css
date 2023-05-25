@@ -1,0 +1,168 @@
+.GameNameSetter {
+    display: flex;
+    flex-direction: column;
+}
+
+.GameNameSetter .game-name {
+    display: flex;
+    flex-direction: column;
+}
+
+.GameNameSetter .game-name .name-display {
+    background-color: rgb(245, 243, 234);
+    margin: auto;
+    display: inline-block;
+    border-radius: 10px;
+    height: 60px;
+    align-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 600px;
+    overflow: scroll;
+    justify-content: center;
+    
+}
+
+.GameNameSetter .game-name .name-display h3 {
+    font-size: 40px;
+    margin-top: -10px;
+    padding: 10px 10px 10px 10px;
+    text-align: center;
+    
+}
+
+.GameNameSetter .game-name .game-name-form {
+    display: inline-block;
+    align-content: center;
+}
+
+.GameNameSetter .game-name .game-name-form input{
+    width: 570px;
+    height: 30px;
+}
+
+.GameNameSetter .game-name .game-name-form button{
+    width: 280;
+    height: 60px;
+    font-size: 16px;
+    margin-top: 10px;
+    width: 600px;
+}
+
+.GameNameSetter .title{
+    background-color: black;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.GameNameSetter .title h1{
+    color: rgb(255, 255, 255);
+    font-size: 35px;
+    text-align: center;
+    padding-bottom: 75px;
+    margin-right: 80%;
+}
+
+.GameNameSetter hr {
+    color: rgba(255, 255, 255, 0.5);
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.GameNameSetter .current-desc {
+    background-color: rgb(245, 243, 234);
+    margin: auto;
+    border-radius: 10px;
+    align-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 600px;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: auto;
+    min-height: 100px;
+    font-size: 18px;
+    text-align: left;
+    justify-content: center;
+    overflow: scroll;
+}
+
+.GameNameSetter .current-desc p {
+    font-size: 18px;
+    text-align: left;
+    margin-top: 5px;
+    padding: 10px 10px 10px 10px;
+}
+
+
+.GameNameSetter .game-description {
+    display: flex;
+    flex-direction: column;
+}
+
+.GameNameSetter .game-desc-form {
+    align-content: center;
+}
+
+.desc-input {
+    width: 600px;
+    height: 30px;
+}
+
+.GameNameSetter .game-desc-form button {
+    width: 600px;
+    height: 60px;
+    font-size: 16px;
+    margin-top: 40px;
+}
+
+/* set up the grid layout */
+
+.GameNameSetter .game-info-cells {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 10px;
+    height: auto;
+    margin-top: 10px;
+}
+
+.GameNameSetter .game-info-cells .left-column {
+    display: grid;
+    grid-template-rows: auto;
+    gap: 10px;
+}
+
+.GameNameSetter .game-info-cells .game-description {
+    border: 2px solid rgb(220, 219, 219);
+    height: auto;
+    
+}
+
+.GameNameSetter .game-info-cells .game-name {
+    border: 2px solid rgb(220, 219, 219);
+    min-height: 100px;
+    
+}
+
+.GameNameSetter .game-info-cells .game-image {
+  border: 2px solid rgb(220, 219, 219);
+}
+
+.GameNameSetter .game-info-cells .game-image img {
+    border: 2px solid black;
+}
+
+.GameNameSetter .game-info-cells .game-image input {
+    width: 380px;
+}
+
+.GameNameSetter .game-info-cells .game-image button {
+    width: 400px;
+    height: 50px;
+    margin-top: 10px;
+}

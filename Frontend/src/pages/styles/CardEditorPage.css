@@ -1,0 +1,15 @@
+.card-to-image-container {
+  background-color: black;
+  display: inline-block;
+}
+
+.CardEditorPage h3 {
+  text-align: left;
+  margin-left: 15px;
+  font-family: "sans-bold";
+}
+
+@font-face {
+  font-family: "sans-bold";
+  src: url(../../assets/fonts/SourceSans3-Bold.ttf);
+}

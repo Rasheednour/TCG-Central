@@ -1,0 +1,63 @@
+
+.SignUpForm h1 {
+color: #ffffff;
+font-size: 1.5em;
+margin-top: 5%;
+font-family: 'sans-bold';
+text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.SignUpForm h2 {
+color: #000000;
+font-size: 0.7em;
+font-family: 'sans-regular';
+margin-bottom: 2%;
+}
+.SignUpForm input {
+width: 400px;
+border-radius: 7px;
+}
+
+.SignUpForm button {
+width: 430px;
+height: 50px;
+margin-top: 1em;
+font-family: 'sans-bold';
+font-size: 15px;
+}
+
+.SignUpForm .button1 {
+background-color: #2d2d2d;
+}
+
+.SignUpForm .button1:hover {
+background-color: #4b4b4b;
+}
+
+.SignUpForm .button2 {
+background-color: #b90101;
+}
+
+.SignUpForm .button2:hover {
+background-color: #e30202;
+
+}
+
+
+@font-face {
+
+font-family: 'sans-bold';
+src: url(../../assets/fonts/SourceSans3-Bold.ttf);
+}
+
+@font-face {
+
+font-family: 'sans-regular';
+src: url(../../assets/fonts/SourceSans3-Regular.ttf);
+}
+
+@font-face {
+
+font-family: 'sans-light';
+src: url(../../assets/fonts/SourceSans3-Light.ttf);
+}
