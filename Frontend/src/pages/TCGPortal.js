@@ -10,7 +10,7 @@ import GameSummary from "../components/GameSummary";
 import tcg_portal_cover from "../assets/images/tcg_portal_cover.png";
 import axios from "axios";
 
-const api = "https://tcgbackend-s2kqyb5vna-wl.a.run.app/";
+const api = "https://tcg-backend-app-2nzzlueilq-lz.a.run.app/";
 
 function TCGPortal() {
   const [games, setGames] = useState([]);

@@ -3,7 +3,7 @@ import './styles/SignUpForm.css';
 import Button from '@mui/material/Button';
 import axios from 'axios';
 
-const api = 'https://tcgbackend-s2kqyb5vna-wl.a.run.app/';
+const api = 'https://tcg-backend-app-2nzzlueilq-lz.a.run.app/';
 
 
 const SignUpForm = () => {

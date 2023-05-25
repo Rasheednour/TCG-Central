@@ -1,5 +1,5 @@
 export const CONFIG = {
-  BACKEND_URL: "https://tcgbackend-s2kqyb5vna-wl.a.run.app",
+  BACKEND_URL: "https://tcg-backend-app-2nzzlueilq-lz.a.run.app",
   BACKEND_CODE: "tcgadmin",
   ACCESS_TOKEN: null,
   DEFAULT_ENEMY: {

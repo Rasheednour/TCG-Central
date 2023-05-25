@@ -6,7 +6,7 @@ import { storage } from "./config/firebase";
 import { ref, getDownloadURL } from "firebase/storage";
 import axios from "axios";
 
-const BACKEND_API = "https://tcgbackend-s2kqyb5vna-wl.a.run.app/";
+const BACKEND_API = "https://tcg-backend-app-2nzzlueilq-lz.a.run.app/";
 
 // Get the query string parameters from the URL
 const queryString = window.location.search;
