@@ -1,0 +1,29 @@
+{
+  "name": "phaser-card-game",
+  "version": "1.0.0",
+  "description": "Server for Capstone TCG game.",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20",
+    "package.json": "^2.0.1",
+    "shuffle-array": "^1.0.1",
+    "socket.io": "^4.5.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Belthunder/Phaser-Card-Game.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Belthunder/Phaser-Card-Game/issues"
+  },
+  "homepage": "https://github.com/Belthunder/Phaser-Card-Game#readme"
+}
