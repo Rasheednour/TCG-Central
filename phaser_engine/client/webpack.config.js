@@ -31,14 +31,14 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin({
-      root: path.resolve(__dirname, "./dist")
+      root: path.resolve(__dirname, "../")
     }),
     new webpack.DefinePlugin({
       CANVAS_RENDERER: JSON.stringify(true),
       WEBGL_RENDERER: JSON.stringify(true)
     }),
     new HtmlWebpackPlugin({
-      template: "./dist/index.html",
+      template: "./src/index.html",
       inject: false
     })
   ]
