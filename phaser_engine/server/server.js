@@ -13,8 +13,8 @@ let gameState = "Initializing";
 
 const io = require("socket.io")(http, {
   cors: {
-    // origin: 'https://tcg-maker-phaser.herokuapp.com/',
-    origin: "*",
+    origin: 'https://tcg-phaser-client.herokuapp.com/',
+    // origin: "*",
     methods: ["GET", "POST"],
   },
 });
