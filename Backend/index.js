@@ -4,7 +4,6 @@ const Firestore = require("@google-cloud/firestore");
 //---------------------------- Google OAuth -----------------
 
 // required libraries 
-const json = require('./client_secret.json');
 const {google} = require('googleapis');
 const url = require('url');
 const jwt_decode = require('jwt-decode');
