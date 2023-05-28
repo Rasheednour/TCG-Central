@@ -3,7 +3,7 @@ const express = require('express');
 const favicon = require('express-favicon');
 
 const app = express();
-const DIST_DIR = path.join(__dirname, '/src');
+const DIST_DIR = path.join(__dirname, 'dist');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
 
 app.use(favicon(__dirname + '/src/favicon.ico'));
