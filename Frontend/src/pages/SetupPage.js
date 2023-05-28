@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 
 const BACKEND_API = "https://tcg-backend-app-2nzzlueilq-lz.a.run.app/";
-const PHASER_CLIENT = "https://tcg-maker-phaser.herokuapp.com/";
+const PHASER_CLIENT = "https://tcg-phaser-client.herokuapp.com/";
 
 function SetupPage() {
   const [game, setGame] = useState("");
